@@ -1,23 +1,18 @@
-import datetime
+from django.forms import ModelForm
 from django.db import models
-from django.utils import timezone
 
-# Create your models here.
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
+# Déclaration de l'objet chaufferie
+class Chaufferie(models.Model):
+    #Nombre de chaudière dans la chaufferie
+    nbChaudiere = models.IntegerField(max_length=1)
 
-    def __str__(self):
-        return self.question_text
-    
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+    # nbPompe = models.IntegerField(max_length=1)
+    # bruleur = models.BooleanField()
+    # nbV2V = models.IntegerField(max_length=1)
 
-
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.choice_text
+# Déclaration de la classe du formulaire chaufferie
+class ChaufferieForm(ModelForm):
+    class Meta:
+        model = Chaufferie
+        fields = ['nbChaudiere']
+        # fields = ['nbChaudiere', 'nbPompe', 'bruleur', 'nbV2V']
