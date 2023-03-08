@@ -5,5 +5,13 @@
 <form action="/chaufferieForm/" method="post">
     <label>Nombre de chaudières: </label>
     <input id="nbChaudiere" type="number" name="nbChaudiere" value="{{ chaufferie.nbChaudiere }}">
+
+    <ul>
+        {% for Chaudiere in chaufferie.Chaudiere %}
+            <li><label>Chaudière {{ Chaudiere.num }}</label></li>
+        {% endfor %}
+    </ul>
+
+
     <input type="submit" value="OK">
 </form>
