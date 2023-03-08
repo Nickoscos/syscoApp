@@ -9,5 +9,15 @@ def IndexView(request):
 
 #Page 2: Définition de la configuration de la chaufferie
 def ChaufferieView(request):
+
+    #Création d'un unique objet chaufferie dans la base de données 
+    try:
+        #Si l'objet 1 est existant alors on le récupère
+        Chaufferie.objects.get(id=1)
+    except Chaufferie.DoesNotExist:
+        #Si l'objet 1 n'existe pas, on l'initialise
+        Chaufferie.objects.create(id=1, nbChaudiere=1)
+
+    #On renvoie les données vers la page
     chaufferie = get_object_or_404(Chaufferie)
     return render(request, 'polls/chaufferie.html', {'chaufferie': chaufferie})
