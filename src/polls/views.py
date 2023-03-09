@@ -24,8 +24,13 @@ def ChaufferieView(request):
     print (c.Chaudieres)
     #On renvoie les données vers la page
     chaufferie = Chaufferie.objects.order_by('id')
-    context = { 'chaufferie': c, 'chaudieres': c.Chaudieres }
+    context = { 'chaufferie': c }
     return render(request, 'polls/chaufferie.html' , context)
     # return render(request, 'polls/chaufferie.html', {'chaufferie': chaufferie})
 
-
+def nbchaudiere(request):
+    chaufferie = get_object_or_404(Chaufferie, pk=1)
+    nbChaudiere = chaufferie.nbChaudiere
+    nbChaudiere = request.POST['nbChaudiere']
+    nbChaudiere.save()
+    
