@@ -21,11 +21,10 @@ def ChaufferieView(request):
 
     #Ajout des chaudières
     Chaufferie.creationChaudiere(c)
-
+    print (c.Chaudieres)
     #On renvoie les données vers la page
     chaufferie = Chaufferie.objects.order_by('id')
-    print(chaufferie[0].nbChaudiere)
-    context = { 'chaufferie': chaufferie[0] }
+    context = { 'chaufferie': c, 'chaudieres': c.Chaudieres }
     return render(request, 'polls/chaufferie.html' , context)
     # return render(request, 'polls/chaufferie.html', {'chaufferie': chaufferie})
 

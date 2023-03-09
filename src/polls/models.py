@@ -7,26 +7,26 @@ class Chaufferie(models.Model):
     nbChaudiere = models.IntegerField()
 
     #Déclaration de la liste contenant les objets chaudières
-    Chaudiere = []
-
-    # nbPompe = models.IntegerField(max_length=1)
-    # nbV2V = models.IntegerField(max_length=1)
+    Chaudieres = []
 
     #Fonction permettant de créer les objets chaudières
     def creationChaudiere(self):
-        self.Chaudiere.clear()
+        self.Chaudieres.clear()
         for i in range(self.nbChaudiere):
-            c = Chaudiere
-            c.num = i+1
-            print("Chaudière ", c.num)
-            self.Chaudiere.append(c)
+            # Initialisation de la liste de chaudière pour affichage dans le formulaire
+            # Le numéro de la chaudière est automatiquement renseignée
+            # De base, une chaudière possède : 0 brûleur, 1 pompe, 1 vanne 2 voie
+            self.Chaudieres.append(Chaudiere(i+1, 0, 1, 1)) 
+
 
 #Déclaration de l'objet Chaudière
-class Chaudiere(models.Model):
-    num = 0
-    bruleur = models.BooleanField()
-    nbPompe = models.IntegerField()
-    nbV2V = models.IntegerField()
+class Chaudiere:
+    def __init__(self, num, bruleur, nbPpe, nbV2V):
+        self.num = num
+        self.bruleur = bruleur #Prend la valeur de 0 ou 1
+        self.nbPpe = nbPpe
+        self.nbV2V = nbV2V
+        if self.bruleur > 1 : self.bruleur = 0 # Une chaudière ne peut avoir plus d'un bruleur (limitation)
 
 
 # Déclaration de la classe du formulaire chaufferie

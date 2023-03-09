@@ -7,11 +7,9 @@
     <input id="nbChaudiere" type="number" name="nbChaudiere" value="{{ chaufferie.nbChaudiere }}">
 
     <ul>
-        {% for Chaudiere in chaufferie.Chaudiere %}
-            <li><label>Chaudière {{ Chaudiere.num }}</label></li>
+        {% for c in chaudieres %}
+            <li><label>Chaudière {{ c.num }}</label></li>
         {% endfor %}
     </ul>
-
-
     <input type="submit" value="OK">
 </form>
