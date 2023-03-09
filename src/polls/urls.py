@@ -8,4 +8,6 @@ urlpatterns = [
     path('', views.IndexView, name='index'),
     # ex: /polls/chaufferie/
     path('chaufferie/', views.ChaufferieView, name='chaufferie'),
+    # ex: /polls/nbchaudiere/
+    path('nbchaudiere/', views.ChaufferieView, name='chaufferie'),
 ]
