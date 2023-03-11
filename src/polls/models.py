@@ -28,10 +28,3 @@ class Chaudiere:
         self.nbV2V = nbV2V
         if self.bruleur > 1 : self.bruleur = 0 # Une chaudière ne peut avoir plus d'un bruleur (limitation)
 
-
-# Déclaration de la classe du formulaire chaufferie
-class ChaufferieForm(ModelForm):
-    class Meta:
-        model = Chaufferie
-        fields = ['nbChaudiere']
-        # fields = ['nbChaudiere', 'nbPompe', 'bruleur', 'nbV2V']

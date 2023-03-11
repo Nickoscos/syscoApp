@@ -2,10 +2,12 @@
 
 <h2>Liste de points pour une chaufferie</h2>
 
-<form action="" method="post">
+<form method="post">
     <label>Nombre de chaudières: </label>
+    {% csrf_token %}
     <input id="nbChaudiere" type="number" name="nbChaudiere" value="{{ chaufferie.nbChaudiere }}">
-
+    <!-- {% csrf_token %}
+    {{ formConf.as_p }} -->
     <input type="submit" value="OK">
 </form>
 

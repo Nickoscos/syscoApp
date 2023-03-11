@@ -7,7 +7,5 @@ urlpatterns = [
     # ex: /polls/
     path('', views.IndexView, name='index'),
     # ex: /polls/chaufferie/
-    path('chaufferie/', views.ChaufferieView, name='chaufferie'),
-    # ex: /polls/nbchaudiere/
-    path('nbchaudiere/', views.ChaufferieView, name='chaufferie'),
+    path('chaufferie/', views.chaufferieView, name='chaufferie'),
 ]
