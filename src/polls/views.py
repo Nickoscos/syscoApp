@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 
 from .models import Chaufferie
-from .forms import nbChaudForm
+from .forms import nbChaudForm, chaudForm
 
 #Page 1: Choix de la configuration
 def IndexView(request):
@@ -22,12 +22,12 @@ def chaufferieView(request):
 
     #Détection de l'envoie d'un formulaire
     if request.method == "POST":
-        form = nbChaudForm(request.POST)
-        if form.is_valid():
+        nbChaudform = nbChaudForm(request.POST)
+        if nbChaudform.is_valid():
             c.nbChaudiere = int(request.POST.get('nbChaudiere')) #Récupération du nombre de chaudières saisies
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
             print (c.nbChaudiere)
-            form.save()
+            nbChaudform.save()
     else:
-        form = nbChaudForm()
-    return render(request, 'polls/chaufferie.html', {'form': form, 'chaufferie': c})
+        nbChaudform = nbChaudForm()
+    return render(request, 'polls/chaufferie.html', {'nbChaudform': nbChaudform, 'chaudform': chaudForm, 'chaufferie': c})

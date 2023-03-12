@@ -5,26 +5,39 @@
 <form method="post">
     <label>Nombre de chaudières: </label>
     {% csrf_token %}
-    <input id="nbChaudiere" type="number" name="nbChaudiere" value="{{ chaufferie.nbChaudiere }}">
+    {{ nbChaudform.as_p }}
+    <!-- <input id="nbChaudiere" type="number" name="nbChaudiere" value="{{ chaufferie.nbChaudiere }}"> -->
     <!-- {% csrf_token %}
     {{ formConf.as_p }} -->
     <input type="submit" value="OK">
 </form>
 
-<form action="/chaufferieForm/" method="post"></form>
+<form action="" method="post"></form>
+    {% csrf_token %}
+    {% for c in chaufferie.Chaudieres %}
+    <fieldset>
+        <legend>Chaudière {{ c.id }}</legend>
+
+        {{ chaudform.as_p }}
+    </fieldset>
+    {% endfor %}
+    
+    <input type="submit" value="Valider configuration">
+</form>
+
+
+<!-- <form action="" method="post"></form>
     {% for c in chaufferie.Chaudieres %}
     <fieldset>
         <legend>Chaudière {{ c.num }}</legend>
 
-        <!-- Nombre de pompes -->
         <label>Nombre de pompe : </label>
         <input type="number" name="nbPpe" id="chaudiere{{ c.num }}.nbPpe" value="{{ c.nbPpe }}">
 
-        <!-- Nombre de vanne 2 voies -->
         <label>Nombre de V2V : </label>
         <input type="number" name="nbV2V" id="chaudiere{{ c.num }}.nbV2V" value="{{ c.nbV2V }}">
     </fieldset>
     {% endfor %}
     
     <input type="submit" value="OK">
-</form>
+</form> -->

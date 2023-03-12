@@ -20,11 +20,24 @@ class Chaufferie(models.Model):
 
 
 #Déclaration de l'objet Chaudière
-class Chaudiere:
-    def __init__(self, num, bruleur, nbPpe, nbV2V):
-        self.num = num
-        self.bruleur = bruleur #Prend la valeur de 0 ou 1
-        self.nbPpe = nbPpe
-        self.nbV2V = nbV2V
-        if self.bruleur > 1 : self.bruleur = 0 # Une chaudière ne peut avoir plus d'un bruleur (limitation)
+class Chaudiere(models.Model):
+    num = models.IntegerField()
+    nomChaud = models.CharField(max_length=20)
+    nbBruleur = models.IntegerField()
+    nbV2V = models.IntegerField()
+    nbPpe = models.IntegerField()
+    # def __init__(self, num, bruleur, nbPpe, nbV2V):
+    #     self.num = num
+    #     self.bruleur = bruleur #Prend la valeur de 0 ou 1
+    #     self.nbPpe = nbPpe
+    #     self.nbV2V = nbV2V
+    #     if self.bruleur > 1 : self.bruleur = 0 # Une chaudière ne peut avoir plus d'un bruleur (limitation)
+
+# class Chaudiere:
+#     def __init__(self, num, bruleur, nbPpe, nbV2V):
+#         self.num = num
+#         self.bruleur = bruleur #Prend la valeur de 0 ou 1
+#         self.nbPpe = nbPpe
+#         self.nbV2V = nbV2V
+#         if self.bruleur > 1 : self.bruleur = 0 # Une chaudière ne peut avoir plus d'un bruleur (limitation)
 
