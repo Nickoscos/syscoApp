@@ -2,18 +2,21 @@
 
 <h2>Liste de points pour une chaufferie</h2>
 
-<form method="post">
-    <label>Nombre de chaudières: </label>
-    {% csrf_token %}
-    {{ nbChaudform.as_p }}
-    <!-- <input id="nbChaudiere" type="number" name="nbChaudiere" value="{{ chaufferie.nbChaudiere }}"> -->
-    <!-- {% csrf_token %}
-    {{ formConf.as_p }} -->
-    <input type="submit" value="OK">
+<!-- Formulaire 1 de configuration de la chaufferie -->
+<form method="post" id="nbChaudform">
+    <fieldset>
+        <legend>Configuration de la chaufferie </legend>
+        {% csrf_token %}
+        {{ nbChaudform.as_p }}
+        <input type="hidden" name="form_type" value="nbChaudform">
+        <input type="submit" value="OK">
+    </fieldset>
 </form>
 
-<form action="" method="post"></form>
+<!-- Formulaire 2 de configuration de chaque chaudière -->
+<form action="" method="post" id="chaudform">
     {% csrf_token %}
+    <input type="hidden" name="form_type" value="chaudform">
     {% for c in chaufferie.Chaudieres %}
     <fieldset>
         <legend>Chaudière {{ c.id }}</legend>
@@ -24,20 +27,3 @@
     
     <input type="submit" value="Valider configuration">
 </form>
-
-
-<!-- <form action="" method="post"></form>
-    {% for c in chaufferie.Chaudieres %}
-    <fieldset>
-        <legend>Chaudière {{ c.num }}</legend>
-
-        <label>Nombre de pompe : </label>
-        <input type="number" name="nbPpe" id="chaudiere{{ c.num }}.nbPpe" value="{{ c.nbPpe }}">
-
-        <label>Nombre de V2V : </label>
-        <input type="number" name="nbV2V" id="chaudiere{{ c.num }}.nbV2V" value="{{ c.nbV2V }}">
-    </fieldset>
-    {% endfor %}
-    
-    <input type="submit" value="OK">
-</form> -->

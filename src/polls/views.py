@@ -20,14 +20,27 @@ def chaufferieView(request):
         #Si l'objet 1 n'existe pas, on l'initialise
         c = Chaufferie.objects.create(id=1, nbChaudiere=1)
 
+    ##Déclaration des deux formulaires
+    print(c.nbChaudiere)
+    initial_data = c
+    nbChaudform = nbChaudForm(request.POST or None)
+    print(nbChaudform['nbChaudiere'].value())
+
     #Détection de l'envoie d'un formulaire
     if request.method == "POST":
-        nbChaudform = nbChaudForm(request.POST)
-        if nbChaudform.is_valid():
+        # nbChaudform = nbChaudForm(request.POST)
+        chaudform = chaudForm(request.POST)
+        #Choix des actions en fonction du formulaire soumit
+        # Soumission du formulaire déterminant le nombre de chaudière
+        if (request.POST.get("form_type") == "nbChaudform" and nbChaudform.is_valid()):
             c.nbChaudiere = int(request.POST.get('nbChaudiere')) #Récupération du nombre de chaudières saisies
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
-            print (c.nbChaudiere)
             nbChaudform.save()
+        # Soumission du formulaire configuration des chaudières
+        elif (request.POST.get("form_type") == "chaudform" and chaudform.is_valid()):
+            print('enregistrement chaudière')
+
     else:
         nbChaudform = nbChaudForm()
+
     return render(request, 'polls/chaufferie.html', {'nbChaudform': nbChaudform, 'chaudform': chaudForm, 'chaufferie': c})
