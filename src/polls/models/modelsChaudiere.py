@@ -1,5 +1,6 @@
 from django.forms import ModelForm
 from django.db import models
+from ..models.modelsEquip import Pompe
 
 # Déclaration de l'objet chaufferie
 class Chaufferie(models.Model):
@@ -17,6 +18,7 @@ class Chaufferie(models.Model):
             # Le numéro de la chaudière est automatiquement renseignée
             # De base, une chaudière possède : 0 brûleur, 1 pompe, 1 vanne 2 voie
             self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbBruleur = 0, nbV2V=1, nbPpe=1)) 
+        self.save() #Enregistrement dans la base
 
     #Fonction permettant d'actualiser les données chaudières
     def updateChaudiere(self, numero, nomChaud, nbBruleur, nbV2V, nbPpe):
@@ -26,6 +28,16 @@ class Chaufferie(models.Model):
                 chaud.nbBruleur = nbBruleur
                 chaud.nbV2V = nbV2V
                 chaud.nbPpe = nbPpe
+        self.save() #Enregistrement dans la base
+
+    #Fonction permettant l'ajout des équipements dans l'objet chaudière
+    def createEquip(self):
+        for chaud in self.Chaudieres:
+            chaud.equipements.clear() 
+            for i in range(chaud.nbPpe):
+                pompe = Pompe('Pompe ' + str(i+1))
+                chaud.equipements.append(pompe)
+        self.save() #Enregistrement dans la base
 
 #Déclaration de l'objet Chaudière
 class Chaudiere(models.Model):
@@ -34,3 +46,4 @@ class Chaudiere(models.Model):
     nbBruleur = models.IntegerField()
     nbV2V = models.IntegerField()
     nbPpe = models.IntegerField()
+    equipements = [] #Listing des points de la chaudière

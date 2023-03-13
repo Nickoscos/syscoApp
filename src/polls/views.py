@@ -5,6 +5,7 @@ from django.template import loader
 from .models.modelsChaudiere import Chaufferie
 from .forms.formsChaudiere import nbChaudForm, chaudForm
 
+
 #Page 1: Choix de la configuration
 def IndexView(request):
     return render(request, 'polls/index.html')
@@ -25,16 +26,14 @@ def chaufferieView(request):
     initial_data = c
     nbChaudform = nbChaudForm(request.POST)
     chaudform = chaudForm(request.POST)
+
     #Détection de l'envoie d'un formulaire
     if request.method == "POST":
-        # nbChaudform = nbChaudForm(request.POST)
-        print(request.POST.get("form_type"))
         #Choix des actions en fonction du formulaire soumit
         # Soumission du formulaire déterminant le nombre de chaudière
         if (request.POST.get("form_type") == "nbChaudform" and nbChaudform.is_valid()):
             c.nbChaudiere = int(request.POST.get('nbChaudiere')) #Récupération du nombre de chaudières saisies
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
-            c.save() #Enregistrement dans la base
             c = Chaufferie.objects.get(id=1) #Relecture pour affichage
             nbChaudform.save()
         # Soumission du formulaire configuration des chaudières
@@ -51,9 +50,10 @@ def chaufferieView(request):
                     nbPpe=int(request.POST.get('nbPpe'+str(chaud.num))),
                     nbV2V=int(request.POST.get('nbV2V'+str(chaud.num))),
                 )
-            c.save()
+
     else:
         nbChaudform = nbChaudForm()
 
+    Chaufferie.createEquip(c)
     c = Chaufferie.objects.get(id=1) #Relecture pour affichage
     return render(request, 'polls/chaufferie.html', {'nbChaudform': nbChaudform, 'chaudform': chaudForm, 'chaufferie': c})
