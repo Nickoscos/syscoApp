@@ -19,25 +19,24 @@
 <!-- Formulaire 2 de configuration de chaque chaudière -->
 <form action="" method="post" id="chaudform">
     {% csrf_token %}
-    <input type="hidden" name="form_type" value="chaudform">
     {% for c in chaufferie.Chaudieres %}
     <fieldset>
         <legend>Chaudière {{ c.num }}</legend>
 
         <label>Nom chaudières: </label>
-        <input name="nomChaud" id="nomChaud" value="{{ c.nomChaud }}">
+        <input name="nomChaud{{ c.num }}" id="nomChaud{{ c.num }}" type="text" value="{{ c.nomChaud }}">
 
         <label>Brûleur présent: </label>
-        <input name="nbBruleur" id="nbBruleur" type="number" value="{{ c.nbBruleur }}">
+        <input name="nbBruleur{{ c.num }}" id="nbBruleur{{ c.num }}" type="number" value="{{ c.nbBruleur }}">
 
         <label>Nombre de pompes: </label>
-        <input name="nbPpe" id="nbPpe" type="number" value="{{ c.nbPpe }}">
+        <input name="nbPpe{{ c.num }}" id="nbPpe{{ c.num }}" type="number" value="{{ c.nbPpe }}">
 
         <label>Nombre de V2V: </label>
-        <input name="nbV2V" id="nbV2V" type="number" value="{{ c.nbV2V }}">
+        <input name="nbV2V{{ c.num }}" id="nbV2V{{ c.num }}" type="number" value="{{ c.nbV2V }}">
 
     </fieldset>
     {% endfor %}
-    
+    <input type="hidden" name="form_type" value="chaudform">
     <input type="submit" value="Valider configuration">
 </form>

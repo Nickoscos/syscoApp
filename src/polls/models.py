@@ -17,7 +17,6 @@ class Chaufferie(models.Model):
             # Le numéro de la chaudière est automatiquement renseignée
             # De base, une chaudière possède : 0 brûleur, 1 pompe, 1 vanne 2 voie
             self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbBruleur = 0, nbV2V=1, nbPpe=1)) 
-        print("nom: ", self.Chaudieres[0].nomChaud)
 
     #Fonction permettant d'actualiser les données chaudières
     def updateChaudiere(self, numero, nomChaud, nbBruleur, nbV2V, nbPpe):
@@ -31,7 +30,7 @@ class Chaufferie(models.Model):
 #Déclaration de l'objet Chaudière
 class Chaudiere(models.Model):
     num = models.IntegerField()
-    nomChaud = models.CharField(max_length=20)
+    nomChaud = models.CharField(max_length=200)
     nbBruleur = models.IntegerField()
     nbV2V = models.IntegerField()
     nbPpe = models.IntegerField()

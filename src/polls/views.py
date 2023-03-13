@@ -16,20 +16,19 @@ def chaufferieView(request):
     try:
         #Si l'objet 1 est existant alors on le récupère
         c = Chaufferie.objects.get(id=1)
-        print("Récupération et le nombre de chaudière est de ", c.Chaudieres)
     except Chaufferie.DoesNotExist:
         #Si l'objet 1 n'existe pas, on l'initialise
         c = Chaufferie.objects.create(id=1, nbChaudiere=1)
         c.save()
-        print("Création")
+
     ##Déclaration des deux formulaires
     initial_data = c
     nbChaudform = nbChaudForm(request.POST)
-
+    chaudform = chaudForm(request.POST)
     #Détection de l'envoie d'un formulaire
     if request.method == "POST":
         # nbChaudform = nbChaudForm(request.POST)
-        chaudform = chaudForm(request.POST)
+        print(request.POST.get("form_type"))
         #Choix des actions en fonction du formulaire soumit
         # Soumission du formulaire déterminant le nombre de chaudière
         if (request.POST.get("form_type") == "nbChaudform" and nbChaudform.is_valid()):
@@ -37,19 +36,21 @@ def chaufferieView(request):
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
             c.save() #Enregistrement dans la base
             c = Chaufferie.objects.get(id=1) #Relecture pour affichage
-
+            nbChaudform.save()
         # Soumission du formulaire configuration des chaudières
-        elif (request.POST.get("form_type") == "chaudform" and chaudform.is_valid()):
+        elif (request.POST.get("form_type") == "chaudform"): #and chaudform.is_valid()):
             c=Chaufferie.objects.get(id=1) #Relecture pour affichage
-            #Modification de la chaudière
-            Chaufferie.updateChaudiere(
-                c,
-                numero=int(1),
-                nomChaud=request.POST.get('nomChaud'),
-                nbBruleur=int(request.POST.get('nbBruleur')),
-                nbPpe=int(request.POST.get('nbPpe')),
-                nbV2V=int(request.POST.get('nbV2V')),
-            )
+            #Modification des chaudières
+            # Bouclage en fonction du numéro de la chaudière
+            for chaud in c.Chaudieres:
+                Chaufferie.updateChaudiere(
+                    c,
+                    numero=chaud.num,
+                    nomChaud=request.POST.get('nomChaud'+str(chaud.num)),
+                    nbBruleur=int(request.POST.get('nbBruleur'+str(chaud.num))),
+                    nbPpe=int(request.POST.get('nbPpe'+str(chaud.num))),
+                    nbV2V=int(request.POST.get('nbV2V'+str(chaud.num))),
+                )
             c.save()
     else:
         nbChaudform = nbChaudForm()
