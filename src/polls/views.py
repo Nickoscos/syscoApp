@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.template import loader
 
-from .models import Chaufferie
-from .forms import nbChaudForm, chaudForm
+from .models.modelsChaudiere import Chaufferie
+from .forms.formsChaudiere import nbChaudForm, chaudForm
 
 #Page 1: Choix de la configuration
 def IndexView(request):

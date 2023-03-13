@@ -1,5 +1,5 @@
 from django import forms
-from .models import Chaufferie, Chaudiere
+from ..models.modelsChaudiere import Chaufferie, Chaudiere
 
 #Formulaire définissant le nombre de chaudières composant la chaufferie
 class nbChaudForm(forms.ModelForm):
