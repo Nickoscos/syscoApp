@@ -16,15 +16,15 @@ def chaufferieView(request):
     try:
         #Si l'objet 1 est existant alors on le récupère
         c = Chaufferie.objects.get(id=1)
+        print("Récupération et le nombre de chaudière est de ", c.Chaudieres)
     except Chaufferie.DoesNotExist:
         #Si l'objet 1 n'existe pas, on l'initialise
         c = Chaufferie.objects.create(id=1, nbChaudiere=1)
-
+        c.save()
+        print("Création")
     ##Déclaration des deux formulaires
-    print(c.nbChaudiere)
     initial_data = c
-    nbChaudform = nbChaudForm(request.POST or None)
-    print(nbChaudform['nbChaudiere'].value())
+    nbChaudform = nbChaudForm(request.POST)
 
     #Détection de l'envoie d'un formulaire
     if request.method == "POST":
@@ -35,12 +35,24 @@ def chaufferieView(request):
         if (request.POST.get("form_type") == "nbChaudform" and nbChaudform.is_valid()):
             c.nbChaudiere = int(request.POST.get('nbChaudiere')) #Récupération du nombre de chaudières saisies
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
-            nbChaudform.save()
+            c.save() #Enregistrement dans la base
+            c = Chaufferie.objects.get(id=1) #Relecture pour affichage
+
         # Soumission du formulaire configuration des chaudières
         elif (request.POST.get("form_type") == "chaudform" and chaudform.is_valid()):
-            print('enregistrement chaudière')
-
+            c=Chaufferie.objects.get(id=1) #Relecture pour affichage
+            #Modification de la chaudière
+            Chaufferie.updateChaudiere(
+                c,
+                numero=int(1),
+                nomChaud=request.POST.get('nomChaud'),
+                nbBruleur=int(request.POST.get('nbBruleur')),
+                nbPpe=int(request.POST.get('nbPpe')),
+                nbV2V=int(request.POST.get('nbV2V')),
+            )
+            c.save()
     else:
         nbChaudform = nbChaudForm()
 
+    c = Chaufferie.objects.get(id=1) #Relecture pour affichage
     return render(request, 'polls/chaufferie.html', {'nbChaudform': nbChaudform, 'chaudform': chaudForm, 'chaufferie': c})

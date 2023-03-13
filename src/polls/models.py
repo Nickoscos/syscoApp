@@ -16,8 +16,17 @@ class Chaufferie(models.Model):
             # Initialisation de la liste de chaudière pour affichage dans le formulaire
             # Le numéro de la chaudière est automatiquement renseignée
             # De base, une chaudière possède : 0 brûleur, 1 pompe, 1 vanne 2 voie
-            self.Chaudieres.append(Chaudiere(i+1, "Chaudière " + str(i+1),0, 1, 1)) 
+            self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbBruleur = 0, nbV2V=1, nbPpe=1)) 
+        print("nom: ", self.Chaudieres[0].nomChaud)
 
+    #Fonction permettant d'actualiser les données chaudières
+    def updateChaudiere(self, numero, nomChaud, nbBruleur, nbV2V, nbPpe):
+        for chaud in self.Chaudieres:
+            if chaud.num == numero :
+                chaud.nomChaud = nomChaud
+                chaud.nbBruleur = nbBruleur
+                chaud.nbV2V = nbV2V
+                chaud.nbPpe = nbPpe
 
 #Déclaration de l'objet Chaudière
 class Chaudiere(models.Model):

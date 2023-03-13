@@ -7,7 +7,10 @@
     <fieldset>
         <legend>Configuration de la chaufferie </legend>
         {% csrf_token %}
-        {{ nbChaudform.as_p }}
+
+        <label>Nombres de chaudières: </label>
+        <input name="nbChaudiere" id="nbChaudiere" value="{{ chaufferie.nbChaudiere }}">
+        
         <input type="hidden" name="form_type" value="nbChaudform">
         <input type="submit" value="OK">
     </fieldset>
@@ -19,9 +22,20 @@
     <input type="hidden" name="form_type" value="chaudform">
     {% for c in chaufferie.Chaudieres %}
     <fieldset>
-        <legend>Chaudière {{ c.id }}</legend>
+        <legend>Chaudière {{ c.num }}</legend>
 
-        {{ chaudform.as_p }}
+        <label>Nom chaudières: </label>
+        <input name="nomChaud" id="nomChaud" value="{{ c.nomChaud }}">
+
+        <label>Brûleur présent: </label>
+        <input name="nbBruleur" id="nbBruleur" type="number" value="{{ c.nbBruleur }}">
+
+        <label>Nombre de pompes: </label>
+        <input name="nbPpe" id="nbPpe" type="number" value="{{ c.nbPpe }}">
+
+        <label>Nombre de V2V: </label>
+        <input name="nbV2V" id="nbV2V" type="number" value="{{ c.nbV2V }}">
+
     </fieldset>
     {% endfor %}
     
