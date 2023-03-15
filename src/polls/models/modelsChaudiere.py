@@ -1,14 +1,27 @@
 from django.forms import ModelForm
 from django.db import models
-from ..models.modelsEquip import Pompe
 
-# Déclaration de l'objet chaufferie
+#Déclaration de l'objet Chaudière
+class Chaudiere(models.Model):
+    num = models.IntegerField(default=1)
+    nomChaud = models.CharField(max_length=200, default="Chaudière " + str(num))
+    nbBruleur = models.IntegerField(default=0)
+    nbV2V = models.IntegerField(default=1)
+    nbPpe = models.IntegerField(default=1)
+
+#Déclaration de l'objet chaufferie
 class Chaufferie(models.Model):
     #Nombre de chaudière dans la chaufferie
     nbChaudiere = models.IntegerField()
     
     #Déclaration de la liste contenant les objets chaudières
     Chaudieres = []
+
+    #Déclaration de la liste contenant les objets chaudières
+    Divers = []
+
+    #Déclaration de la liste des points
+    listePts = []
 
     #Fonction permettant de créer les objets chaudières
     def creationChaudiere(self):
@@ -30,20 +43,3 @@ class Chaufferie(models.Model):
                 chaud.nbPpe = nbPpe
         self.save() #Enregistrement dans la base
 
-    #Fonction permettant l'ajout des équipements dans l'objet chaudière
-    def createEquip(self):
-        for chaud in self.Chaudieres:
-            chaud.equipements.clear() 
-            for i in range(chaud.nbPpe):
-                pompe = Pompe('Pompe ' + str(i+1))
-                chaud.equipements.append(pompe)
-        self.save() #Enregistrement dans la base
-
-#Déclaration de l'objet Chaudière
-class Chaudiere(models.Model):
-    num = models.IntegerField()
-    nomChaud = models.CharField(max_length=200)
-    nbBruleur = models.IntegerField()
-    nbV2V = models.IntegerField()
-    nbPpe = models.IntegerField()
-    equipements = [] #Listing des points de la chaudière

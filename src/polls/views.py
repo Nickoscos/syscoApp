@@ -1,10 +1,7 @@
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
-from django.template import loader
-
+from django.shortcuts import render
 from .models.modelsChaudiere import Chaufferie
 from .forms.formsChaudiere import nbChaudForm, chaudForm
-
+from .ListePTS.listePts import generationListe
 
 #Page 1: Choix de la configuration
 def IndexView(request):
@@ -50,10 +47,11 @@ def chaufferieView(request):
                     nbPpe=int(request.POST.get('nbPpe'+str(chaud.num))),
                     nbV2V=int(request.POST.get('nbV2V'+str(chaud.num))),
                 )
-
+            generationListe(c)
     else:
         nbChaudform = nbChaudForm()
 
-    Chaufferie.createEquip(c)
+
     c = Chaufferie.objects.get(id=1) #Relecture pour affichage
+    
     return render(request, 'polls/chaufferie.html', {'nbChaudform': nbChaudform, 'chaudform': chaudForm, 'chaufferie': c})

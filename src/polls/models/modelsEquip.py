@@ -1,59 +1,23 @@
+from django.db import models
 
 
-#Création de la classe d'une donnée
-dataPts = {
-    'libelle': 'libellé',
-    'TM': 0,
-    'TS': 0,
-    'TS imp':0,
-    'TR': 0,
-    'TC': 0
-}
+#Déclaration du modèle d'un point
+class point(models.Model):
+    libelle = models.CharField(max_length=200)
+    TM = models.IntegerField()
+    TS = models.IntegerField()
+    TR = models.IntegerField()
+    TC = models.IntegerField()
 
+    # def ajoutPts(self, libelle, TM, TS, TR, TC):
+    #     self.libelle = libelle
+    #     self.TM = TM
+    #     self.TS = TS
+    #     self.TR = TR
+    #     self.TC = TC
 
-#Création des classes des équipements
-# Pompe
-class Pompe():
-    defaut : dataPts
-    commande : dataPts
+#Déclaration d'une liste de points
+class Liste(models.Model):
+    pts = []
 
-    def __init__(self, nom):
-        self.defaut = {
-            'libelle': 'Défaut ' + nom,
-            'TM': 0,
-            'TS': 1,
-            'TS imp':0,
-            'TR': 0,
-            'TC': 0
-        }
-        self.commande = {
-            'libelle': 'Commande ' + nom,
-            'TM': 0,
-            'TS': 0,
-            'TS imp':0,
-            'TR': 0,
-            'TC': 1
-        }
-
-# V2V
-class V2V():
-    fdc : dataPts
-    commande : dataPts
-
-    def __init__(self, nom):
-        self.fdc = {
-            'libelle': 'retour ouverture ' + nom,
-            'TM': 0,
-            'TS': 1,
-            'TS imp':0,
-            'TR': 0,
-            'TC': 0
-        }
-        self.commande = {
-            'libelle': 'Commande ouverture' + nom,
-            'TM': 0,
-            'TS': 0,
-            'TS imp':0,
-            'TR': 0,
-            'TC': 1
-        }
+        

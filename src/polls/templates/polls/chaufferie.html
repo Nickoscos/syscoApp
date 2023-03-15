@@ -40,3 +40,33 @@
     <input type="hidden" name="form_type" value="chaudform">
     <input type="submit" value="Valider configuration">
 </form>
+
+{% for e in chaufferie.Chaudieres %}
+    <h3>test</h3>
+{% endfor %}
+<!-- {% for c in chaufferie.Chaudieres %}
+<fieldset>
+    <table>
+        <thead>
+            <tr>
+                <th colspan="2">Chaudière {{ c.num }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Libellé</td>
+                <td>TM</td>
+                <td>TS</td>
+                <td>TS impulsionnel</td>
+                <td>TR</td>
+                <td>TC</td>
+            </tr>
+
+        </tbody>
+    </table>
+</fieldset>
+{% endfor %} -->
+
+<!-- {% for e in chaufferie.Chaudieres.equipements %} -->
+
+<!-- {% endfor %} -->
