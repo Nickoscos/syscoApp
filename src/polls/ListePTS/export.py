@@ -5,11 +5,14 @@ from tkinter import *
 
 def generationXls(liste):
 
-    Tk().withdraw()
+    #Gestion de la box pour enregistrer le fichier
+    root = Tk() #Ajout du widget tkinter
+    root.withdraw() #Séparer la box de la fenêtre de tkinter
+    root.attributes('-topmost', True)  # Affichage de la box au premier plan
+    root.iconify()  # Cache la fenetre de tkinter
     files = [('Excel Document', '.xlsx'), ('All Files', '*.*')]
-    # filename = asksaveasfile(initialdir = "C:\\",title = "Select file", defaultextension=files) 
-    file = asksaveasfile(filetypes = files, defaultextension = files) 
-    print(file.name)
+    file = asksaveasfile(filetypes = files, defaultextension = files, parent=root) 
+    root.destroy() #Supprime le widget 
 
     # On crée un nouveau classeur
     with xlsxwriter.Workbook(file.name) as workbook:

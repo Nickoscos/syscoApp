@@ -9,7 +9,7 @@
         {% csrf_token %}
 
         <label>Nombres de chaudières: </label>
-        <input name="nbChaudiere" id="nbChaudiere" value="{{ chaufferie.nbChaudiere }}">
+        <input name="nbChaudiere" id="nbChaudiere" type="number" value="{{ chaufferie.nbChaudiere }}">
         
         <input type="hidden" name="form_type" value="nbChaudform">
         <input type="submit" value="OK">
