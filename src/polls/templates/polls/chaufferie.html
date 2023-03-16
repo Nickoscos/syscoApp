@@ -41,32 +41,32 @@
     <input type="submit" value="Valider configuration">
 </form>
 
-{% for e in chaufferie.Chaudieres %}
-    <h3>test</h3>
-{% endfor %}
-<!-- {% for c in chaufferie.Chaudieres %}
-<fieldset>
-    <table>
-        <thead>
-            <tr>
-                <th colspan="2">Chaudière {{ c.num }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Libellé</td>
-                <td>TM</td>
-                <td>TS</td>
-                <td>TS impulsionnel</td>
-                <td>TR</td>
-                <td>TC</td>
-            </tr>
-
-        </tbody>
-    </table>
-</fieldset>
+<!-- {% for l in listePts.pts %}
+    <p>{{ l.libelle }} => TM: {{ l.TM }}, TS: {{ l.TS }}, TR: {{ l.TR }}, TC: {{ l.TC }}</p>
 {% endfor %} -->
 
-<!-- {% for e in chaufferie.Chaudieres.equipements %} -->
-
-<!-- {% endfor %} -->
+<table>
+    <thead>
+        <tr>
+            <th colspan="5">Liste de points</th>
+        </tr>
+        <tr>
+            <th>Libellé</th>
+            <th>TM Température</th>
+            <th>TS Digital</th>
+            <th>TR 0-10V</th>
+            <th>TC Digital</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for l in listePts.pts %}
+        <tr>
+            <td>{{ l.libelle }}</td>
+            <td>{{ l.TM }}</td>
+            <td>{{ l.TS }}</td>
+            <td>{{ l.TR }}</td>
+            <td>{{ l.TC }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

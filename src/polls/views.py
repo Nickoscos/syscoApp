@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models.modelsChaudiere import Chaufferie
+from .models.modelsEquip import Liste
 from .forms.formsChaudiere import nbChaudForm, chaudForm
 from .ListePTS.listePts import generationListe
 
@@ -18,6 +19,15 @@ def chaufferieView(request):
         #Si l'objet 1 n'existe pas, on l'initialise
         c = Chaufferie.objects.create(id=1, nbChaudiere=1)
         c.save()
+
+    #Initialisation de la liste de points
+    try:
+        #Si l'objet 1 est existant alors on le récupère
+        listePts = Liste.objects.get(id=1)
+        # liste = Liste.objects.get(id=1)
+    except Liste.DoesNotExist:
+        #Si l'objet 1 n'existe pas, on ne fait rien
+        listePts = Liste.objects.create(id=1)
 
     ##Déclaration des deux formulaires
     initial_data = c
@@ -53,5 +63,10 @@ def chaufferieView(request):
 
 
     c = Chaufferie.objects.get(id=1) #Relecture pour affichage
-    
-    return render(request, 'polls/chaufferie.html', {'nbChaudform': nbChaudform, 'chaudform': chaudForm, 'chaufferie': c})
+    listePts = Liste.objects.get(id=1)
+    return render(request, 'polls/chaufferie.html', {
+        'nbChaudform': nbChaudform, 
+        'chaudform': chaudForm, 
+        'chaufferie': c,
+        'listePts': listePts
+        })
