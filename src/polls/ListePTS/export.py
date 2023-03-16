@@ -1,15 +1,18 @@
 import xlsxwriter
-from tkinter import filedialog
+import pandas
+from tkinter.filedialog import asksaveasfile
 from tkinter import *
 
 def generationXls(liste):
 
     Tk().withdraw()
-    filename = filedialog.asksaveasfile(initialdir = "C:\\",title = "Select file", defaultextension=".xls") 
-    print(filename)
+    files = [('Excel Document', '.xlsx'), ('All Files', '*.*')]
+    # filename = asksaveasfile(initialdir = "C:\\",title = "Select file", defaultextension=files) 
+    file = asksaveasfile(filetypes = files, defaultextension = files) 
+    print(file.name)
 
     # On crée un nouveau classeur
-    with xlsxwriter.Workbook("listedepoints.xlsx") as workbook:
+    with xlsxwriter.Workbook(file.name) as workbook:
 
         # On y ajoute une première feuille
         worksheet = workbook.add_worksheet("Liste")
