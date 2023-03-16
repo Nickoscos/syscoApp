@@ -1,5 +1,6 @@
 from ..models.modelsEquip import point, Liste
 from ..models.modelsChaudiere import Chaufferie
+from .export import generationXls
 
 #Fonction permettant la génération de la liste de points
 def generationListe(chaufferie):
@@ -21,6 +22,9 @@ def generationListe(chaufferie):
 
     #Ajout de la dernière ligne de la liste TOTAUX
     calculTotaux(liste)
+
+    #Création du fichier EXCEL
+    generationXls(liste)
 
     #Affichage Liste
     for listePts in liste.pts:
