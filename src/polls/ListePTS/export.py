@@ -1,12 +1,13 @@
 import xlsxwriter
-import xlrd
+from tkinter import filedialog
+from tkinter import *
 
 def generationXls(liste):
-    createXLS(liste)
 
+    Tk().withdraw()
+    filename = filedialog.asksaveasfile(initialdir = "C:\\",title = "Select file", defaultextension=".xls") 
+    print(filename)
 
-
-def createXLS(liste):
     # On crée un nouveau classeur
     with xlsxwriter.Workbook("listedepoints.xlsx") as workbook:
 

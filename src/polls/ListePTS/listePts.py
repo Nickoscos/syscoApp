@@ -5,7 +5,6 @@ from .export import generationXls
 #Fonction permettant la génération de la liste de points
 def generationListe(chaufferie):
     #Déclaration d'un point
-    # point.objects.all().delete()
     pts = point
 
     #Initialisation de la liste de points
@@ -23,9 +22,6 @@ def generationListe(chaufferie):
     #Ajout de la dernière ligne de la liste TOTAUX
     calculTotaux(liste)
 
-    #Création du fichier EXCEL
-    generationXls(liste)
-
     #Affichage Liste
     for listePts in liste.pts:
         print(listePts.libelle + 
@@ -34,6 +30,9 @@ def generationListe(chaufferie):
             ' TR:' + str(listePts.TR) +
             ' TC:' + str(listePts.TC)
             )
+    
+    #Création du fichier EXCEL
+    generationXls(liste)
 
 #Fonction permettant l'ajout des points chaudières
 def ajoutPtsChaud(liste, Chaudieres):
