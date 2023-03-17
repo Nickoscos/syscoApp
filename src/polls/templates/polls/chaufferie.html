@@ -1,5 +1,10 @@
 {% extends 'polls/header.html' %}
 
+{% block cssfile %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chaufferie.css' %}">
+{% endblock %}
+
 {% block content %}
 
     <h1>Définition de la liste de points</h1>
