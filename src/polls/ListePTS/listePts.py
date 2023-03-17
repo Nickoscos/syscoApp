@@ -22,6 +22,12 @@ def generationListe(chaufferie):
     #Ajout des points Divers
     ajoutPtsDivers(liste, chaufferie.Divers)
 
+    #Ajout des points Circuits Constants
+    ajoutPtsCircCst(liste, chaufferie.CircCst)
+
+    #Ajout des points Circuits Régulés
+    ajoutPtsCircReg(liste, chaufferie.CircReg)
+
     #Ajout de la dernière ligne de la liste TOTAUX
     calculTotaux(liste)
 
@@ -80,7 +86,7 @@ def ajoutPtsChaud(liste, Chaudieres):
         ))
         liste.save()  
 
-#Fonction permettant l'ajout des points chaudières
+#Fonction permettant l'ajout des points Divers
 def ajoutPtsDivers(liste, Divers):
     for div in Divers:
         #TéléSignalisation supplémentaire
@@ -130,6 +136,72 @@ def ajoutPtsDivers(liste, Divers):
             TS=0, 
             TR=0, 
             TC=div.nbV2V
+        ))
+        liste.save()  
+
+#Fonction permettant l'ajout des points Divers
+def ajoutPtsCircReg(liste, CircReg):
+    for circ in CircReg:
+        #Mesure de température
+        liste.pts.append(point(
+            libelle= circ.nomCirc + ' Température départ ', 
+            TM=circ.nbTemp, 
+            TS=0, 
+            TR=0, 
+            TC=0
+        ))
+        liste.save()  
+
+        #Défaut pompe
+        liste.pts.append(point(
+            libelle= circ.nomCirc + ' Défaut pompe ', 
+            TM=0, 
+            TS=circ.nbPpe, 
+            TR=0, 
+            TC=0
+        ))
+        liste.save()  
+
+        #Commande pompe
+        liste.pts.append(point(
+            libelle= circ.nomCirc + ' Commande pompe ', 
+            TM=0, 
+            TS=0, 
+            TR=circ.nbPpe, 
+            TC=0
+        ))
+        liste.save()  
+
+        #Commande V3V
+        liste.pts.append(point(
+            libelle= circ.nomCirc + ' Commande V3V ', 
+            TM=0, 
+            TS=0, 
+            TR=circ.nbV3V, 
+            TC=0
+        ))
+        liste.save()  
+
+#Fonction permettant l'ajout des points circuits constants
+def ajoutPtsCircCst(liste, CircCst):
+    for circ in CircCst:
+        #Défaut pompe
+        liste.pts.append(point(
+            libelle= circ.nomCirc + ' Défaut pompe ', 
+            TM=0, 
+            TS=circ.nbPpe, 
+            TR=0, 
+            TC=0
+        ))
+        liste.save()  
+
+        #Commande pompe
+        liste.pts.append(point(
+            libelle= circ.nomCirc + ' Commande pompe ', 
+            TM=0, 
+            TS=0, 
+            TR=circ.nbPpe, 
+            TC=0
         ))
         liste.save()  
 

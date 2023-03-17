@@ -13,6 +13,12 @@
 
         <label>Nombres d'équipements divers: </label>
         <input name="nbDivers" id="nbDivers" type="number" value="{{ chaufferie.nbDivers }}">
+
+        <label>Nombres de circuits régulés: </label>
+        <input name="nbCircReg" id="nbCircReg" type="number" value="{{ chaufferie.nbCircReg }}">
+
+        <label>Nombres de circuits constants: </label>
+        <input name="nbCircCst" id="nbCircCst" type="number" value="{{ chaufferie.nbCircCst }}">
         
         <input type="hidden" name="form_type" value="nbChaudform">
         <input type="submit" value="OK">
@@ -55,6 +61,36 @@
 
         <label>Nombre de V2V: </label>
         <input name="nbV2VDivers{{ d.num }}" id="nbV2VDivers{{ d.num }}" type="number" value="{{ d.nbV2V }}">
+
+    </fieldset>
+    {% endfor %}
+    {% for c in chaufferie.CircReg %}
+    <fieldset>
+        <legend>Circuit régulé {{ c.num }}</legend>
+
+        <label>Nom circuit régulé: </label>
+        <input name="nomCircReg{{ c.num }}" id="nomCircReg{{ c.num }}" type="text" value="{{ c.nomCirc }}">
+
+        <label>Nombre de sonde de température: </label>
+        <input name="nbTempCircReg{{ c.num }}" id="nbTempCircReg{{ c.num }}" type="number" value="{{ c.nbTemp }}">
+
+        <label>Nombre de pompes: </label>
+        <input name="nbPpeCircReg{{ c.num }}" id="nbPpeCircReg{{ c.num }}" type="number" value="{{ c.nbPpe }}">
+
+        <label>Nombre de V3V: </label>
+        <input name="nbV3VCircReg{{ c.num }}" id="nbV3VCircReg{{ c.num }}" type="number" value="{{ c.nbV3V }}">
+
+    </fieldset>
+    {% endfor %}
+    {% for c in chaufferie.CircCst %}
+    <fieldset>
+        <legend>Circuit constant {{ c.num }}</legend>
+
+        <label>Nom circuit constant: </label>
+        <input name="nomCircCst{{ c.num }}" id="nomCircCst{{ c.num }}" type="text" value="{{ c.nomCirc }}">
+
+        <label>Nombre de pompes: </label>
+        <input name="nbPpeCircCst{{ c.num }}" id="nbPpeCircCst{{ c.num }}" type="number" value="{{ c.nbPpe }}">
 
     </fieldset>
     {% endfor %}

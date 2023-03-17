@@ -41,10 +41,14 @@ def chaufferieView(request):
         if (request.POST.get("form_type") == "nbChaudform" and nbChaudform.is_valid()):
             c.nbChaudiere = int(request.POST.get('nbChaudiere')) #Récupération du nombre de chaudières saisies
             c.nbDivers = int(request.POST.get('nbDivers')) #Récupération du nombre de chaudières saisies
+            c.nbCircReg = int(request.POST.get('nbCircReg')) #Récupération du nombre de circuits régulés saisies
+            c.nbCircCst = int(request.POST.get('nbCircCst')) #Récupération du nombre de circuits constants saisies
 
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
             Chaufferie.creationDivers(c) #Ajout des équipements Divers dans la base de données
-
+            Chaufferie.creationCircReg(c) #Ajout des circuits régulés dans la base de données
+            Chaufferie.creationCircCst(c) #Ajout des circuits constants dans la base de données
+        
             c = Chaufferie.objects.get(id=1) #Relecture pour affichage
             nbChaudform.save()
         # Soumission du formulaire configuration des chaudières
@@ -61,7 +65,7 @@ def chaufferieView(request):
                     nbPpe=int(request.POST.get('nbPpeChaud'+str(chaud.num))),
                     nbV2V=int(request.POST.get('nbV2VChaud'+str(chaud.num))),
                 )
-                        # Bouclage en fonction du numéro de la chaudière
+            # Bouclage en fonction du numéro de la chaudière
             for divers in c.Divers:
                 Chaufferie.updateDivers(
                     c,
@@ -70,6 +74,24 @@ def chaufferieView(request):
                     nbTSsup=int(request.POST.get('nbTSsupDivers'+str(divers.num))),
                     nbPpe=int(request.POST.get('nbPpeDivers'+str(divers.num))),
                     nbV2V=int(request.POST.get('nbV2VDivers'+str(divers.num))),
+                )
+            # Bouclage en fonction du numéro du circuit régulé
+            for circ in c.CircReg:
+                Chaufferie.updateCircReg(
+                    c,
+                    numero=circ.num,
+                    nomCirc=request.POST.get('nomCircReg'+str(circ.num)),
+                    nbTemp=int(request.POST.get('nbTempCircReg'+str(circ.num))),
+                    nbPpe=int(request.POST.get('nbPpeCircReg'+str(circ.num))),
+                    nbV3V=int(request.POST.get('nbV3VCircReg'+str(circ.num))),
+                )
+            # Bouclage en fonction du numéro du circuit constant
+            for circ in c.CircCst:
+                Chaufferie.updateCircCst(
+                    c,
+                    numero=circ.num,
+                    nomCirc=request.POST.get('nomCircCst'+str(circ.num)),
+                    nbPpe=int(request.POST.get('nbPpeCircCst'+str(circ.num))),
                 )
             generationListe(c)
     else:

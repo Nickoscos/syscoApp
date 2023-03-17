@@ -17,25 +17,29 @@ class Divers(models.Model):
     nbPpe = models.IntegerField(default=1)
     nbTSsup = models.IntegerField(default=1)
 
+#Déclaration de l'objet Circuit Régulés
+class CircReg(models.Model):
+    num = models.IntegerField(default=1)
+    nomCirc = models.CharField(max_length=200, default="Circuit Régulé " + str(num))
+    nbTemp = models.IntegerField(default=1)
+    nbV3V = models.IntegerField(default=1)
+    nbPpe = models.IntegerField(default=2)
+
+#Déclaration de l'objet Circuit Constant
+class CircCst(models.Model):
+    num = models.IntegerField(default=1)
+    nomCirc = models.CharField(max_length=200, default="Circuit Constant " + str(num))
+    nbPpe = models.IntegerField(default=2)
 
 #Déclaration de l'objet chaufferie
 class Chaufferie(models.Model):
+    ######CONFIGURATION CHAUDIERES#####
     #Nombre de chaudière dans la chaufferie
     nbChaudiere = models.IntegerField(default=1)
 
-    #Nombre d'équipements divers dans la chaufferie
-    nbDivers = models.IntegerField(default=0)
-    
     #Déclaration de la liste contenant les objets chaudières
     Chaudieres = []
 
-    #Déclaration de la liste contenant les objets chaudières
-    Divers = []
-
-    #Déclaration de la liste des points
-    listePts = []
-
-    ###### CHAUDIERES ########
     #Fonction permettant de créer les objets chaudières
     def creationChaudiere(self):
         self.Chaudieres.clear()
@@ -56,7 +60,13 @@ class Chaufferie(models.Model):
                 chaud.nbPpe = nbPpe
         self.save() #Enregistrement dans la base
 
-    ###### DIVERS ########
+    ######CONFIGURATION DIVERS#####
+    #Nombre d'équipements divers dans la chaufferie
+    nbDivers = models.IntegerField(default=0)
+
+    #Déclaration de la liste contenant les objets chaudières
+    Divers = []
+
     #Fonction permettant de créer les objets divers
     def creationDivers(self):
         self.Divers.clear()
@@ -77,3 +87,60 @@ class Chaufferie(models.Model):
                 divers.nbV2V = nbV2V
                 divers.nbPpe = nbPpe
         self.save() #Enregistrement dans la base
+
+    ######CONFIGURATION CIRCUITS REGULES#####
+    #Nombre de circuits régulés dans la chaufferie
+    nbCircReg = models.IntegerField(default=1)
+
+    #Déclaration de la liste contenant les objets circuits régulés
+    CircReg = []
+
+    #Fonction permettant de créer les objets circuits régulés
+    def creationCircReg(self):
+        self.CircReg.clear()
+        for i in range(self.nbCircReg):
+            # Initialisation de la liste de circuits régulés pour affichage dans le formulaire
+            # Le numéro du circuit régulé est automatiquement renseignée
+            # De base, un circuit régulé possède : 1 Mesure de température, 1 pompe, 1 vanne 3 voie
+            self.CircReg.append(CircReg(num = i+1, nomCirc= "Circuit Régulé " + str(i+1), nbTemp = 1, nbV3V=1, nbPpe=2)) 
+        self.save() #Enregistrement dans la base
+
+    #Fonction permettant d'actualiser les données circuit régulé
+    def updateCircReg(self, numero, nomCirc, nbTemp, nbV3V, nbPpe):
+        for circ in self.CircReg:
+            if circ.num == numero :
+                circ.nomCirc = nomCirc
+                circ.nbTemp = nbTemp
+                circ.nbV3V = nbV3V
+                circ.nbPpe = nbPpe
+        self.save() #Enregistrement dans la base
+
+    ######CONFIGURATION CIRCUITS CONSTANT#####
+    #Nombre de circuits constants dans la chaufferie
+    nbCircCst = models.IntegerField(default=1)
+
+    #Déclaration de la liste contenant les objets circuits constant
+    CircCst = []
+
+    #Fonction permettant de créer les objets circuits constants
+    def creationCircCst(self):
+        self.CircCst.clear()
+        for i in range(self.nbCircCst):
+            # Initialisation de la liste de circuits constants pour affichage dans le formulaire
+            # Le numéro du circuit régulé est automatiquement renseignée
+            # De base, un circuit régulé possède : 1 Mesure de température, 1 pompe, 1 vanne 3 voie
+            self.CircCst.append(CircCst(num = i+1, nomCirc= "Circuit Constant " + str(i+1), nbPpe=2)) 
+        self.save() #Enregistrement dans la base
+
+    #Fonction permettant d'actualiser les données circuit régulé
+    def updateCircCst(self, numero, nomCirc, nbPpe):
+        for circ in self.CircCst:
+            if circ.num == numero :
+                circ.nomCirc = nomCirc
+                circ.nbPpe = nbPpe
+        self.save() #Enregistrement dans la base
+        
+    #Déclaration de la liste des points
+    listePts = []
+
+
