@@ -11,3 +11,11 @@ body h2 {
     display: flex;
     justify-content: center;
 }
+
+table {
+    margin: auto;
+}
+
+td {
+    text-align :center;
+}
