@@ -1,133 +1,139 @@
-<h1>Définition de la liste de points</h1>
+{% extends 'polls/header.html' %}
 
-<h2>Liste de points pour une chaufferie</h2>
+{% block content %}
 
-<span style="color:red">{{message}}</span>
-<br>
-<br>
-<!-- Formulaire 1 de configuration de la chaufferie -->
-<form method="post" id="nbChaudform">
-    <fieldset>
-        <legend>Configuration de la chaufferie </legend>
+    <h1>Définition de la liste de points</h1>
+
+    <h2>Liste de points pour une chaufferie</h2>
+
+    <span style="color:red">{{message}}</span>
+    <br>
+    <br>
+    <!-- Formulaire 1 de configuration de la chaufferie -->
+    <form method="post" id="nbChaudform">
+        <fieldset>
+            <legend>Configuration de la chaufferie </legend>
+            {% csrf_token %}
+
+            <label>Nombres de chaudières: </label>
+            <input name="nbChaudiere" id="nbChaudiere" type="number" value="{{ chaufferie.nbChaudiere }}">
+
+            <label>Nombres d'équipements divers: </label>
+            <input name="nbDivers" id="nbDivers" type="number" value="{{ chaufferie.nbDivers }}">
+
+            <label>Nombres de circuits régulés: </label>
+            <input name="nbCircReg" id="nbCircReg" type="number" value="{{ chaufferie.nbCircReg }}">
+
+            <label>Nombres de circuits constants: </label>
+            <input name="nbCircCst" id="nbCircCst" type="number" value="{{ chaufferie.nbCircCst }}">
+            
+            <input type="hidden" name="form_type" value="nbChaudform">
+            <input type="submit" value="OK">
+        </fieldset>
+    </form>
+
+    <!-- Formulaire 2 de configuration de chaque composant -->
+    <form action="" method="post" id="chaudform">
         {% csrf_token %}
+        <!-- CONFIGURATION CHAUDIERES -->
+        {% for c in chaufferie.Chaudieres %}
+        <fieldset>
+            <legend>Chaudière {{ c.num }}</legend>
 
-        <label>Nombres de chaudières: </label>
-        <input name="nbChaudiere" id="nbChaudiere" type="number" value="{{ chaufferie.nbChaudiere }}">
+            <label>Nom chaudières: </label>
+            <input name="nomChaud{{ c.num }}" id="nomChaud{{ c.num }}" type="text" value="{{ c.nomChaud }}">
 
-        <label>Nombres d'équipements divers: </label>
-        <input name="nbDivers" id="nbDivers" type="number" value="{{ chaufferie.nbDivers }}">
+            <label>Brûleur présent: </label>
+            <input name="nbBruleurChaud{{ c.num }}" id="nbBruleurChaud{{ c.num }}" type="number" value="{{ c.nbBruleur }}">
 
-        <label>Nombres de circuits régulés: </label>
-        <input name="nbCircReg" id="nbCircReg" type="number" value="{{ chaufferie.nbCircReg }}">
+            <label>Nombre de pompes: </label>
+            <input name="nbPpeChaud{{ c.num }}" id="nbPpeChaud{{ c.num }}" type="number" value="{{ c.nbPpe }}">
 
-        <label>Nombres de circuits constants: </label>
-        <input name="nbCircCst" id="nbCircCst" type="number" value="{{ chaufferie.nbCircCst }}">
-        
-        <input type="hidden" name="form_type" value="nbChaudform">
-        <input type="submit" value="OK">
-    </fieldset>
-</form>
+            <label>Nombre de V2V: </label>
+            <input name="nbV2VChaud{{ c.num }}" id="nbV2VChaud{{ c.num }}" type="number" value="{{ c.nbV2V }}">
 
-<!-- Formulaire 2 de configuration de chaque composant -->
-<form action="" method="post" id="chaudform">
-    {% csrf_token %}
-    <!-- CONFIGURATION CHAUDIERES -->
-    {% for c in chaufferie.Chaudieres %}
-    <fieldset>
-        <legend>Chaudière {{ c.num }}</legend>
-
-        <label>Nom chaudières: </label>
-        <input name="nomChaud{{ c.num }}" id="nomChaud{{ c.num }}" type="text" value="{{ c.nomChaud }}">
-
-        <label>Brûleur présent: </label>
-        <input name="nbBruleurChaud{{ c.num }}" id="nbBruleurChaud{{ c.num }}" type="number" value="{{ c.nbBruleur }}">
-
-        <label>Nombre de pompes: </label>
-        <input name="nbPpeChaud{{ c.num }}" id="nbPpeChaud{{ c.num }}" type="number" value="{{ c.nbPpe }}">
-
-        <label>Nombre de V2V: </label>
-        <input name="nbV2VChaud{{ c.num }}" id="nbV2VChaud{{ c.num }}" type="number" value="{{ c.nbV2V }}">
-
-    </fieldset>
-    {% endfor %}
-    <!-- CONFIGURATION EQUIPEMENTS DIVERS -->
-    {% for d in chaufferie.Divers %}
-    <fieldset>
-        <legend>Divers {{ d.num }}</legend>
-
-        <label>Nom équipement: </label>
-        <input name="nomDivers{{ d.num }}" id="nomDivers{{ d.num }}" type="text" value="{{ d.nomDivers }}">
-
-        <label>Nombre de TS supplémentaires (hors défaut pompe): </label>
-        <input name="nbTSsupDivers{{ d.num }}" id="nbTSsupDivers{{ d.num }}" type="number" value="{{ d.nbTSsup }}">
-
-        <label>Nombre de pompes: </label>
-        <input name="nbPpeDivers{{ d.num }}" id="nbPpeDivers{{ d.num }}" type="number" value="{{ d.nbPpe }}">
-
-        <label>Nombre de V2V: </label>
-        <input name="nbV2VDivers{{ d.num }}" id="nbV2VDivers{{ d.num }}" type="number" value="{{ d.nbV2V }}">
-
-    </fieldset>
-    {% endfor %}
-    <!-- CONFIGURATION CIRCUITS REGULES -->
-    {% for c in chaufferie.CircReg %}
-    <fieldset>
-        <legend>Circuit régulé {{ c.num }}</legend>
-
-        <label>Nom circuit régulé: </label>
-        <input name="nomCircReg{{ c.num }}" id="nomCircReg{{ c.num }}" type="text" value="{{ c.nomCirc }}">
-
-        <label>Nombre de sonde de température: </label>
-        <input name="nbTempCircReg{{ c.num }}" id="nbTempCircReg{{ c.num }}" type="number" value="{{ c.nbTemp }}">
-
-        <label>Nombre de pompes: </label>
-        <input name="nbPpeCircReg{{ c.num }}" id="nbPpeCircReg{{ c.num }}" type="number" value="{{ c.nbPpe }}">
-
-        <label>Nombre de V3V: </label>
-        <input name="nbV3VCircReg{{ c.num }}" id="nbV3VCircReg{{ c.num }}" type="number" value="{{ c.nbV3V }}">
-
-    </fieldset>
-    {% endfor %}
-    <!-- CONFIGURATION CIRCUITS CONSTANTS -->
-    {% for c in chaufferie.CircCst %}
-    <fieldset>
-        <legend>Circuit constant {{ c.num }}</legend>
-
-        <label>Nom circuit constant: </label>
-        <input name="nomCircCst{{ c.num }}" id="nomCircCst{{ c.num }}" type="text" value="{{ c.nomCirc }}">
-
-        <label>Nombre de pompes: </label>
-        <input name="nbPpeCircCst{{ c.num }}" id="nbPpeCircCst{{ c.num }}" type="number" value="{{ c.nbPpe }}">
-
-    </fieldset>
-    {% endfor %}
-    <input type="hidden" name="form_type" value="chaudform">
-    <input type="submit" value="Valider configuration">
-</form>
-
-<!-- AFFICHAGE DE LA LISTE DE POINTS -->
-<table>
-    <thead>
-        <tr>
-            <th colspan="5">Liste de points</th>
-        </tr>
-        <tr>
-            <th>Libellé</th>
-            <th>TM Température</th>
-            <th>TS Digital</th>
-            <th>TR 0-10V</th>
-            <th>TC Digital</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for l in listePts.pts %}
-        <tr>
-            <td>{{ l.libelle }}</td>
-            <td>{{ l.TM }}</td>
-            <td>{{ l.TS }}</td>
-            <td>{{ l.TR }}</td>
-            <td>{{ l.TC }}</td>
-        </tr>
+        </fieldset>
         {% endfor %}
-    </tbody>
-</table>
+        <!-- CONFIGURATION EQUIPEMENTS DIVERS -->
+        {% for d in chaufferie.Divers %}
+        <fieldset>
+            <legend>Divers {{ d.num }}</legend>
+
+            <label>Nom équipement: </label>
+            <input name="nomDivers{{ d.num }}" id="nomDivers{{ d.num }}" type="text" value="{{ d.nomDivers }}">
+
+            <label>Nombre de TS supplémentaires (hors défaut pompe): </label>
+            <input name="nbTSsupDivers{{ d.num }}" id="nbTSsupDivers{{ d.num }}" type="number" value="{{ d.nbTSsup }}">
+
+            <label>Nombre de pompes: </label>
+            <input name="nbPpeDivers{{ d.num }}" id="nbPpeDivers{{ d.num }}" type="number" value="{{ d.nbPpe }}">
+
+            <label>Nombre de V2V: </label>
+            <input name="nbV2VDivers{{ d.num }}" id="nbV2VDivers{{ d.num }}" type="number" value="{{ d.nbV2V }}">
+
+        </fieldset>
+        {% endfor %}
+        <!-- CONFIGURATION CIRCUITS REGULES -->
+        {% for c in chaufferie.CircReg %}
+        <fieldset>
+            <legend>Circuit régulé {{ c.num }}</legend>
+
+            <label>Nom circuit régulé: </label>
+            <input name="nomCircReg{{ c.num }}" id="nomCircReg{{ c.num }}" type="text" value="{{ c.nomCirc }}">
+
+            <label>Nombre de sonde de température: </label>
+            <input name="nbTempCircReg{{ c.num }}" id="nbTempCircReg{{ c.num }}" type="number" value="{{ c.nbTemp }}">
+
+            <label>Nombre de pompes: </label>
+            <input name="nbPpeCircReg{{ c.num }}" id="nbPpeCircReg{{ c.num }}" type="number" value="{{ c.nbPpe }}">
+
+            <label>Nombre de V3V: </label>
+            <input name="nbV3VCircReg{{ c.num }}" id="nbV3VCircReg{{ c.num }}" type="number" value="{{ c.nbV3V }}">
+
+        </fieldset>
+        {% endfor %}
+        <!-- CONFIGURATION CIRCUITS CONSTANTS -->
+        {% for c in chaufferie.CircCst %}
+        <fieldset>
+            <legend>Circuit constant {{ c.num }}</legend>
+
+            <label>Nom circuit constant: </label>
+            <input name="nomCircCst{{ c.num }}" id="nomCircCst{{ c.num }}" type="text" value="{{ c.nomCirc }}">
+
+            <label>Nombre de pompes: </label>
+            <input name="nbPpeCircCst{{ c.num }}" id="nbPpeCircCst{{ c.num }}" type="number" value="{{ c.nbPpe }}">
+
+        </fieldset>
+        {% endfor %}
+        <input type="hidden" name="form_type" value="chaudform">
+        <input type="submit" value="Valider configuration">
+    </form>
+
+    <!-- AFFICHAGE DE LA LISTE DE POINTS -->
+    <table>
+        <thead>
+            <tr>
+                <th colspan="5">Liste de points</th>
+            </tr>
+            <tr>
+                <th>Libellé</th>
+                <th>TM Température</th>
+                <th>TS Digital</th>
+                <th>TR 0-10V</th>
+                <th>TC Digital</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for l in listePts.pts %}
+            <tr>
+                <td>{{ l.libelle }}</td>
+                <td>{{ l.TM }}</td>
+                <td>{{ l.TS }}</td>
+                <td>{{ l.TR }}</td>
+                <td>{{ l.TC }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
