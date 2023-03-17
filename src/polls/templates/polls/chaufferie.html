@@ -31,6 +31,7 @@
 <!-- Formulaire 2 de configuration de chaque composant -->
 <form action="" method="post" id="chaudform">
     {% csrf_token %}
+    <!-- CONFIGURATION CHAUDIERES -->
     {% for c in chaufferie.Chaudieres %}
     <fieldset>
         <legend>Chaudière {{ c.num }}</legend>
@@ -49,6 +50,7 @@
 
     </fieldset>
     {% endfor %}
+    <!-- CONFIGURATION EQUIPEMENTS DIVERS -->
     {% for d in chaufferie.Divers %}
     <fieldset>
         <legend>Divers {{ d.num }}</legend>
@@ -67,6 +69,7 @@
 
     </fieldset>
     {% endfor %}
+    <!-- CONFIGURATION CIRCUITS REGULES -->
     {% for c in chaufferie.CircReg %}
     <fieldset>
         <legend>Circuit régulé {{ c.num }}</legend>
@@ -85,6 +88,7 @@
 
     </fieldset>
     {% endfor %}
+    <!-- CONFIGURATION CIRCUITS CONSTANTS -->
     {% for c in chaufferie.CircCst %}
     <fieldset>
         <legend>Circuit constant {{ c.num }}</legend>
@@ -101,6 +105,7 @@
     <input type="submit" value="Valider configuration">
 </form>
 
+<!-- AFFICHAGE DE LA LISTE DE POINTS -->
 <table>
     <thead>
         <tr>
