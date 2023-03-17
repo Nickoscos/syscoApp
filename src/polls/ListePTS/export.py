@@ -1,5 +1,4 @@
 import xlsxwriter
-import pandas
 from tkinter.filedialog import asksaveasfile
 from tkinter import *
 

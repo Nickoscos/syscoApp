@@ -9,10 +9,22 @@ class Chaudiere(models.Model):
     nbV2V = models.IntegerField(default=1)
     nbPpe = models.IntegerField(default=1)
 
+#Déclaration de l'objet Divers
+class Divers(models.Model):
+    num = models.IntegerField(default=1)
+    nomDivers = models.CharField(max_length=200, default="Divers " + str(num))
+    nbV2V = models.IntegerField(default=1)
+    nbPpe = models.IntegerField(default=1)
+    nbTSsup = models.IntegerField(default=1)
+
+
 #Déclaration de l'objet chaufferie
 class Chaufferie(models.Model):
     #Nombre de chaudière dans la chaufferie
-    nbChaudiere = models.IntegerField()
+    nbChaudiere = models.IntegerField(default=1)
+
+    #Nombre d'équipements divers dans la chaufferie
+    nbDivers = models.IntegerField(default=0)
     
     #Déclaration de la liste contenant les objets chaudières
     Chaudieres = []
@@ -23,6 +35,7 @@ class Chaufferie(models.Model):
     #Déclaration de la liste des points
     listePts = []
 
+    ###### CHAUDIERES ########
     #Fonction permettant de créer les objets chaudières
     def creationChaudiere(self):
         self.Chaudieres.clear()
@@ -43,3 +56,24 @@ class Chaufferie(models.Model):
                 chaud.nbPpe = nbPpe
         self.save() #Enregistrement dans la base
 
+    ###### DIVERS ########
+    #Fonction permettant de créer les objets divers
+    def creationDivers(self):
+        self.Divers.clear()
+        if self.nbDivers > 0 :
+            for i in range(self.nbDivers):
+                # Initialisation de la liste des équipements divers pour affichage dans le formulaire
+                # Le numéro de l'équipement divers est automatiquement renseignée
+                # De base, une équipement divers possède : 1 TS, 1 pompe, 0 vanne 2 voie
+                self.Divers.append(Divers(num = i+1, nomDivers= "Divers " + str(i+1), nbTSsup = 0, nbV2V=1, nbPpe=1)) 
+            self.save() #Enregistrement dans la base
+
+    #Fonction permettant d'actualiser les données des équipements divers
+    def updateDivers(self, numero, nomDivers, nbTSsup, nbV2V, nbPpe):
+        for divers in self.Divers:
+            if divers.num == numero :
+                divers.nomDivers = nomDivers
+                divers.nbTSsup = nbTSsup
+                divers.nbV2V = nbV2V
+                divers.nbPpe = nbPpe
+        self.save() #Enregistrement dans la base

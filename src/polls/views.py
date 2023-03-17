@@ -17,7 +17,7 @@ def chaufferieView(request):
         c = Chaufferie.objects.get(id=1)
     except Chaufferie.DoesNotExist:
         #Si l'objet 1 n'existe pas, on l'initialise
-        c = Chaufferie.objects.create(id=1, nbChaudiere=1)
+        c = Chaufferie.objects.create(id=1, nbChaudiere=1, nbDivers=0)
         c.save()
 
     #Initialisation de la liste de points
@@ -40,7 +40,11 @@ def chaufferieView(request):
         # Soumission du formulaire déterminant le nombre de chaudière
         if (request.POST.get("form_type") == "nbChaudform" and nbChaudform.is_valid()):
             c.nbChaudiere = int(request.POST.get('nbChaudiere')) #Récupération du nombre de chaudières saisies
+            c.nbDivers = int(request.POST.get('nbDivers')) #Récupération du nombre de chaudières saisies
+
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
+            Chaufferie.creationDivers(c) #Ajout des équipements Divers dans la base de données
+
             c = Chaufferie.objects.get(id=1) #Relecture pour affichage
             nbChaudform.save()
         # Soumission du formulaire configuration des chaudières
@@ -53,9 +57,19 @@ def chaufferieView(request):
                     c,
                     numero=chaud.num,
                     nomChaud=request.POST.get('nomChaud'+str(chaud.num)),
-                    nbBruleur=int(request.POST.get('nbBruleur'+str(chaud.num))),
-                    nbPpe=int(request.POST.get('nbPpe'+str(chaud.num))),
-                    nbV2V=int(request.POST.get('nbV2V'+str(chaud.num))),
+                    nbBruleur=int(request.POST.get('nbBruleurChaud'+str(chaud.num))),
+                    nbPpe=int(request.POST.get('nbPpeChaud'+str(chaud.num))),
+                    nbV2V=int(request.POST.get('nbV2VChaud'+str(chaud.num))),
+                )
+                        # Bouclage en fonction du numéro de la chaudière
+            for divers in c.Divers:
+                Chaufferie.updateDivers(
+                    c,
+                    numero=divers.num,
+                    nomDivers=request.POST.get('nomDivers'+str(divers.num)),
+                    nbTSsup=int(request.POST.get('nbTSsupDivers'+str(divers.num))),
+                    nbPpe=int(request.POST.get('nbPpeDivers'+str(divers.num))),
+                    nbV2V=int(request.POST.get('nbV2VDivers'+str(divers.num))),
                 )
             generationListe(c)
     else:

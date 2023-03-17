@@ -8,14 +8,7 @@ class point(models.Model):
     TS = models.IntegerField()
     TR = models.IntegerField()
     TC = models.IntegerField()
-
-    # def ajoutPts(self, libelle, TM, TS, TR, TC):
-    #     self.libelle = libelle
-    #     self.TM = TM
-    #     self.TS = TS
-    #     self.TR = TR
-    #     self.TC = TC
-
+    
 #Déclaration d'une liste de points
 class Liste(models.Model):
     pts = []

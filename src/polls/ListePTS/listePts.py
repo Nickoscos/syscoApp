@@ -19,6 +19,9 @@ def generationListe(chaufferie):
     #Ajout des points pompes chaudières
     ajoutPtsChaud(liste, chaufferie.Chaudieres)
 
+    #Ajout des points Divers
+    ajoutPtsDivers(liste, chaufferie.Divers)
+
     #Ajout de la dernière ligne de la liste TOTAUX
     calculTotaux(liste)
 
@@ -74,6 +77,59 @@ def ajoutPtsChaud(liste, Chaudieres):
             TS=0, 
             TR=0, 
             TC=chaud.nbV2V
+        ))
+        liste.save()  
+
+#Fonction permettant l'ajout des points chaudières
+def ajoutPtsDivers(liste, Divers):
+    for div in Divers:
+        #TéléSignalisation supplémentaire
+        liste.pts.append(point(
+            libelle= div.nomDivers + ' Information supplémentaire ', 
+            TM=0, 
+            TS=div.nbTSsup, 
+            TR=0, 
+            TC=0
+        ))
+
+        liste.save()  
+        #Défaut pompe
+        liste.pts.append(point(
+            libelle= div.nomDivers + ' Défaut pompe ', 
+            TM=0, 
+            TS=div.nbPpe, 
+            TR=0, 
+            TC=0
+        ))
+        liste.save()  
+
+        #Commande pompe
+        liste.pts.append(point(
+            libelle= div.nomDivers + ' Commande pompe ', 
+            TM=0, 
+            TS=0, 
+            TR=div.nbPpe, 
+            TC=0
+        ))
+        liste.save()  
+
+        #Fin de course V2V
+        liste.pts.append(point(
+            libelle= div.nomDivers + ' Fin de course V2V ', 
+            TM=0, 
+            TS=div.nbV2V, 
+            TR=0, 
+            TC=0
+        ))
+        liste.save()  
+
+        #Commande V2V
+        liste.pts.append(point(
+            libelle= div.nomDivers + ' Commande V2V ', 
+            TM=0, 
+            TS=0, 
+            TR=0, 
+            TC=div.nbV2V
         ))
         liste.save()  
 

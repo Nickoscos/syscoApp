@@ -10,6 +10,9 @@
 
         <label>Nombres de chaudières: </label>
         <input name="nbChaudiere" id="nbChaudiere" type="number" value="{{ chaufferie.nbChaudiere }}">
+
+        <label>Nombres d'équipements divers: </label>
+        <input name="nbDivers" id="nbDivers" type="number" value="{{ chaufferie.nbDivers }}">
         
         <input type="hidden" name="form_type" value="nbChaudform">
         <input type="submit" value="OK">
@@ -27,23 +30,37 @@
         <input name="nomChaud{{ c.num }}" id="nomChaud{{ c.num }}" type="text" value="{{ c.nomChaud }}">
 
         <label>Brûleur présent: </label>
-        <input name="nbBruleur{{ c.num }}" id="nbBruleur{{ c.num }}" type="number" value="{{ c.nbBruleur }}">
+        <input name="nbBruleurChaud{{ c.num }}" id="nbBruleurChaud{{ c.num }}" type="number" value="{{ c.nbBruleur }}">
 
         <label>Nombre de pompes: </label>
-        <input name="nbPpe{{ c.num }}" id="nbPpe{{ c.num }}" type="number" value="{{ c.nbPpe }}">
+        <input name="nbPpeChaud{{ c.num }}" id="nbPpeChaud{{ c.num }}" type="number" value="{{ c.nbPpe }}">
 
         <label>Nombre de V2V: </label>
-        <input name="nbV2V{{ c.num }}" id="nbV2V{{ c.num }}" type="number" value="{{ c.nbV2V }}">
+        <input name="nbV2VChaud{{ c.num }}" id="nbV2VChaud{{ c.num }}" type="number" value="{{ c.nbV2V }}">
+
+    </fieldset>
+    {% endfor %}
+    {% for d in chaufferie.Divers %}
+    <fieldset>
+        <legend>Divers {{ d.num }}</legend>
+
+        <label>Nom équipement: </label>
+        <input name="nomDivers{{ d.num }}" id="nomDivers{{ d.num }}" type="text" value="{{ d.nomDivers }}">
+
+        <label>Nombre de TS supplémentaires (hors défaut pompe): </label>
+        <input name="nbTSsupDivers{{ d.num }}" id="nbTSsupDivers{{ d.num }}" type="number" value="{{ d.nbTSsup }}">
+
+        <label>Nombre de pompes: </label>
+        <input name="nbPpeDivers{{ d.num }}" id="nbPpeDivers{{ d.num }}" type="number" value="{{ d.nbPpe }}">
+
+        <label>Nombre de V2V: </label>
+        <input name="nbV2VDivers{{ d.num }}" id="nbV2VDivers{{ d.num }}" type="number" value="{{ d.nbV2V }}">
 
     </fieldset>
     {% endfor %}
     <input type="hidden" name="form_type" value="chaudform">
     <input type="submit" value="Valider configuration">
 </form>
-
-<!-- {% for l in listePts.pts %}
-    <p>{{ l.libelle }} => TM: {{ l.TM }}, TS: {{ l.TS }}, TR: {{ l.TR }}, TC: {{ l.TC }}</p>
-{% endfor %} -->
 
 <table>
     <thead>
