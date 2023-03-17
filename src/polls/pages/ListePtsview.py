@@ -6,7 +6,7 @@ from ..ListePTS.listePts import generationListe
 
 #Page 2: Définition de la configuration de la chaufferie 
 def chaufferieView(request):
-    
+    message = "" 
     #Création d'un unique objet chaufferie dans la base de données 
     try:
         #Si l'objet 1 est existant alors on le récupère
@@ -89,7 +89,7 @@ def chaufferieView(request):
                     nomCirc=request.POST.get('nomCircCst'+str(circ.num)),
                     nbPpe=int(request.POST.get('nbPpeCircCst'+str(circ.num))),
                 )
-            generationListe(c)
+            message = generationListe(c)
     else:
         nbChaudform = nbChaudForm()
 
@@ -100,5 +100,6 @@ def chaufferieView(request):
         'nbChaudform': nbChaudform, 
         'chaudform': chaudForm, 
         'chaufferie': c,
-        'listePts': listePts
+        'listePts': listePts,
+        'message': message
         })

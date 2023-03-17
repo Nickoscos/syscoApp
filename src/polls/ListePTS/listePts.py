@@ -41,7 +41,9 @@ def generationListe(chaufferie):
             )
     
     #Création du fichier EXCEL
-    generationXls(liste)
+    message = generationXls(liste)
+
+    return message
 
 #Fonction permettant l'ajout des points chaudières
 def ajoutPtsChaud(liste, Chaudieres):
