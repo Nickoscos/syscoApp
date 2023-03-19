@@ -6,9 +6,17 @@
 {% endblock %}
 
 {% block content %}
-
-    <h1>Génération de la liste de points</h1>
-
+    <div class="container-fluid">
+        <h1>Génération de la liste de points</h1>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <!-- Formulaire 1 téléchargement template Liste de points -->
+            <form method="post" id="downloadListTemplate" class="form">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="downloadListTemplate">
+                <button type="submit" class="btn btn-secondary">Télécharger liste de points</button>    
+            </form>
+        </div>
+    </div>
     <p>
         Cette page permet de générer la liste de points en fonction de la constitution de la chaufferie ou de la sous-station. Le bouton "Template Liste de points"
         vous permet aussi de concevoir vous même la liste de points depuis excel.

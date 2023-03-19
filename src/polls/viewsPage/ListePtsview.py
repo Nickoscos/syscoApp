@@ -47,7 +47,8 @@ def chaufferieView(request):
         
             c = Chaufferie.objects.get(id=1) #Relecture pour affichage
             nbChaudform.save()
-        # Soumission du formulaire configuration des chaudières
+
+        # Soumission du formulaire configuration des équipements
         elif (request.POST.get("form_type") == "chaudform"): #and chaudform.is_valid()):
             c=Chaufferie.objects.get(id=1) #Relecture pour affichage
             #Modification des chaudières
@@ -90,6 +91,9 @@ def chaufferieView(request):
                     nbPpe=int(request.POST.get('nbPpeCircCst'+str(circ.num))),
                 )
             message = generationListe(c)
+        # Soumission du formulaire de téléchargement liste de point
+        elif (request.POST.get("form_type") == "downloadListTemplate"): #and chaudform.is_valid()):
+            print("téléchargement")
     else:
         nbChaudform = nbChaudForm()
 
