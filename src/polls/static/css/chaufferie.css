@@ -7,7 +7,7 @@ body h1 {
     justify-content: center;
 }
 
-body h2 {
+body p {
     display: flex;
     justify-content: center;
 }

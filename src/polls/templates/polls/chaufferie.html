@@ -7,9 +7,12 @@
 
 {% block content %}
 
-    <h1>Définition de la liste de points</h1>
+    <h1>Génération de la liste de points</h1>
 
-    <h2>Liste de points pour une chaufferie</h2>
+    <p>
+        Cette page permet de générer la liste de points en fonction de la constitution de la chaufferie ou de la sous-station. Le bouton "Template Liste de points"
+        vous permet aussi de concevoir vous même la liste de points depuis excel.
+    </p>
 
     <span style="color:red">{{message}}</span>
     <br>
@@ -131,20 +134,20 @@
 
             <div class="row m-1">
                 <div class="col mt-1">
-                    <label>Nom circuit régulé: </label>
-                    <input name="nomCircReg{{ c.num }}" id="nomCircReg{{ c.num }}" type="text" value="{{ c.nomCirc }}">
+                    <label class="row">Nom circuit régulé: </label>
+                    <input class="row" name="nomCircReg{{ c.num }}" id="nomCircReg{{ c.num }}" type="text" value="{{ c.nomCirc }}">
                 </div>
                 <div class="col mt-1">
-                    <label>Nombre de sonde de température: </label>
-                    <input name="nbTempCircReg{{ c.num }}" id="nbTempCircReg{{ c.num }}" type="number" value="{{ c.nbTemp }}">
+                    <label class="row">Nombre de sonde Température: </label>
+                    <input class="row" name="nbTempCircReg{{ c.num }}" id="nbTempCircReg{{ c.num }}" type="number" value="{{ c.nbTemp }}">
                 </div>
                 <div class="col mt-1">
-                    <label>Nombre de pompes: </label>
-                    <input name="nbPpeCircReg{{ c.num }}" id="nbPpeCircReg{{ c.num }}" type="number" value="{{ c.nbPpe }}">
+                    <label class="row">Nombre de pompes: </label>
+                    <input class="row" name="nbPpeCircReg{{ c.num }}" id="nbPpeCircReg{{ c.num }}" type="number" value="{{ c.nbPpe }}">
                 </div>
                 <div class="col mt-1">
-                    <label>Nombre de V3V: </label>
-                    <input name="nbV3VCircReg{{ c.num }}" id="nbV3VCircReg{{ c.num }}" type="number" value="{{ c.nbV3V }}">
+                    <label class="row">Nombre de V3V: </label>
+                    <input  class="row"name="nbV3VCircReg{{ c.num }}" id="nbV3VCircReg{{ c.num }}" type="number" value="{{ c.nbV3V }}">
                 </div>
             </div>
         </fieldset>
@@ -158,12 +161,12 @@
             
             <div class="row m-1">
                 <div class="col mt-1">
-                    <label>Nom circuit constant: </label>
-                    <input name="nomCircCst{{ c.num }}" id="nomCircCst{{ c.num }}" type="text" value="{{ c.nomCirc }}">
+                    <label class="row">Nom circuit constant: </label>
+                    <input class="row" name="nomCircCst{{ c.num }}" id="nomCircCst{{ c.num }}" type="text" value="{{ c.nomCirc }}">
                 </div>
                 <div class="col mt-1">
-                    <label>Nombre de pompes: </label>
-                    <input name="nbPpeCircCst{{ c.num }}" id="nbPpeCircCst{{ c.num }}" type="number" value="{{ c.nbPpe }}">
+                    <label class="row">Nombre de pompes: </label>
+                    <input class="row" name="nbPpeCircCst{{ c.num }}" id="nbPpeCircCst{{ c.num }}" type="number" value="{{ c.nbPpe }}">
                 </div>
             </div>
         </fieldset>
@@ -177,12 +180,13 @@
     </form>
 
     <!-- AFFICHAGE DE LA LISTE DE POINTS -->
-    <table>
+    <table class="table text-center mt-2">
         <thead>
             <tr>
-                <th colspan="5">Liste de points</th>
+                <th colspan="6" style="background-color: gray; font-size: 1.3em;">LISTE DE POINTS</th>
             </tr>
-            <tr>
+            <tr style="background-color: gray;">
+                <th>Sous-ensemble</th>
                 <th>Libellé</th>
                 <th>TM Température</th>
                 <th>TS Digital</th>
@@ -192,7 +196,8 @@
         </thead>
         <tbody>
             {% for l in listePts.pts %}
-            <tr>
+            <tr {% if forloop.last %} style="background-color: gray;" {% endif %}>
+                <td>{{ l.equip }}</td>
                 <td>{{ l.libelle }}</td>
                 <td>{{ l.TM }}</td>
                 <td>{{ l.TS }}</td>

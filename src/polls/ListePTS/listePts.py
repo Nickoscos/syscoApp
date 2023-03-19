@@ -33,7 +33,8 @@ def generationListe(chaufferie):
 
     #Affichage Liste
     for listePts in liste.pts:
-        print(listePts.libelle + 
+        print( listePts.equip +
+            listePts.libelle + 
             ' TM:' + str(listePts.TM) + 
             ' TS:' + str(listePts.TS) + 
             ' TR:' + str(listePts.TR) +
@@ -50,7 +51,8 @@ def ajoutPtsChaud(liste, Chaudieres):
     for chaud in Chaudieres:
         #Défaut pompe
         liste.pts.append(point(
-            libelle= chaud.nomChaud + ' Défaut pompe ', 
+            equip= chaud.nomChaud,
+            libelle= ' Défaut pompe ', 
             TM=0, 
             TS=chaud.nbPpe, 
             TR=0, 
@@ -60,7 +62,8 @@ def ajoutPtsChaud(liste, Chaudieres):
 
         #Commande pompe
         liste.pts.append(point(
-            libelle= chaud.nomChaud + ' Commande pompe ', 
+            equip= chaud.nomChaud,
+            libelle= 'Commande pompe ', 
             TM=0, 
             TS=0, 
             TR=chaud.nbPpe, 
@@ -70,7 +73,8 @@ def ajoutPtsChaud(liste, Chaudieres):
 
         #Fin de course V2V
         liste.pts.append(point(
-            libelle= chaud.nomChaud + ' Fin de course V2V ', 
+            equip= chaud.nomChaud,
+            libelle= 'Fin de course V2V ', 
             TM=0, 
             TS=chaud.nbV2V, 
             TR=0, 
@@ -80,7 +84,8 @@ def ajoutPtsChaud(liste, Chaudieres):
 
         #Commande V2V
         liste.pts.append(point(
-            libelle= chaud.nomChaud + ' Commande V2V ', 
+            equip= chaud.nomChaud,
+            libelle= 'Commande V2V ', 
             TM=0, 
             TS=0, 
             TR=0, 
@@ -93,7 +98,8 @@ def ajoutPtsDivers(liste, Divers):
     for div in Divers:
         #TéléSignalisation supplémentaire
         liste.pts.append(point(
-            libelle= div.nomDivers + ' Information supplémentaire ', 
+            equip= div.nomDivers,
+            libelle= 'Information supplémentaire ', 
             TM=0, 
             TS=div.nbTSsup, 
             TR=0, 
@@ -103,7 +109,8 @@ def ajoutPtsDivers(liste, Divers):
         liste.save()  
         #Défaut pompe
         liste.pts.append(point(
-            libelle= div.nomDivers + ' Défaut pompe ', 
+            equip= div.nomDivers,
+            libelle= 'Défaut pompe ', 
             TM=0, 
             TS=div.nbPpe, 
             TR=0, 
@@ -113,7 +120,8 @@ def ajoutPtsDivers(liste, Divers):
 
         #Commande pompe
         liste.pts.append(point(
-            libelle= div.nomDivers + ' Commande pompe ', 
+            equip= div.nomDivers,
+            libelle= 'Commande pompe ', 
             TM=0, 
             TS=0, 
             TR=div.nbPpe, 
@@ -123,7 +131,8 @@ def ajoutPtsDivers(liste, Divers):
 
         #Fin de course V2V
         liste.pts.append(point(
-            libelle= div.nomDivers + ' Fin de course V2V ', 
+            equip= div.nomDivers,
+            libelle= 'Fin de course V2V ', 
             TM=0, 
             TS=div.nbV2V, 
             TR=0, 
@@ -133,7 +142,8 @@ def ajoutPtsDivers(liste, Divers):
 
         #Commande V2V
         liste.pts.append(point(
-            libelle= div.nomDivers + ' Commande V2V ', 
+            equip= div.nomDivers,
+            libelle= 'Commande V2V ', 
             TM=0, 
             TS=0, 
             TR=0, 
@@ -146,7 +156,8 @@ def ajoutPtsCircReg(liste, CircReg):
     for circ in CircReg:
         #Mesure de température
         liste.pts.append(point(
-            libelle= circ.nomCirc + ' Température départ ', 
+            equip= circ.nomCirc,
+            libelle= 'Température départ ', 
             TM=circ.nbTemp, 
             TS=0, 
             TR=0, 
@@ -156,7 +167,8 @@ def ajoutPtsCircReg(liste, CircReg):
 
         #Défaut pompe
         liste.pts.append(point(
-            libelle= circ.nomCirc + ' Défaut pompe ', 
+            equip= circ.nomCirc,
+            libelle= 'Défaut pompe ', 
             TM=0, 
             TS=circ.nbPpe, 
             TR=0, 
@@ -166,7 +178,8 @@ def ajoutPtsCircReg(liste, CircReg):
 
         #Commande pompe
         liste.pts.append(point(
-            libelle= circ.nomCirc + ' Commande pompe ', 
+            equip= circ.nomCirc,
+            libelle= 'Commande pompe ', 
             TM=0, 
             TS=0, 
             TR=circ.nbPpe, 
@@ -176,7 +189,8 @@ def ajoutPtsCircReg(liste, CircReg):
 
         #Commande V3V
         liste.pts.append(point(
-            libelle= circ.nomCirc + ' Commande V3V ', 
+            equip= circ.nomCirc,
+            libelle= 'Commande V3V ', 
             TM=0, 
             TS=0, 
             TR=circ.nbV3V, 
@@ -189,7 +203,8 @@ def ajoutPtsCircCst(liste, CircCst):
     for circ in CircCst:
         #Défaut pompe
         liste.pts.append(point(
-            libelle= circ.nomCirc + ' Défaut pompe ', 
+            equip= circ.nomCirc,
+            libelle= 'Défaut pompe ', 
             TM=0, 
             TS=circ.nbPpe, 
             TR=0, 
@@ -199,7 +214,8 @@ def ajoutPtsCircCst(liste, CircCst):
 
         #Commande pompe
         liste.pts.append(point(
-            libelle= circ.nomCirc + ' Commande pompe ', 
+            equip= circ.nomCirc,
+            libelle= 'Commande pompe ', 
             TM=0, 
             TS=0, 
             TR=circ.nbPpe, 
@@ -223,6 +239,7 @@ def calculTotaux(liste):
         TotTC =  TotTC + listPts.TC
 
     liste.pts.append(point(
+            equip = '',
             libelle= ' TOTAUX (' + str(TotTM+TotTS+TotTR+TotTC) + ' points)', 
             TM=TotTM, 
             TS=TotTS, 
