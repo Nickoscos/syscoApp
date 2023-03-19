@@ -11,6 +11,14 @@
     {% block cssfile %}
     {% endblock %}
 
+    {% load django_bootstrap5 %}
+
+    {% bootstrap_css %}
+
+    {% bootstrap_javascript %}
+
+    {% bootstrap_messages %}
+
     <script>
       function openNav() {
           document.getElementById("sideNavigation").style.width = "250px";
