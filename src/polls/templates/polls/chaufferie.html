@@ -55,6 +55,9 @@
                     <input class="row" name="nbCircCst" id="nbCircCst" type="number" value="{{ chaufferie.nbCircCst }}">
                 </div>
 
+                <div class="col mt-1">
+                </div>
+
                 <div class="col d-flex justify-content-end mt-1">
                     <input type="hidden" name="form_type" value="nbChaudform">
                     <!-- <input type="submit" value="OK" class="btn btn-primary"> -->
@@ -94,6 +97,12 @@
                     <label class="row">Nombre de V2V: </label>
                     <input class="row" name="nbV2VChaud{{ c.num }}" id="nbV2VChaud{{ c.num }}" type="number" value="{{ c.nbV2V }}">        
                 </div>
+
+                <div class="col mt-1">       
+                </div>
+
+                <div class="col mt-1">       
+                </div>
             </div>
         </fieldset>
         {% endfor %}
@@ -129,6 +138,9 @@
                     <label class="row">Nombre de V2V: </label>
                     <input class="row" name="nbV2VDivers{{ d.num }}" id="nbV2VDivers{{ d.num }}" type="number" value="{{ d.nbV2V }}">
                 </div>
+
+                <div class="col mt-1">
+                </div>
             </div>
             
         </fieldset>
@@ -157,6 +169,12 @@
                     <label class="row">Nombre de V3V: </label>
                     <input  class="row"name="nbV3VCircReg{{ c.num }}" id="nbV3VCircReg{{ c.num }}" type="number" value="{{ c.nbV3V }}">
                 </div>
+
+                <div class="col mt-1">
+                </div>
+
+                <div class="col mt-1">
+                </div>
             </div>
         </fieldset>
         {% endfor %}
@@ -172,9 +190,22 @@
                     <label class="row">Nom circuit constant: </label>
                     <input class="row" name="nomCircCst{{ c.num }}" id="nomCircCst{{ c.num }}" type="text" value="{{ c.nomCirc }}">
                 </div>
+                
                 <div class="col mt-1">
                     <label class="row">Nombre de pompes: </label>
                     <input class="row" name="nbPpeCircCst{{ c.num }}" id="nbPpeCircCst{{ c.num }}" type="number" value="{{ c.nbPpe }}">
+                </div>
+
+                <div class="col mt-1">
+                </div>
+
+                <div class="col mt-1">
+                </div>
+
+                <div class="col mt-1">
+                </div>
+
+                <div class="col mt-1">
                 </div>
             </div>
         </fieldset>
