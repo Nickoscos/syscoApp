@@ -3,7 +3,8 @@ from django.db import models
 
 #Déclaration du modèle d'un point
 class point(models.Model):
-    libelle = models.CharField(max_length=200)
+    equip = models.CharField(max_length=200, default='equipement')
+    libelle = models.CharField(max_length=200, default='libellé')
     TM = models.IntegerField()
     TS = models.IntegerField()
     TR = models.IntegerField()

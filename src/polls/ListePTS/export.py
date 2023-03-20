@@ -24,7 +24,7 @@ def generationXls(liste):
 
             # On dimensionne les colonnes
             worksheet.set_column("A:A", 60)
-            worksheet.set_column("B:B", 20)
+            worksheet.set_column("B:B", 60)
             worksheet.set_column("C:C", 20)
             worksheet.set_column("D:D", 20)
             worksheet.set_column("E:E", 20)
@@ -45,11 +45,12 @@ def generationXls(liste):
             })
 
             # On injecte la ligne de titre dans la première feuille    
-            worksheet.write("A1", "Libellé", header_style)
-            worksheet.write("B1", "Télé-Mesure", header_style)
-            worksheet.write("C1", "Télé-Signalisation", header_style)
-            worksheet.write("D1", "Télé-Réglage", header_style)
-            worksheet.write("E1", "Télé-Commande", header_style)
+            worksheet.write("A1", "Sous-ensemble", header_style)
+            worksheet.write("B1", "Libellé", header_style)
+            worksheet.write("C1", "Télé-Mesure", header_style)
+            worksheet.write("D1", "Télé-Signalisation", header_style)
+            worksheet.write("E1", "Télé-Réglage", header_style)
+            worksheet.write("F1", "Télé-Commande", header_style)
 
             pos = 1
             derniereLigne = pos + len(liste.pts)
@@ -61,11 +62,12 @@ def generationXls(liste):
                 else :
                     style = point_style
 
-                worksheet.write("A"+str(pos), point.libelle, style)
-                worksheet.write("B"+str(pos), point.TM, style)
-                worksheet.write("C"+str(pos), point.TS, style)
-                worksheet.write("D"+str(pos), point.TR, style)
-                worksheet.write("E"+str(pos), point.TC, style)
+                worksheet.write("A"+str(pos), point.equip, style)
+                worksheet.write("B"+str(pos), point.libelle, style)
+                worksheet.write("C"+str(pos), point.TM, style)
+                worksheet.write("D"+str(pos), point.TS, style)
+                worksheet.write("E"+str(pos), point.TR, style)
+                worksheet.write("F"+str(pos), point.TC, style)
         message = "Liste de points générée"
     else:
         message = "Erreur lors de la génération de la liste de points, veuillez valider de nouveau le formulaire"

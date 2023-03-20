@@ -17,6 +17,15 @@ class Divers(models.Model):
     nbPpe = models.IntegerField(default=1)
     nbTSsup = models.IntegerField(default=1)
 
+#Déclaration de l'objet ECS
+class ECS(models.Model):
+    num = models.IntegerField(default=1)
+    nomECS = models.CharField(max_length=200, default="ECS " + str(num))
+    nbTemp = models.IntegerField(default=1)
+    nbBallon = models.IntegerField(default=1)
+    nbV3V = models.IntegerField(default=1)
+    nbPpe = models.IntegerField(default=2)
+
 #Déclaration de l'objet Circuit Régulés
 class CircReg(models.Model):
     num = models.IntegerField(default=1)
@@ -132,14 +141,37 @@ class Chaufferie(models.Model):
             self.CircCst.append(CircCst(num = i+1, nomCirc= "Circuit Constant " + str(i+1), nbPpe=2)) 
         self.save() #Enregistrement dans la base
 
-    #Fonction permettant d'actualiser les données circuit régulé
+    #Fonction permettant d'actualiser les données circuit constant
     def updateCircCst(self, numero, nomCirc, nbPpe):
         for circ in self.CircCst:
             if circ.num == numero :
                 circ.nomCirc = nomCirc
                 circ.nbPpe = nbPpe
         self.save() #Enregistrement dans la base
-        
+    
+    ######CONFIGURATION ECS#####
+    #Déclaration de la liste contenant les objets circuits constant
+    ECS = []
+
+    #Fonction permettant de créer les objets circuits constants
+    def creationECS(self):
+        self.ECS.clear()
+
+        # Initialisation de la liste de circuits constants pour affichage dans le formulaire
+        # Le numéro du circuit régulé est automatiquement renseignée
+        # De base, un circuit régulé possède : 1 Mesure de température, 2 pompes, 1 vanne 3 voie
+        self.ECS.append(ECS(num = 1, nomECS= "ECS " + str(1), nbTemp=2, nbBallon=1, nbPpe=2, nbV3V=1)) 
+        self.save() #Enregistrement dans la base
+
+    #Fonction permettant d'actualiser les données ECS
+    def updateECS(self, nomECS, nbTemp, nbBallon, nbPpe, nbV3V):
+        self.ECS[0].nomECS = nomECS
+        self.ECS[0].nbTemp = nbTemp
+        self.ECS[0].nbPpe = nbPpe
+        self.ECS[0].nbBallon = nbBallon
+        self.ECS[0].nbV3V = nbV3V
+        self.save() #Enregistrement dans la base
+
     #Déclaration de la liste des points
     listePts = []
 

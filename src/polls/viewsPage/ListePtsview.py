@@ -44,10 +44,12 @@ def chaufferieView(request):
             Chaufferie.creationDivers(c) #Ajout des équipements Divers dans la base de données
             Chaufferie.creationCircReg(c) #Ajout des circuits régulés dans la base de données
             Chaufferie.creationCircCst(c) #Ajout des circuits constants dans la base de données
-        
+            Chaufferie.creationECS(c) #Ajout de l'ECS dans la base de données       
+
             c = Chaufferie.objects.get(id=1) #Relecture pour affichage
             nbChaudform.save()
-        # Soumission du formulaire configuration des chaudières
+
+        # Soumission du formulaire configuration des équipements
         elif (request.POST.get("form_type") == "chaudform"): #and chaudform.is_valid()):
             c=Chaufferie.objects.get(id=1) #Relecture pour affichage
             #Modification des chaudières
@@ -89,7 +91,21 @@ def chaufferieView(request):
                     nomCirc=request.POST.get('nomCircCst'+str(circ.num)),
                     nbPpe=int(request.POST.get('nbPpeCircCst'+str(circ.num))),
                 )
+            # Bouclage en fonction du numéro de l'ECS
+            for ECS in c.ECS:
+                Chaufferie.updateECS(
+                    c,
+                    nomECS=request.POST.get('nomECS'+str(ECS.num)),
+                    nbBallon=int(request.POST.get('nbBallonECS'+str(ECS.num))),
+                    nbV3V=int(request.POST.get('nbV3VECS'+str(ECS.num))),
+                    nbTemp=int(request.POST.get('nbTempECS'+str(ECS.num))),
+                    nbPpe=int(request.POST.get('nbPpeECS'+str(ECS.num))),
+                )
+
             message = generationListe(c)
+        # Soumission du formulaire de téléchargement liste de point
+        elif (request.POST.get("form_type") == "downloadListTemplate"): #and chaudform.is_valid()):
+            print("téléchargement")
     else:
         nbChaudform = nbChaudForm()
 
