@@ -252,32 +252,51 @@
     </form>
 
     <!-- AFFICHAGE DE LA LISTE DE POINTS -->
-    <table class="table text-center mt-2">
-        <thead>
-            <tr>
-                <th colspan="6" style="background-color: gray; font-size: 1.3em;">LISTE DE POINTS</th>
-            </tr>
-            <tr style="background-color: gray;">
-                <th>Sous-ensemble</th>
-                <th>Libellé</th>
-                <th>TM Température</th>
-                <th>TS Digital</th>
-                <th>TR 0-10V</th>
-                <th>TC Digital</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for l in listePts.pts %}
-            <tr {% if forloop.last %} style="background-color: gray;" {% endif %}>
-                <td>{{ l.equip }}</td>
-                <td>{{ l.libelle }}</td>
-                <td>{{ l.TM }}</td>
-                <td>{{ l.TS }}</td>
-                <td>{{ l.TR }}</td>
-                <td>{{ l.TC }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <form action="" method="post" id="listform">
+        {% csrf_token %}
+        <table class="table text-center mt-2">
+            <thead>
+                <tr>
+                    <th colspan="6" style="background-color: gray; font-size: 1.3em;">LISTE DE POINTS</th>
+                </tr>
+                <tr style="background-color: gray;">
+                    <th>Sous-ensemble</th>
+                    <th>Libellé</th>
+                    <th>TM Température</th>
+                    <th>TS Digital</th>
+                    <th>TR 0-10V</th>
+                    <th>TC Digital</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for l in listePts.pts %}
+                    {% if forloop.last %}
+                    <tr style="background-color: gray;">
+                        <td>{{ l.equip }}</td>
+                        <td>{{ l.libelle }}</td>
+                        <td>{{ l.TM }}</td>
+                        <td>{{ l.TS }}</td>
+                        <td>{{ l.TR }}</td>
+                        <td>{{ l.TC }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td><input name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" type="text" value="{{ l.equip }}"></td>
+                        <td><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" value="{{ l.libelle }}"></td>
+                        <td><input name="TM{{ forloop.counter0 }}" id="TM{{ forloop.counter0 }}" type="number" value="{{ l.TM }}"></td>
+                        <td><input name="TS{{ forloop.counter0 }}" id="TS{{ forloop.counter0 }}" type="number" value="{{ l.TS }}"></td>
+                        <td><input name="TR{{ forloop.counter0 }}" id="TR{{ forloop.counter0 }}" type="number" value="{{ l.TR }}"></td>
+                        <td><input name="TC{{ forloop.counter0 }}" id="TC{{ forloop.counter0 }}" type="number" value="{{ l.TC }}"></td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="col d-flex justify-content-end mt-1">
+            <input type="hidden" name="form_type" value="listform">
+            <button type="submit" class="btn btn-warning">Actualiser liste</button>
+        </div>    
+    </form>
 
 {% endblock %}

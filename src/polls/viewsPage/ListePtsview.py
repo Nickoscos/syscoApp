@@ -2,7 +2,7 @@ from django.shortcuts import render
 from ..models.modelsChaudiere import Chaufferie
 from ..models.modelsEquip import Liste
 from ..forms.formsChaudiere import nbChaudForm, chaudForm
-from ..ListePTS.listePts import generationListe
+from ..ListePTS.listePts import generationListe, updateListe
 
 #Page 2: Définition de la configuration de la chaufferie 
 def chaufferieView(request):
@@ -103,6 +103,9 @@ def chaufferieView(request):
                 )
 
             message = generationListe(c)
+        elif (request.POST.get("form_type") == "listform"):
+            message = updateListe(listePts, request)
+
         # Soumission du formulaire de téléchargement liste de point
         elif (request.POST.get("form_type") == "downloadListTemplate"): #and chaudform.is_valid()):
             print("téléchargement")

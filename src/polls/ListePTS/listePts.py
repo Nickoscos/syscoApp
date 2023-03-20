@@ -49,6 +49,24 @@ def generationListe(chaufferie):
 
     return message
 
+#Fonction de mise à jour liste
+def updateListe(listePts, request):
+    i = 0
+    for liste in listePts.pts:
+        if (i != len(listePts.pts) - 1):
+            liste.equip = request.POST.get('nomEquip'+str(i))
+            liste.libelle = request.POST.get('libelle'+str(i))
+            liste.TM = int(request.POST.get('TM'+str(i)))
+            liste.TS = int(request.POST.get('TS'+str(i)))
+            liste.TR = int(request.POST.get('TR'+str(i)))
+            liste.TC = int(request.POST.get('TC'+str(i)))  
+        i = i +1
+    #Ajout de la dernière ligne de la liste TOTAUX
+    listePts.pts.pop()
+    calculTotaux(listePts)       
+    listePts.save()
+    return "Mise à jour liste effectué"
+
 #Fonction permettant la génération de la liste de points
 def geneTempListe():
     #Déclaration d'un point
