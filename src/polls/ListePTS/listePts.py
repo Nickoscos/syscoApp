@@ -49,6 +49,105 @@ def generationListe(chaufferie):
 
     return message
 
+#Fonction permettant la génération de la liste de points
+def geneTempListe():
+    #Déclaration d'un point
+    pts = point
+
+    #Déclaration 
+    c = Chaufferie
+
+    #Initialisation de la liste de points
+    try:
+        #Si l'objet 1 est existant alors on le récupère
+        liste = Liste.objects.get(id=1)
+        liste.pts.clear()
+    except Liste.DoesNotExist:
+        #Si l'objet 1 n'existe pas, on ne fait rien
+        liste = Liste.objects.create(id=1)
+
+    # Bouclage en fonction du numéro de la chaudière
+    for chaud in c.Chaudieres:
+        Chaufferie.updateChaudiere(
+            c,
+            numero=chaud.num,
+            nomChaud=chaud.nomChaud,
+            nbBruleur=chaud.nbBruleur,
+            nbPpe=chaud.nbPpe,
+            nbV2V=chaud.nbV2V,
+        )
+    # Bouclage en fonction du numéro de la chaudière
+    for divers in c.Divers:
+        Chaufferie.updateDivers(
+            c,
+            numero=divers.num,
+            nomDivers=divers.nomDivers,
+            nbTSsup=divers.nbTSsup,
+            nbPpe=divers.nbPpe,
+            nbV2V=divers.nbV2V,
+        )
+    # Bouclage en fonction du numéro du circuit régulé
+    for circ in c.CircReg:
+        Chaufferie.updateCircReg(
+            c,
+            numero=circ.num,
+            nomCirc=circ.nomCirc,
+            nbTemp=circ.nbTemp,
+            nbPpe=circ.nbPpe,
+            nbV3V=circ.nbV3V,
+        )
+    # Bouclage en fonction du numéro du circuit constant
+    for circ in c.CircCst:
+        Chaufferie.updateCircCst(
+            c,
+            numero=circ.num,
+            nomCirc=circ.nomCirc,
+            nbPpe=circ.nbPpe,
+        )
+    # Bouclage en fonction du numéro de l'ECS
+    for ECS in c.ECS:
+        Chaufferie.updateECS(
+            c,
+            nomECS=ECS.nomECS,
+            nbBallon=ECS.nbBallon,
+            nbV3V=ECS.nbV3V,
+            nbTemp=ECS.nbTemp,
+            nbPpe=ECS.nbPpe,
+        )
+
+    #Ajout des points pompes chaudières
+    ajoutPtsChaud(liste, c.Chaudieres)
+
+    #Ajout des points Divers
+    # ajoutPtsDivers(liste, chaufferie.Divers)
+
+    #Ajout des points Circuits Constants
+    # ajoutPtsCircCst(liste, chaufferie.CircCst)
+
+    #Ajout des points Circuits Régulés
+    # ajoutPtsCircReg(liste, chaufferie.CircReg)
+
+    #Ajout des points Circuits Régulés
+    # ajoutPtsECS(liste, chaufferie.ECS)
+
+    #Ajout de la dernière ligne de la liste TOTAUX
+    # calculTotaux(liste)
+
+    #Affichage Liste
+    for listePts in liste.pts:
+        print( listePts.equip +
+            listePts.libelle + 
+            ' TM:' + str(listePts.TM) + 
+            ' TS:' + str(listePts.TS) + 
+            ' TR:' + str(listePts.TR) +
+            ' TC:' + str(listePts.TC)
+            )
+    
+    #Création du fichier EXCEL
+    message = generationXls(liste)
+
+    return message
+
 #Fonction permettant l'ajout des points chaudières
 def ajoutPtsChaud(liste, Chaudieres):
     for chaud in Chaudieres:
