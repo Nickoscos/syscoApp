@@ -56,10 +56,7 @@
                 </div>
 
                 <div class="col mt-1">
-                    <!-- <label class="row" >Nombres de circuits constants: </label>
-                    <input class="row" name="nbCircCst" id="nbCircCst" type="number" value="{{ chaufferie.nbCircCst }}"> -->
                 </div>
-
 
                 <div class="col d-flex justify-content-end mt-1">
                     <input type="hidden" name="form_type" value="nbChaudform">
@@ -159,8 +156,12 @@
                     <input class="row" name="nomCircReg{{ c.num }}" id="nomCircReg{{ c.num }}" type="text" value="{{ c.nomCirc }}">
                 </div>
                 <div class="col mt-1">
-                    <label class="row">Nombre de sonde Température: </label>
+                    <label class="row">Nombre de Température Eau: </label>
                     <input class="row" name="nbTempCircReg{{ c.num }}" id="nbTempCircReg{{ c.num }}" type="number" value="{{ c.nbTemp }}">
+                </div>
+                <div class="col mt-1">
+                    <label class="row">Nombre de Température Ambiant (filaire): </label>
+                    <input class="row" name="nbAmbCircReg{{ c.num }}" id="nbAmbCircReg{{ c.num }}" type="number" value="{{ c.nbAmb }}">
                 </div>
                 <div class="col mt-1">
                     <label class="row">Nombre de pompes: </label>
@@ -174,8 +175,6 @@
                 <div class="col mt-1">
                 </div>
 
-                <div class="col mt-1">
-                </div>
             </div>
         </fieldset>
         {% endfor %}       

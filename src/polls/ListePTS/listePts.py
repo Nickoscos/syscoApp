@@ -198,8 +198,8 @@ def ajoutPtsChaud(liste, Chaudieres):
         liste.pts.append(point(
             equip= chaud.nomChaud,
             libelle= 'Température départ primaire ', 
-            TM=0, 
-            TS=1, 
+            TM=chaud.nbTemp, 
+            TS=0, 
             TR=0, 
             TC=0
         ))
@@ -210,7 +210,7 @@ def ajoutPtsChaud(liste, Chaudieres):
             equip= chaud.nomChaud,
             libelle= 'Synthèse défaut ', 
             TM=0, 
-            TS=1, 
+            TS=chaud.nbDef, 
             TR=0, 
             TC=0
         ))
@@ -219,7 +219,7 @@ def ajoutPtsChaud(liste, Chaudieres):
         #Défaut pompe
         liste.pts.append(point(
             equip= chaud.nomChaud,
-            libelle= ' Défaut pompe ', 
+            libelle= 'Défaut pompe ', 
             TM=0, 
             TS=chaud.nbPpe, 
             TR=0, 
@@ -279,7 +279,7 @@ def ajoutPtsDivers(liste, Divers):
             equip= div.nomDivers,
             libelle= 'Défaut pompe ', 
             TM=0, 
-            TS=div.nbPpe, 
+            TS=2*div.nbPpe, 
             TR=0, 
             TC=0
         ))
@@ -332,12 +332,23 @@ def ajoutPtsCircReg(liste, CircReg):
         ))
         liste.save()  
 
+        #Mesure de température Ambiant
+        liste.pts.append(point(
+            equip= circ.nomCirc,
+            libelle= 'Température Ambiant ', 
+            TM=circ.nbAmb, 
+            TS=0, 
+            TR=0, 
+            TC=0
+        ))
+        liste.save()  
+
         #Défaut pompe
         liste.pts.append(point(
             equip= circ.nomCirc,
             libelle= 'Défaut pompe ', 
             TM=0, 
-            TS=circ.nbPpe, 
+            TS=2*circ.nbPpe, 
             TR=0, 
             TC=0
         ))
@@ -384,7 +395,7 @@ def ajoutPtsECS(liste, ECS):
             equip= e.nomECS,
             libelle= 'Défaut pompe ', 
             TM=0, 
-            TS=e.nbPpe, 
+            TS=2*e.nbPpe, 
             TR=0, 
             TC=0
         ))

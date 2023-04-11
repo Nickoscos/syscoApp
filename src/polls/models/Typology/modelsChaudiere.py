@@ -13,6 +13,8 @@ class General(models.Model):
 class Chaudiere(models.Model):
     num = models.IntegerField(default=1)
     nomChaud = models.CharField(max_length=200, default="Chaudière " + str(num))
+    nbTemp = models.IntegerField(default=1)
+    nbDef = models.IntegerField(default=1)
     nbV2V = models.IntegerField(default=1)
     nbPpe = models.IntegerField(default=1)
 
@@ -38,6 +40,7 @@ class CircReg(models.Model):
     num = models.IntegerField(default=1)
     nomCirc = models.CharField(max_length=200, default="Circuit Régulé " + str(num))
     nbTemp = models.IntegerField(default=1)
+    nbAmb = models.IntegerField(default=1)
     nbV3V = models.IntegerField(default=1)
     nbPpe = models.IntegerField(default=2)
 
@@ -123,15 +126,16 @@ class Chaufferie(models.Model):
             # Initialisation de la liste de circuits régulés pour affichage dans le formulaire
             # Le numéro du circuit régulé est automatiquement renseignée
             # De base, un circuit régulé possède : 1 Mesure de température, 1 pompe, 1 vanne 3 voie
-            self.CircReg.append(CircReg(num = i+1, nomCirc= "Circuit Régulé " + str(i+1), nbTemp = 1, nbV3V=1, nbPpe=2)) 
+            self.CircReg.append(CircReg(num = i+1, nomCirc= "Circuit Régulé " + str(i+1), nbTemp = 1, nbAmb = 1, nbV3V=1, nbPpe=1)) 
         self.save() #Enregistrement dans la base
 
     #Fonction permettant d'actualiser les données circuit régulé
-    def updateCircReg(self, numero, nomCirc, nbTemp, nbV3V, nbPpe):
+    def updateCircReg(self, numero, nomCirc, nbTemp, nbAmb, nbV3V, nbPpe):
         for circ in self.CircReg:
             if circ.num == numero :
                 circ.nomCirc = nomCirc
                 circ.nbTemp = nbTemp
+                circ.nbAmb = nbAmb
                 circ.nbV3V = nbV3V
                 circ.nbPpe = nbPpe
         self.save() #Enregistrement dans la base
@@ -148,7 +152,7 @@ class Chaufferie(models.Model):
         # Initialisation de la liste de circuits constants pour affichage dans le formulaire
         # Le numéro du circuit régulé est automatiquement renseignée
         # De base, un circuit régulé possède : 1 Mesure de température, 2 pompes, 1 vanne 3 voie
-            self.ECS.append(ECS(num = 1, nomECS= "ECS " + str(1), nbTemp=2, nbBallon=1, nbPpe=2, nbV3V=1)) 
+            self.ECS.append(ECS(num = 1, nomECS= "ECS " + str(1), nbTemp=2, nbBallon=1, nbPpe=1, nbV3V=1)) 
             self.save() #Enregistrement dans la base
 
     #Fonction permettant d'actualiser les données ECS

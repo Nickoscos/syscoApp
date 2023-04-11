@@ -80,6 +80,7 @@ def chaufferieView(request):
                     numero=circ.num,
                     nomCirc=request.POST.get('nomCircReg'+str(circ.num)),
                     nbTemp=int(request.POST.get('nbTempCircReg'+str(circ.num))),
+                    nbAmb=int(request.POST.get('nbAmbCircReg'+str(circ.num))),
                     nbPpe=int(request.POST.get('nbPpeCircReg'+str(circ.num))),
                     nbV3V=int(request.POST.get('nbV3VCircReg'+str(circ.num))),
                 )
