@@ -46,6 +46,11 @@
                 </div>
 
                 <div class="col mt-1">
+                    <label class="row">ECS préparateur indépendant: </label>
+                    <input class="row" name="ECSprepa" id="ECSprepa" type="checkbox" style="width:30px;height:30px;" value="{{ chaufferie.ECSprepa }}" {% if chaufferie.ECSprepa %} checked {% endif %}>
+                </div>
+
+                <div class="col mt-1">
                     <label class="row">Nombres d'équipements divers: </label>
                     <input class="row" name="nbDivers" id="nbDivers" type="number" value="{{ chaufferie.nbDivers }}">
                 </div>
@@ -84,6 +89,11 @@
                 </div>
 
                 <div class="col mt-1">
+                    <label class="row">Nombre de synthèse défauts: </label>
+                    <input class="row" name="nbDef{{ c.num }}" id="nbDef{{ c.num }}" type="number" value="{{ c.nbDef }}">
+                </div>
+
+                <div class="col mt-1">
                     <label class="row">Nombre de pompes: </label>
                     <input class="row" name="nbPpeChaud{{ c.num }}" id="nbPpeChaud{{ c.num }}" type="number" value="{{ c.nbPpe }}">
                 </div>
@@ -91,9 +101,6 @@
                 <div class="col mt-1">
                     <label class="row">Nombre de V2V: </label>
                     <input class="row" name="nbV2VChaud{{ c.num }}" id="nbV2VChaud{{ c.num }}" type="number" value="{{ c.nbV2V }}">        
-                </div>
-
-                <div class="col mt-1">       
                 </div>
 
                 <div class="col mt-1">       
@@ -189,6 +196,10 @@
                 <div class="col mt-1">
                     <label class="row">Nom ECS: </label>
                     <input class="row" name="nomECS{{ c.num }}" id="nomECS{{ c.num }}" type="text" value="{{ c.nomECS }}">
+                </div>
+                <div class="col mt-1">
+                    <label class="row">Nombre de défauts: </label>
+                    <input class="row" name="nbDef{{ c.num }}" id="nbDef{{ c.num }}" type="number" value="{{ c.nbDef }}">
                 </div>
                 <div class="col mt-1">
                     <label class="row">Nombre de ballon: </label>

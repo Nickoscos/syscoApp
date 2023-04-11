@@ -39,6 +39,7 @@ def chaufferieView(request):
             c.nbDivers = int(request.POST.get('nbDivers')) #Récupération du nombre de chaudières saisies
             c.nbCircReg = int(request.POST.get('nbCircReg')) #Récupération du nombre de circuits régulés saisies
             c.ECSpres = bool(request.POST.get('ECSpres'))
+            c.ECSprepa = bool(request.POST.get('ECSprepa'))
 
             Chaufferie.creationGeneral(c) #Ajout partie générale dans la base de données
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
@@ -60,6 +61,7 @@ def chaufferieView(request):
                     numero=chaud.num,
                     nomChaud=request.POST.get('nomChaud'+str(chaud.num)),
                     bruleurPres=bool(request.POST.get('bruleurPres'+str(chaud.num))),
+                    nbDef=int(request.POST.get('nbDef'+str(chaud.num))),
                     nbPpe=int(request.POST.get('nbPpeChaud'+str(chaud.num))),
                     nbV2V=int(request.POST.get('nbV2VChaud'+str(chaud.num))),
                 )
@@ -91,6 +93,7 @@ def chaufferieView(request):
                     nomECS=request.POST.get('nomECS'+str(ECS.num)),
                     nbBallon=int(request.POST.get('nbBallonECS'+str(ECS.num))),
                     nbV3V=int(request.POST.get('nbV3VECS'+str(ECS.num))),
+                    nbDef=int(request.POST.get('nbDef'+str(ECS.num))),
                     nbTemp=int(request.POST.get('nbTempECS'+str(ECS.num))),
                     nbPpe=int(request.POST.get('nbPpeECS'+str(ECS.num))),
                 )

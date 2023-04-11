@@ -30,6 +30,7 @@ class Divers(models.Model):
 class ECS(models.Model):
     num = models.IntegerField(default=1)
     nomECS = models.CharField(max_length=200, default="ECS " + str(num))
+    nbDef = models.IntegerField(default=1)
     nbTemp = models.IntegerField(default=1)
     nbBallon = models.IntegerField(default=1)
     nbV3V = models.IntegerField(default=1)
@@ -72,14 +73,16 @@ class Chaufferie(models.Model):
             # Initialisation de la liste de chaudière pour affichage dans le formulaire
             # Le numéro de la chaudière est automatiquement renseignée
             # De base, une chaudière possède : 0 brûleur, 1 pompe, 0 vanne 2 voie
-            self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbV2V=0, nbPpe=0)) 
+            self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbDef=1, nbV2V=0, nbPpe=1)) 
         self.save() #Enregistrement dans la base
 
     #Fonction permettant d'actualiser les données chaudières
-    def updateChaudiere(self, numero, nomChaud, bruleurPres, nbV2V, nbPpe):
+    def updateChaudiere(self, numero, nomChaud, bruleurPres, nbDef, nbV2V, nbPpe):
         for chaud in self.Chaudieres:
             if chaud.num == numero :
                 chaud.nomChaud = nomChaud
+                chaud.bruleurPres = bruleurPres
+                chaud.nbDef = nbDef
                 chaud.nbV2V = nbV2V
                 chaud.nbPpe = nbPpe
         self.save() #Enregistrement dans la base
@@ -143,22 +146,28 @@ class Chaufferie(models.Model):
     ######CONFIGURATION ECS#####
     #L'ECS est-il présent:
     ECSpres = models.BooleanField(default=False)
+    #L'ECS possède-t-il un préparateur indépendant:
+    ECSprepa = models.BooleanField(default=True)
+
     ECS = []
 
     #Fonction permettant de créer les objets circuits constants
     def creationECS(self):
         self.ECS.clear()
-        if self.ECSpres :
+        if (self.ECSpres and not self.ECSprepa) :
         # Initialisation de la liste de circuits constants pour affichage dans le formulaire
         # Le numéro du circuit régulé est automatiquement renseignée
         # De base, un circuit régulé possède : 1 Mesure de température, 2 pompes, 1 vanne 3 voie
-            self.ECS.append(ECS(num = 1, nomECS= "ECS " + str(1), nbTemp=2, nbBallon=1, nbPpe=1, nbV3V=1)) 
-            self.save() #Enregistrement dans la base
+            self.ECS.append(ECS(num = 1, nomECS= "ECS " + str(1), nbDef=1, nbTemp=2, nbBallon=1, nbPpe=1, nbV3V=1)) 
+        elif (self.ECSpres and self.ECSprepa) :
+            self.ECS.append(ECS(num = 1, nomECS= "ECS " + str(1), nbDef=1, nbTemp=2, nbBallon=0, nbPpe=0, nbV3V=0)) 
+        self.save() #Enregistrement dans la base
 
     #Fonction permettant d'actualiser les données ECS
-    def updateECS(self, nomECS, nbTemp, nbBallon, nbPpe, nbV3V):
+    def updateECS(self, nomECS, nbDef, nbTemp, nbBallon, nbPpe, nbV3V):
         self.ECS[0].nomECS = nomECS
         self.ECS[0].nbTemp = nbTemp
+        self.ECS[0].nbDef = nbDef
         self.ECS[0].nbPpe = nbPpe
         self.ECS[0].nbBallon = nbBallon
         self.ECS[0].nbV3V = nbV3V
