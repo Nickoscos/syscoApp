@@ -56,7 +56,7 @@ class Chaufferie(models.Model):
             # Initialisation de la liste de chaudière pour affichage dans le formulaire
             # Le numéro de la chaudière est automatiquement renseignée
             # De base, une chaudière possède : 0 brûleur, 1 pompe, 1 vanne 2 voie
-            self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbBruleur = 0, nbV2V=1, nbPpe=1)) 
+            self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbBruleur = 0, nbV2V=0, nbPpe=1)) 
         self.save() #Enregistrement dans la base
 
     #Fonction permettant d'actualiser les données chaudières
@@ -84,7 +84,7 @@ class Chaufferie(models.Model):
                 # Initialisation de la liste des équipements divers pour affichage dans le formulaire
                 # Le numéro de l'équipement divers est automatiquement renseignée
                 # De base, une équipement divers possède : 1 TS, 1 pompe, 0 vanne 2 voie
-                self.Divers.append(Divers(num = i+1, nomDivers= "Divers " + str(i+1), nbTSsup = 0, nbV2V=1, nbPpe=1)) 
+                self.Divers.append(Divers(num = i+1, nomDivers= "Divers " + str(i+1), nbTSsup = 0, nbV2V=0, nbPpe=1)) 
             self.save() #Enregistrement dans la base
 
     #Fonction permettant d'actualiser les données des équipements divers
