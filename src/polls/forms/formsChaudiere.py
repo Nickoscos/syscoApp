@@ -1,5 +1,5 @@
 from django import forms
-from ..models.modelsChaudiere import Chaufferie, Chaudiere
+from ..models.Typology.modelsChaudiere import Chaufferie, Chaudiere
 
 #Formulaire définissant le nombre de chaudières composant la chaufferie
 class nbChaudForm(forms.ModelForm):
@@ -12,5 +12,5 @@ class nbChaudForm(forms.ModelForm):
 class chaudForm(forms.ModelForm):
   class Meta:
     model = Chaudiere
-    fields = ["nomChaud","nbBruleur","nbPpe", "nbV2V"]
-    labels = {'nomChaud': "Nom", 'nbBruleur': "Brûleur présent", 'nbPpe': "Nombre de pompes", 'nbV2V':"Nombre de V2V"}
+    fields = ["nomChaud","nbPpe", "nbV2V"]
+    labels = {'nomChaud': "Nom", 'nbPpe': "Nombre de pompes", 'nbV2V':"Nombre de V2V"}

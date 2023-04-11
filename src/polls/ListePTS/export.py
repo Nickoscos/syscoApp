@@ -51,6 +51,7 @@ def generationXls(liste):
             worksheet.write("D1", "Télé-Signalisation", header_style)
             worksheet.write("E1", "Télé-Réglage", header_style)
             worksheet.write("F1", "Télé-Commande", header_style)
+            worksheet.write("G1", "", header_style)
 
             pos = 1
             derniereLigne = pos + len(liste.pts)
@@ -68,6 +69,9 @@ def generationXls(liste):
                 worksheet.write("D"+str(pos), point.TS, style)
                 worksheet.write("E"+str(pos), point.TR, style)
                 worksheet.write("F"+str(pos), point.TC, style)
+                worksheet.write("G"+str(pos), "", style)
+
+
         message = "Liste de points générée"
     else:
         message = "Erreur lors de la génération de la liste de points, veuillez valider de nouveau le formulaire"

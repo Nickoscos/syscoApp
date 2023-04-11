@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from ..models.modelsChaudiere import Chaufferie
-from ..models.modelsEquip import Liste
+from ..models.Typology.modelsChaudiere import Chaufferie
+from ..models.Typology.modelsEquip import Liste
 from ..forms.formsChaudiere import nbChaudForm, chaudForm
 from ..ListePTS.listePts import generationListe, updateListe
 
@@ -20,7 +20,6 @@ def chaufferieView(request):
     try:
         #Si l'objet 1 est existant alors on le récupère
         listePts = Liste.objects.get(id=1)
-        # liste = Liste.objects.get(id=1)
     except Liste.DoesNotExist:
         #Si l'objet 1 n'existe pas, on ne fait rien
         listePts = Liste.objects.create(id=1)
@@ -35,15 +34,16 @@ def chaufferieView(request):
         #Choix des actions en fonction du formulaire soumit
         # Soumission du formulaire déterminant le nombre de chaudière
         if (request.POST.get("form_type") == "nbChaudform" and nbChaudform.is_valid()):
+            message = "Générer la liste de points" 
             c.nbChaudiere = int(request.POST.get('nbChaudiere')) #Récupération du nombre de chaudières saisies
             c.nbDivers = int(request.POST.get('nbDivers')) #Récupération du nombre de chaudières saisies
             c.nbCircReg = int(request.POST.get('nbCircReg')) #Récupération du nombre de circuits régulés saisies
-            c.nbCircCst = int(request.POST.get('nbCircCst')) #Récupération du nombre de circuits constants saisies
+            c.ECSpres = bool(request.POST.get('ECSpres'))
 
+            Chaufferie.creationGeneral(c) #Ajout partie générale dans la base de données
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
             Chaufferie.creationDivers(c) #Ajout des équipements Divers dans la base de données
             Chaufferie.creationCircReg(c) #Ajout des circuits régulés dans la base de données
-            Chaufferie.creationCircCst(c) #Ajout des circuits constants dans la base de données
             Chaufferie.creationECS(c) #Ajout de l'ECS dans la base de données       
 
             c = Chaufferie.objects.get(id=1) #Relecture pour affichage
@@ -59,7 +59,7 @@ def chaufferieView(request):
                     c,
                     numero=chaud.num,
                     nomChaud=request.POST.get('nomChaud'+str(chaud.num)),
-                    nbBruleur=int(request.POST.get('nbBruleurChaud'+str(chaud.num))),
+                    bruleurPres=bool(request.POST.get('bruleurPres'+str(chaud.num))),
                     nbPpe=int(request.POST.get('nbPpeChaud'+str(chaud.num))),
                     nbV2V=int(request.POST.get('nbV2VChaud'+str(chaud.num))),
                 )
@@ -82,14 +82,6 @@ def chaufferieView(request):
                     nbTemp=int(request.POST.get('nbTempCircReg'+str(circ.num))),
                     nbPpe=int(request.POST.get('nbPpeCircReg'+str(circ.num))),
                     nbV3V=int(request.POST.get('nbV3VCircReg'+str(circ.num))),
-                )
-            # Bouclage en fonction du numéro du circuit constant
-            for circ in c.CircCst:
-                Chaufferie.updateCircCst(
-                    c,
-                    numero=circ.num,
-                    nomCirc=request.POST.get('nomCircCst'+str(circ.num)),
-                    nbPpe=int(request.POST.get('nbPpeCircCst'+str(circ.num))),
                 )
             # Bouclage en fonction du numéro de l'ECS
             for ECS in c.ECS:

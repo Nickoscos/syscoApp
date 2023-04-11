@@ -41,6 +41,11 @@
                 </div>
 
                 <div class="col mt-1">
+                    <label class="row">ECS présent: </label>
+                    <input class="row" name="ECSpres" id="ECSpres" type="checkbox" style="width:30px;height:30px;" value="{{ chaufferie.ECSpres }}" {% if chaufferie.ECSpres %} checked {% endif %}>
+                </div>
+
+                <div class="col mt-1">
                     <label class="row">Nombres d'équipements divers: </label>
                     <input class="row" name="nbDivers" id="nbDivers" type="number" value="{{ chaufferie.nbDivers }}">
                 </div>
@@ -51,12 +56,10 @@
                 </div>
 
                 <div class="col mt-1">
-                    <label class="row" >Nombres de circuits constants: </label>
-                    <input class="row" name="nbCircCst" id="nbCircCst" type="number" value="{{ chaufferie.nbCircCst }}">
+                    <!-- <label class="row" >Nombres de circuits constants: </label>
+                    <input class="row" name="nbCircCst" id="nbCircCst" type="number" value="{{ chaufferie.nbCircCst }}"> -->
                 </div>
 
-                <div class="col mt-1">
-                </div>
 
                 <div class="col d-flex justify-content-end mt-1">
                     <input type="hidden" name="form_type" value="nbChaudform">
@@ -84,11 +87,6 @@
                 </div>
 
                 <div class="col mt-1">
-                    <label class="row">Brûleur présent: </label>
-                    <input class="row" name="nbBruleurChaud{{ c.num }}" id="nbBruleurChaud{{ c.num }}" type="number" value="{{ c.nbBruleur }}">
-                </div>
-
-                <div class="col mt-1">
                     <label class="row">Nombre de pompes: </label>
                     <input class="row" name="nbPpeChaud{{ c.num }}" id="nbPpeChaud{{ c.num }}" type="number" value="{{ c.nbPpe }}">
                 </div>
@@ -96,6 +94,9 @@
                 <div class="col mt-1">
                     <label class="row">Nombre de V2V: </label>
                     <input class="row" name="nbV2VChaud{{ c.num }}" id="nbV2VChaud{{ c.num }}" type="number" value="{{ c.nbV2V }}">        
+                </div>
+
+                <div class="col mt-1">       
                 </div>
 
                 <div class="col mt-1">       
@@ -177,39 +178,7 @@
                 </div>
             </div>
         </fieldset>
-        {% endfor %}
-        <!-- CONFIGURATION CIRCUITS CONSTANTS -->
-        {% for c in chaufferie.CircCst %}
-        <fieldset class="container-fluid mt-1 pb-1 border border-warning rounded">
-            <div class="row">
-                <legend>Circuit constant {{ c.num }}</legend>
-            </div>
-            
-            <div class="row m-1">
-                <div class="col mt-1">
-                    <label class="row">Nom circuit constant: </label>
-                    <input class="row" name="nomCircCst{{ c.num }}" id="nomCircCst{{ c.num }}" type="text" value="{{ c.nomCirc }}">
-                </div>
-                
-                <div class="col mt-1">
-                    <label class="row">Nombre de pompes: </label>
-                    <input class="row" name="nbPpeCircCst{{ c.num }}" id="nbPpeCircCst{{ c.num }}" type="number" value="{{ c.nbPpe }}">
-                </div>
-
-                <div class="col mt-1">
-                </div>
-
-                <div class="col mt-1">
-                </div>
-
-                <div class="col mt-1">
-                </div>
-
-                <div class="col mt-1">
-                </div>
-            </div>
-        </fieldset>
-        {% endfor %}
+        {% endfor %}       
         <!-- CONFIGURATION ECS -->
         {% for c in chaufferie.ECS %}
         <fieldset class="container-fluid mt-1 pb-1 border border-warning rounded">

@@ -1,11 +1,18 @@
 from django.forms import ModelForm
 from django.db import models
 
+#Déclaration de l'objet Général
+class General(models.Model):
+    num = models.IntegerField(default=1)
+    nomGen = models.CharField(max_length=200, default="Général ")
+    nbDefaut = models.IntegerField(default=1)
+    nbTempExt = models.IntegerField(default=1)
+
+
 #Déclaration de l'objet Chaudière
 class Chaudiere(models.Model):
     num = models.IntegerField(default=1)
     nomChaud = models.CharField(max_length=200, default="Chaudière " + str(num))
-    nbBruleur = models.IntegerField(default=0)
     nbV2V = models.IntegerField(default=1)
     nbPpe = models.IntegerField(default=1)
 
@@ -34,18 +41,24 @@ class CircReg(models.Model):
     nbV3V = models.IntegerField(default=1)
     nbPpe = models.IntegerField(default=2)
 
-#Déclaration de l'objet Circuit Constant
-class CircCst(models.Model):
-    num = models.IntegerField(default=1)
-    nomCirc = models.CharField(max_length=200, default="Circuit Constant " + str(num))
-    nbPpe = models.IntegerField(default=2)
-
 #Déclaration de l'objet chaufferie
 class Chaufferie(models.Model):
+    ######CONFIGURATION GENERAL#####
+    #Déclaration de la liste contenant les objets généraux
+    General = []
+
+    #Fonction permettant de créer les objets chaudières
+    def creationGeneral(self):
+        self.General.clear()
+        # Initialisation de la liste
+        # De base, la liste général comprend: 1 température extérieure, 1 défaut manque d'eau
+        self.General.append(General(num=1, nomGen = "Général", nbDefaut = 1, nbTempExt = 1)) 
+        self.save() #Enregistrement dans la base
+
     ######CONFIGURATION CHAUDIERES#####
     #Nombre de chaudière dans la chaufferie
     nbChaudiere = models.IntegerField(default=1)
-
+    
     #Déclaration de la liste contenant les objets chaudières
     Chaudieres = []
 
@@ -55,16 +68,15 @@ class Chaufferie(models.Model):
         for i in range(self.nbChaudiere):
             # Initialisation de la liste de chaudière pour affichage dans le formulaire
             # Le numéro de la chaudière est automatiquement renseignée
-            # De base, une chaudière possède : 0 brûleur, 1 pompe, 1 vanne 2 voie
-            self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbBruleur = 0, nbV2V=0, nbPpe=1)) 
+            # De base, une chaudière possède : 0 brûleur, 1 pompe, 0 vanne 2 voie
+            self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbV2V=0, nbPpe=0)) 
         self.save() #Enregistrement dans la base
 
     #Fonction permettant d'actualiser les données chaudières
-    def updateChaudiere(self, numero, nomChaud, nbBruleur, nbV2V, nbPpe):
+    def updateChaudiere(self, numero, nomChaud, bruleurPres, nbV2V, nbPpe):
         for chaud in self.Chaudieres:
             if chaud.num == numero :
                 chaud.nomChaud = nomChaud
-                chaud.nbBruleur = nbBruleur
                 chaud.nbV2V = nbV2V
                 chaud.nbPpe = nbPpe
         self.save() #Enregistrement dans la base
@@ -123,45 +135,21 @@ class Chaufferie(models.Model):
                 circ.nbV3V = nbV3V
                 circ.nbPpe = nbPpe
         self.save() #Enregistrement dans la base
-
-    ######CONFIGURATION CIRCUITS CONSTANT#####
-    #Nombre de circuits constants dans la chaufferie
-    nbCircCst = models.IntegerField(default=1)
-
-    #Déclaration de la liste contenant les objets circuits constant
-    CircCst = []
-
-    #Fonction permettant de créer les objets circuits constants
-    def creationCircCst(self):
-        self.CircCst.clear()
-        for i in range(self.nbCircCst):
-            # Initialisation de la liste de circuits constants pour affichage dans le formulaire
-            # Le numéro du circuit régulé est automatiquement renseignée
-            # De base, un circuit régulé possède : 1 Mesure de température, 1 pompe, 1 vanne 3 voie
-            self.CircCst.append(CircCst(num = i+1, nomCirc= "Circuit Constant " + str(i+1), nbPpe=2)) 
-        self.save() #Enregistrement dans la base
-
-    #Fonction permettant d'actualiser les données circuit constant
-    def updateCircCst(self, numero, nomCirc, nbPpe):
-        for circ in self.CircCst:
-            if circ.num == numero :
-                circ.nomCirc = nomCirc
-                circ.nbPpe = nbPpe
-        self.save() #Enregistrement dans la base
     
     ######CONFIGURATION ECS#####
-    #Déclaration de la liste contenant les objets circuits constant
+    #L'ECS est-il présent:
+    ECSpres = models.BooleanField(default=False)
     ECS = []
 
     #Fonction permettant de créer les objets circuits constants
     def creationECS(self):
         self.ECS.clear()
-
+        if self.ECSpres :
         # Initialisation de la liste de circuits constants pour affichage dans le formulaire
         # Le numéro du circuit régulé est automatiquement renseignée
         # De base, un circuit régulé possède : 1 Mesure de température, 2 pompes, 1 vanne 3 voie
-        self.ECS.append(ECS(num = 1, nomECS= "ECS " + str(1), nbTemp=2, nbBallon=1, nbPpe=2, nbV3V=1)) 
-        self.save() #Enregistrement dans la base
+            self.ECS.append(ECS(num = 1, nomECS= "ECS " + str(1), nbTemp=2, nbBallon=1, nbPpe=2, nbV3V=1)) 
+            self.save() #Enregistrement dans la base
 
     #Fonction permettant d'actualiser les données ECS
     def updateECS(self, nomECS, nbTemp, nbBallon, nbPpe, nbV3V):

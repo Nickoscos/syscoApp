@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models.modelsChaudiere import Chaufferie
-from .models.modelsEquip import Liste
+from .models.Typology.modelsChaudiere import Chaufferie
+from .models.Typology.modelsEquip import Liste
 from .forms.formsChaudiere import nbChaudForm, chaudForm
 from .ListePTS.listePts import generationListe
 

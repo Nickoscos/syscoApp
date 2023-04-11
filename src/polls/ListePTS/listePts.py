@@ -1,5 +1,5 @@
-from ..models.modelsEquip import point, Liste
-from ..models.modelsChaudiere import Chaufferie
+from ..models.Typology.modelsEquip import point, Liste
+from ..models.Typology.modelsChaudiere import Chaufferie
 from .export import generationXls
 
 #Fonction permettant la génération de la liste de points
@@ -16,14 +16,14 @@ def generationListe(chaufferie):
         #Si l'objet 1 n'existe pas, on ne fait rien
         liste = Liste.objects.create(id=1)
 
-    #Ajout des points pompes chaudières
+    #Ajout des points Général
+    ajoutPtsGeneral(liste, chaufferie.General)
+
+    #Ajout des points chaudières
     ajoutPtsChaud(liste, chaufferie.Chaudieres)
 
     #Ajout des points Divers
     ajoutPtsDivers(liste, chaufferie.Divers)
-
-    #Ajout des points Circuits Constants
-    ajoutPtsCircCst(liste, chaufferie.CircCst)
 
     #Ajout des points Circuits Régulés
     ajoutPtsCircReg(liste, chaufferie.CircReg)
@@ -94,7 +94,7 @@ def geneTempListe():
             nbPpe=chaud.nbPpe,
             nbV2V=chaud.nbV2V,
         )
-    # Bouclage en fonction du numéro de la chaudière
+    # Bouclage en fonction du numéro de l'équipement divers
     for divers in c.Divers:
         Chaufferie.updateDivers(
             c,
@@ -166,9 +166,56 @@ def geneTempListe():
 
     return message
 
+#Fonction permettant l'ajout des points généraux
+def ajoutPtsGeneral(liste, General):
+    for gen in General:
+            #Température départ primaire
+            liste.pts.append(point(
+                equip= gen.nomGen,
+                libelle= 'Température extérieure ', 
+                TM=1, 
+                TS=0, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
+
+            #Défaut synthèse
+            liste.pts.append(point(
+                equip= gen.nomGen,
+                libelle= 'Défaut manque d\'eau ', 
+                TM=0, 
+                TS=1, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save() 
+
 #Fonction permettant l'ajout des points chaudières
 def ajoutPtsChaud(liste, Chaudieres):
     for chaud in Chaudieres:
+        #Température départ primaire
+        liste.pts.append(point(
+            equip= chaud.nomChaud,
+            libelle= 'Température départ primaire ', 
+            TM=0, 
+            TS=1, 
+            TR=0, 
+            TC=0
+        ))
+        liste.save()  
+
+        #Défaut synthèse
+        liste.pts.append(point(
+            equip= chaud.nomChaud,
+            libelle= 'Synthèse défaut ', 
+            TM=0, 
+            TS=1, 
+            TR=0, 
+            TC=0
+        ))
+        liste.save() 
+
         #Défaut pompe
         liste.pts.append(point(
             equip= chaud.nomChaud,
@@ -183,11 +230,11 @@ def ajoutPtsChaud(liste, Chaudieres):
         #Commande pompe
         liste.pts.append(point(
             equip= chaud.nomChaud,
-            libelle= 'Commande pompe ', 
+            libelle= 'Commande pompe + Chaudière ', 
             TM=0, 
             TS=0, 
-            TR=chaud.nbPpe, 
-            TC=0
+            TR=0, 
+            TC=chaud.nbPpe
         ))
         liste.save()  
 
@@ -245,7 +292,7 @@ def ajoutPtsDivers(liste, Divers):
             TM=0, 
             TS=0, 
             TR=div.nbPpe, 
-            TC=0
+            TC=2*div.nbPpe
         ))
         liste.save()  
 
@@ -303,7 +350,7 @@ def ajoutPtsCircReg(liste, CircReg):
             TM=0, 
             TS=0, 
             TR=circ.nbPpe, 
-            TC=0
+            TC=2*circ.nbPpe
         ))
         liste.save()  
 
@@ -314,31 +361,6 @@ def ajoutPtsCircReg(liste, CircReg):
             TM=0, 
             TS=0, 
             TR=circ.nbV3V, 
-            TC=0
-        ))
-        liste.save()  
-
-#Fonction permettant l'ajout des points circuits constants
-def ajoutPtsCircCst(liste, CircCst):
-    for circ in CircCst:
-        #Défaut pompe
-        liste.pts.append(point(
-            equip= circ.nomCirc,
-            libelle= 'Défaut pompe ', 
-            TM=0, 
-            TS=circ.nbPpe, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save()  
-
-        #Commande pompe
-        liste.pts.append(point(
-            equip= circ.nomCirc,
-            libelle= 'Commande pompe ', 
-            TM=0, 
-            TS=0, 
-            TR=circ.nbPpe, 
             TC=0
         ))
         liste.save()  
@@ -375,7 +397,7 @@ def ajoutPtsECS(liste, ECS):
             TM=0, 
             TS=0, 
             TR=e.nbPpe, 
-            TC=0
+            TC=2*e.nbPpe
         ))
         liste.save()  
 
