@@ -194,256 +194,278 @@ def ajoutPtsGeneral(liste, General):
 #Fonction permettant l'ajout des points chaudières
 def ajoutPtsChaud(liste, Chaudieres):
     for chaud in Chaudieres:
-        #Température départ primaire
-        liste.pts.append(point(
-            equip= chaud.nomChaud,
-            libelle= 'Température départ primaire ', 
-            TM=chaud.nbTemp, 
-            TS=0, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save()  
+        #Température XX
+        for i in range(chaud.nbTemp):
+            liste.pts.append(point(
+                equip= chaud.nomChaud,
+                libelle= 'Température ' + str(i+1), 
+                TM=1, 
+                TS=0, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
 
         #Défaut synthèse
-        liste.pts.append(point(
-            equip= chaud.nomChaud,
-            libelle= 'Synthèse défaut ', 
-            TM=0, 
-            TS=chaud.nbDef, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save() 
+        for i in range(chaud.nbDef):
+            liste.pts.append(point(
+                equip= chaud.nomChaud,
+                libelle= 'Synthèse défaut ' + str(i+1), 
+                TM=0, 
+                TS=1, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save() 
 
         #Défaut pompe
-        liste.pts.append(point(
-            equip= chaud.nomChaud,
-            libelle= 'Défaut pompe ', 
-            TM=0, 
-            TS=chaud.nbPpe, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save()  
+        for i in range(chaud.nbPpe):
+            liste.pts.append(point(
+                equip= chaud.nomChaud,
+                libelle= 'Défaut pompe '+ str(i+1), 
+                TM=0, 
+                TS=1, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
 
         #Commande pompe
-        liste.pts.append(point(
-            equip= chaud.nomChaud,
-            libelle= 'Commande pompe + Chaudière ', 
-            TM=0, 
-            TS=0, 
-            TR=0, 
-            TC=chaud.nbPpe
-        ))
-        liste.save()  
+        for i in range(chaud.nbPpe):
+            liste.pts.append(point(
+                equip= chaud.nomChaud,
+                libelle= 'Commande pompe + Chaudière '+ str(i+1), 
+                TM=0, 
+                TS=0, 
+                TR=0, 
+                TC=1
+            ))
+            liste.save()  
 
         #Fin de course V2V
-        liste.pts.append(point(
-            equip= chaud.nomChaud,
-            libelle= 'Fin de course V2V ', 
-            TM=0, 
-            TS=chaud.nbV2V, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save()  
+        for i in range(chaud.nbV2V):
+            liste.pts.append(point(
+                equip= chaud.nomChaud,
+                libelle= 'Fin de course V2V '+ str(i+1), 
+                TM=0, 
+                TS=1, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
 
         #Commande V2V
-        liste.pts.append(point(
-            equip= chaud.nomChaud,
-            libelle= 'Commande V2V ', 
-            TM=0, 
-            TS=0, 
-            TR=0, 
-            TC=chaud.nbV2V
-        ))
-        liste.save()  
+        for i in range(chaud.nbV2V):
+            liste.pts.append(point(
+                equip= chaud.nomChaud,
+                libelle= 'Commande V2V '+ str(i+1), 
+                TM=0, 
+                TS=0, 
+                TR=0, 
+                TC=1
+            ))
+            liste.save()  
 
 #Fonction permettant l'ajout des points Divers
 def ajoutPtsDivers(liste, Divers):
     for div in Divers:
         #TéléSignalisation supplémentaire
-        liste.pts.append(point(
-            equip= div.nomDivers,
-            libelle= 'Information supplémentaire ', 
-            TM=0, 
-            TS=div.nbTSsup, 
-            TR=0, 
-            TC=0
-        ))
+        for i in range(div.nbTSsup):
+            liste.pts.append(point(
+                equip= div.nomDivers,
+                libelle= 'Information supplémentaire '+ str(i+1), 
+                TM=0, 
+                TS=1, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
 
-        liste.save()  
         #Défaut pompe
-        liste.pts.append(point(
-            equip= div.nomDivers,
-            libelle= 'Défaut pompe ', 
-            TM=0, 
-            TS=2*div.nbPpe, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save()  
+        for i in range(div.nbPpe):
+            liste.pts.append(point(
+                equip= div.nomDivers,
+                libelle= 'Défaut pompe '+ str(i+1), 
+                TM=0, 
+                TS=1, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
 
         #Commande pompe
-        liste.pts.append(point(
-            equip= div.nomDivers,
-            libelle= 'Commande pompe ', 
-            TM=0, 
-            TS=0, 
-            TR=div.nbPpe, 
-            TC=2*div.nbPpe
-        ))
-        liste.save()  
+        for i in range(div.nbPpe):
+            liste.pts.append(point(
+                equip= div.nomDivers,
+                libelle= 'Commande pompe '+ str(i+1), 
+                TM=0, 
+                TS=0, 
+                TR=1, 
+                TC=0
+            ))
+            liste.save()  
 
         #Fin de course V2V
-        liste.pts.append(point(
-            equip= div.nomDivers,
-            libelle= 'Fin de course V2V ', 
-            TM=0, 
-            TS=div.nbV2V, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save()  
+        for i in range(div.nbV2V):       
+            liste.pts.append(point(
+                equip= div.nomDivers,
+                libelle= 'Fin de course V2V '+ str(i+1), 
+                TM=0, 
+                TS=1, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
 
         #Commande V2V
-        liste.pts.append(point(
-            equip= div.nomDivers,
-            libelle= 'Commande V2V ', 
-            TM=0, 
-            TS=0, 
-            TR=0, 
-            TC=div.nbV2V
-        ))
-        liste.save()  
+        for i in range(div.nbV2V): 
+            liste.pts.append(point(
+                equip= div.nomDivers,
+                libelle= 'Commande V2V '+ str(i+1), 
+                TM=0, 
+                TS=0, 
+                TR=0, 
+                TC=1
+            ))
+            liste.save()  
 
 #Fonction permettant l'ajout des points circuits régulés
 def ajoutPtsCircReg(liste, CircReg):
     for circ in CircReg:
         #Mesure de température
-        liste.pts.append(point(
-            equip= circ.nomCirc,
-            libelle= 'Température départ ', 
-            TM=circ.nbTemp, 
-            TS=0, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save()  
+        for i in range(circ.nbTemp): 
+            liste.pts.append(point(
+                equip= circ.nomCirc,
+                libelle= 'Température départ '+ str(i+1), 
+                TM=circ.nbTemp, 
+                TS=0, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
 
         #Mesure de température Ambiant
-        liste.pts.append(point(
-            equip= circ.nomCirc,
-            libelle= 'Température Ambiant ', 
-            TM=circ.nbAmb, 
-            TS=0, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save()  
+        for i in range(circ.nbAmb): 
+            liste.pts.append(point(
+                equip= circ.nomCirc,
+                libelle= 'Température Ambiant '+ str(i+1), 
+                TM=circ.nbAmb, 
+                TS=0, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
 
         #Défaut pompe
-        liste.pts.append(point(
-            equip= circ.nomCirc,
-            libelle= 'Défaut pompe ', 
-            TM=0, 
-            TS=2*circ.nbPpe, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save()  
+        for i in range(circ.nbPpe):
+            liste.pts.append(point(
+                equip= circ.nomCirc,
+                libelle= 'Défaut pompe '+ str(i+1), 
+                TM=0, 
+                TS=1, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
 
         #Commande pompe
-        liste.pts.append(point(
-            equip= circ.nomCirc,
-            libelle= 'Commande pompe ', 
-            TM=0, 
-            TS=0, 
-            TR=circ.nbPpe, 
-            TC=2*circ.nbPpe
-        ))
-        liste.save()  
+        for i in range(circ.nbPpe):
+            liste.pts.append(point(
+                equip= circ.nomCirc,
+                libelle= 'Commande pompe '+ str(i+1), 
+                TM=0, 
+                TS=0, 
+                TR=1, 
+                TC=0
+            ))
+            liste.save()  
 
         #Commande V3V
-        liste.pts.append(point(
-            equip= circ.nomCirc,
-            libelle= 'Commande V3V ', 
-            TM=0, 
-            TS=0, 
-            TR=circ.nbV3V, 
-            TC=0
-        ))
-        liste.save()  
+        for i in range(circ.nbV3V):
+            liste.pts.append(point(
+                equip= circ.nomCirc,
+                libelle= 'Commande V3V '+ str(i+1), 
+                TM=0, 
+                TS=0, 
+                TR=1, 
+                TC=0
+            ))
+            liste.save()  
 
 #Fonction permettant l'ajout des points Divers
 def ajoutPtsECS(liste, ECS):
     for e in ECS:
         #Mesure de température
-        liste.pts.append(point(
-            equip= e.nomECS,
-            libelle= 'Température départ/retour ', 
-            TM=e.nbTemp, 
-            TS=0, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save()  
+        for i in range(e.nbTemp):
+            liste.pts.append(point(
+                equip= e.nomECS,
+                libelle= 'Température départ/retour '+ str(i+1), 
+                TM=1, 
+                TS=0, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
 
         #Défaut pompe
-        liste.pts.append(point(
-            equip= e.nomECS,
-            libelle= 'Défaut pompe ', 
-            TM=0, 
-            TS=2*e.nbPpe, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save()  
+        for i in range(e.nbPpe):
+            liste.pts.append(point(
+                equip= e.nomECS,
+                libelle= 'Défaut pompe '+ str(i+1), 
+                TM=0, 
+                TS=1, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
 
         #Commande pompe
-        liste.pts.append(point(
-            equip= e.nomECS,
-            libelle= 'Commande pompe ', 
-            TM=0, 
-            TS=0, 
-            TR=e.nbPpe, 
-            TC=2*e.nbPpe
-        ))
-        liste.save()  
+        for i in range(e.nbPpe):
+            liste.pts.append(point(
+                equip= e.nomECS,
+                libelle= 'Commande pompe '+ str(i+1), 
+                TM=0, 
+                TS=0, 
+                TR=1, 
+                TC=0
+            ))
+            liste.save()  
 
         #Commande V3V
-        liste.pts.append(point(
-            equip= e.nomECS,
-            libelle= 'Commande V3V ', 
-            TM=0, 
-            TS=0, 
-            TR=e.nbV3V, 
-            TC=0
-        ))
-        liste.save()  
+        for i in range(e.nbV3V):
+            liste.pts.append(point(
+                equip= e.nomECS,
+                libelle= 'Commande V3V '+ str(i+1), 
+                TM=0, 
+                TS=0, 
+                TR=1, 
+                TC=0
+            ))
+            liste.save()  
 
         #Mesure température ballon
-        liste.pts.append(point(
-            equip= e.nomECS,
-            libelle= 'Température ballon ', 
-            TM=e.nbBallon, 
-            TS=0, 
-            TR=0, 
-            TC=0
-        ))
-        liste.save()  
+        for i in range(e.nbBallon):
+            liste.pts.append(point(
+                equip= e.nomECS,
+                libelle= 'Température ballon '+ str(i+1), 
+                TM=1, 
+                TS=0, 
+                TR=0, 
+                TC=0
+            ))
+            liste.save()  
 
         #Mesure épingle ballon
-        liste.pts.append(point(
-            equip= e.nomECS,
-            libelle= 'Epingle ballon ', 
-            TM=0, 
-            TS=0, 
-            TR=0, 
-            TC=e.nbBallon
-        ))
-        liste.save() 
+        for i in range(e.nbBallon):
+            liste.pts.append(point(
+                equip= e.nomECS,
+                libelle= 'Epingle ballon '+ str(i+1), 
+                TM=0, 
+                TS=0, 
+                TR=0, 
+                TC=1
+            ))
+            liste.save() 
 
 #Calcul des totaux par type d'entrées/sorties
 def calculTotaux(liste):

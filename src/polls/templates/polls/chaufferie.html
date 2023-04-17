@@ -35,30 +35,31 @@
             {% csrf_token %}
 
             <div class="row m-1">
-                <div class="col mt-1">
-                    <label class="row">Nombres de chaudières: </label>
-                    <input class="row" name="nbChaudiere" id="nbChaudiere" type="number" value="{{ chaufferie.nbChaudiere }}">
-                </div>
+                <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
+                    <legend class="text-center">Chaudières</legend>
+                    <label>Nombres de chaudières: </label>
+                    <input name="nbChaudiere" id="nbChaudiere" type="number" value="{{ chaufferie.nbChaudiere }}">
+                </fieldset>
 
-                <div class="col mt-1">
-                    <label class="row">ECS présent: </label>
-                    <input class="row" name="ECSpres" id="ECSpres" type="checkbox" style="width:30px;height:30px;" value="{{ chaufferie.ECSpres }}" {% if chaufferie.ECSpres %} checked {% endif %}>
-                </div>
+                <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
+                    <legend class="text-center">ECS</legend>
+                    <label>ECS présent: </label>
+                    <input name="ECSpres" id="ECSpres" type="checkbox" style="width:30px;height:30px;" value="{{ chaufferie.ECSpres }}" {% if chaufferie.ECSpres %} checked {% endif %}>
+                    <label>Préparateur indépendant: </label>
+                    <input name="ECSprepa" id="ECSprepa" type="checkbox" style="width:30px;height:30px;" value="{{ chaufferie.ECSprepa }}" {% if chaufferie.ECSprepa %} checked {% endif %}>
+                </fieldset>
+                
+                <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
+                    <legend class="text-center">Circuits</legend>
+                    <label>Nombres de circuits: </label>
+                    <input name="nbCircReg" id="nbCircReg" type="number" value="{{ chaufferie.nbCircReg }}">
+                </fieldset>
 
-                <div class="col mt-1">
-                    <label class="row">ECS préparateur indépendant: </label>
-                    <input class="row" name="ECSprepa" id="ECSprepa" type="checkbox" style="width:30px;height:30px;" value="{{ chaufferie.ECSprepa }}" {% if chaufferie.ECSprepa %} checked {% endif %}>
-                </div>
-
-                <div class="col mt-1">
-                    <label class="row">Nombres d'équipements divers: </label>
-                    <input class="row" name="nbDivers" id="nbDivers" type="number" value="{{ chaufferie.nbDivers }}">
-                </div>
-
-                <div class="col mt-1">
-                    <label class="row">Nombres de circuits régulés: </label>
-                    <input class="row" name="nbCircReg" id="nbCircReg" type="number" value="{{ chaufferie.nbCircReg }}">
-                </div>
+                <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
+                    <legend class="text-center">Autres:</legend>
+                    <label>Nombres d'équipements divers: </label>
+                    <input name="nbDivers" id="nbDivers" type="number" value="{{ chaufferie.nbDivers }}">
+                </fieldset>
 
                 <div class="col mt-1">
                 </div>
@@ -91,6 +92,11 @@
                 <div class="col mt-1">
                     <label class="row">Nombre de synthèse défauts: </label>
                     <input class="row" name="nbDef{{ c.num }}" id="nbDef{{ c.num }}" type="number" value="{{ c.nbDef }}">
+                </div>
+
+                <div class="col mt-1">
+                    <label class="row">Nombre de Température: </label>
+                    <input class="row" name="nbTemp{{ c.num }}" id="nbTemp{{ c.num }}" type="number" value="{{ c.nbTemp }}">
                 </div>
 
                 <div class="col mt-1">

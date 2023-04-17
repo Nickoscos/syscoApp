@@ -13,7 +13,7 @@ class General(models.Model):
 class Chaudiere(models.Model):
     num = models.IntegerField(default=1)
     nomChaud = models.CharField(max_length=200, default="Chaudière " + str(num))
-    nbTemp = models.IntegerField(default=1)
+    nbTemp = models.IntegerField(default=2)
     nbDef = models.IntegerField(default=1)
     nbV2V = models.IntegerField(default=1)
     nbPpe = models.IntegerField(default=1)
@@ -73,15 +73,16 @@ class Chaufferie(models.Model):
             # Initialisation de la liste de chaudière pour affichage dans le formulaire
             # Le numéro de la chaudière est automatiquement renseignée
             # De base, une chaudière possède : 0 brûleur, 1 pompe, 0 vanne 2 voie
-            self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbDef=1, nbV2V=0, nbPpe=1)) 
+            self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbTemp=1, nbDef=1, nbV2V=0, nbPpe=1)) 
         self.save() #Enregistrement dans la base
 
     #Fonction permettant d'actualiser les données chaudières
-    def updateChaudiere(self, numero, nomChaud, bruleurPres, nbDef, nbV2V, nbPpe):
+    def updateChaudiere(self, numero, nomChaud, bruleurPres, nbTemp, nbDef, nbV2V, nbPpe):
         for chaud in self.Chaudieres:
             if chaud.num == numero :
                 chaud.nomChaud = nomChaud
                 chaud.bruleurPres = bruleurPres
+                chaud.nbTemp = nbTemp
                 chaud.nbDef = nbDef
                 chaud.nbV2V = nbV2V
                 chaud.nbPpe = nbPpe

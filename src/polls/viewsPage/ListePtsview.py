@@ -61,6 +61,7 @@ def chaufferieView(request):
                     numero=chaud.num,
                     nomChaud=request.POST.get('nomChaud'+str(chaud.num)),
                     bruleurPres=bool(request.POST.get('bruleurPres'+str(chaud.num))),
+                    nbTemp=int(request.POST.get('nbTemp'+str(chaud.num))),
                     nbDef=int(request.POST.get('nbDef'+str(chaud.num))),
                     nbPpe=int(request.POST.get('nbPpeChaud'+str(chaud.num))),
                     nbV2V=int(request.POST.get('nbV2VChaud'+str(chaud.num))),
@@ -105,6 +106,29 @@ def chaufferieView(request):
         # Soumission du formulaire de téléchargement liste de point
         elif (request.POST.get("form_type") == "downloadListTemplate"): #and chaudform.is_valid()):
             print("téléchargement")
+            try:
+                #Si l'objet 2 est existant alors on le récupère
+                cTemplate = Chaufferie.objects.get(id=2)
+            except Chaufferie.DoesNotExist:
+                #Si l'objet 1 n'existe pas, on l'initialise
+                cTemplate = Chaufferie.objects.create(id=2, nbChaudiere=1, nbDivers=0)
+                cTemplate.save()
+
+            cTemplate.nbDivers = 0
+            cTemplate.nbCircReg = 1
+            cTemplate.ECSpres = False
+            cTemplate.ECSprepa = False
+
+            Chaufferie.creationGeneral(cTemplate) #Ajout partie générale dans la base de données
+            Chaufferie.creationChaudiere(cTemplate) #Ajout des chaudières dans la base de données
+            Chaufferie.creationDivers(cTemplate) #Ajout des équipements Divers dans la base de données
+            Chaufferie.creationCircReg(cTemplate) #Ajout des circuits régulés dans la base de données
+            Chaufferie.creationECS(cTemplate) #Ajout de l'ECS dans la base de données       
+
+            cTemplate = Chaufferie.objects.get(id=2) #Relecture pour affichage
+
+            cTemplate.save()
+            generationListe(cTemplate)
     else:
         nbChaudform = nbChaudForm()
 
