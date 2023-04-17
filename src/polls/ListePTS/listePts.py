@@ -55,12 +55,16 @@ def updateListe(listePts, request):
     i = 0
     for liste in listePts.pts:
         if (i != len(listePts.pts) - 1):
-            liste.equip = request.POST.get('nomEquip'+str(i))
-            liste.libelle = request.POST.get('libelle'+str(i))
-            liste.TM = int(request.POST.get('TM'+str(i)))
-            liste.TS = int(request.POST.get('TS'+str(i)))
-            liste.TR = int(request.POST.get('TR'+str(i)))
-            liste.TC = int(request.POST.get('TC'+str(i)))  
+                liste.equip = request.POST.get('nomEquip'+str(i))
+                liste.libelle = request.POST.get('libelle'+str(i))
+                liste.TM = int(request.POST.get('TM'+str(i)))
+                liste.TS = int(request.POST.get('TS'+str(i)))
+                liste.TR = int(request.POST.get('TR'+str(i)))
+                liste.TC = int(request.POST.get('TC'+str(i)))  
+
+        # if (liste.TM == 0 and liste.TS == 0 and liste.TR == 0 and liste.TC == 0):
+        #         listePts.pts.remove(liste)
+
         i = i +1
     #Ajout de la dernière ligne de la liste TOTAUX
     listePts.pts.pop()
