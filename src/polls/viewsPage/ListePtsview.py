@@ -5,7 +5,7 @@ from ..forms.formsChaudiere import nbChaudForm, chaudForm
 from ..ListePTS.listePts import generationListe, updateListe, generationXls
 
 #Page 2: Définition de la configuration de la chaufferie 
-def chaufferieView(request):
+def chaufferieView(request,part_id =None):
     message = "" 
     #Création d'un unique objet chaufferie dans la base de données 
     try:
@@ -129,16 +129,26 @@ def chaufferieView(request):
 
             cTemplate.save()
             generationListe(cTemplate)
+
         # Soumission du formulaire de téléchargement liste de point
         elif (request.POST.get("form_type") == "exportExcelList"):
             message = generationXls(listePts)
+
+        # Soumission du formulaire permettant la suppresion d'une ligne de la liste de points
+        elif (request.POST.get("form_type") == "deleteForm"): #and chaudform.is_valid()):
+            print("Suppression " + request.POST.get('Supp'))
+            print(listePts.pts[int(request.POST.get('Supp'))].libelle)
+            listePts.pts.pop(int(request.POST.get('Supp')))
     else:
         nbChaudform = nbChaudForm()
 
+    if part_id != None :
+        print('test')
+        listPt_select = listePts.pts[part_id]
+        listPt_select.delete()
 
     c = Chaufferie.objects.get(id=1) #Relecture pour affichage
     listePts = Liste.objects.get(id=1)
-    print(len(listePts.pts))
     return render(request, 'polls/chaufferie.html', {
         'nbChaudform': nbChaudform, 
         'chaudform': chaudForm, 

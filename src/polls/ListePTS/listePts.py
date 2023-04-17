@@ -181,7 +181,8 @@ def ajoutPtsGeneral(liste, General):
                 TM=1, 
                 TS=0, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -192,7 +193,8 @@ def ajoutPtsGeneral(liste, General):
                 TM=0, 
                 TS=1, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save() 
 
@@ -207,7 +209,8 @@ def ajoutPtsChaud(liste, Chaudieres):
                 TM=1, 
                 TS=0, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -219,7 +222,8 @@ def ajoutPtsChaud(liste, Chaudieres):
                 TM=0, 
                 TS=1, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save() 
 
@@ -231,7 +235,8 @@ def ajoutPtsChaud(liste, Chaudieres):
                 TM=0, 
                 TS=1, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -243,7 +248,8 @@ def ajoutPtsChaud(liste, Chaudieres):
                 TM=0, 
                 TS=0, 
                 TR=0, 
-                TC=1
+                TC=1,
+                Supp=False
             ))
             liste.save()  
 
@@ -255,7 +261,8 @@ def ajoutPtsChaud(liste, Chaudieres):
                 TM=0, 
                 TS=1, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -267,7 +274,8 @@ def ajoutPtsChaud(liste, Chaudieres):
                 TM=0, 
                 TS=0, 
                 TR=0, 
-                TC=1
+                TC=1,
+                Supp=False
             ))
             liste.save()  
 
@@ -282,7 +290,8 @@ def ajoutPtsDivers(liste, Divers):
                 TM=0, 
                 TS=1, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -294,7 +303,8 @@ def ajoutPtsDivers(liste, Divers):
                 TM=0, 
                 TS=1, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -306,7 +316,8 @@ def ajoutPtsDivers(liste, Divers):
                 TM=0, 
                 TS=0, 
                 TR=1, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -318,7 +329,8 @@ def ajoutPtsDivers(liste, Divers):
                 TM=0, 
                 TS=1, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -330,7 +342,8 @@ def ajoutPtsDivers(liste, Divers):
                 TM=0, 
                 TS=0, 
                 TR=0, 
-                TC=1
+                TC=1,
+                Supp=False
             ))
             liste.save()  
 
@@ -345,7 +358,8 @@ def ajoutPtsCircReg(liste, CircReg):
                 TM=circ.nbTemp, 
                 TS=0, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -357,7 +371,8 @@ def ajoutPtsCircReg(liste, CircReg):
                 TM=circ.nbAmb, 
                 TS=0, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -369,7 +384,8 @@ def ajoutPtsCircReg(liste, CircReg):
                 TM=0, 
                 TS=1, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -381,7 +397,8 @@ def ajoutPtsCircReg(liste, CircReg):
                 TM=0, 
                 TS=0, 
                 TR=1, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -393,7 +410,8 @@ def ajoutPtsCircReg(liste, CircReg):
                 TM=0, 
                 TS=0, 
                 TR=1, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -408,7 +426,8 @@ def ajoutPtsECS(liste, ECS):
                 TM=1, 
                 TS=0, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -420,7 +439,8 @@ def ajoutPtsECS(liste, ECS):
                 TM=0, 
                 TS=1, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -432,7 +452,8 @@ def ajoutPtsECS(liste, ECS):
                 TM=0, 
                 TS=0, 
                 TR=1, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -444,7 +465,8 @@ def ajoutPtsECS(liste, ECS):
                 TM=0, 
                 TS=0, 
                 TR=1, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -456,7 +478,8 @@ def ajoutPtsECS(liste, ECS):
                 TM=1, 
                 TS=0, 
                 TR=0, 
-                TC=0
+                TC=0,
+                Supp=False
             ))
             liste.save()  
 
@@ -468,7 +491,8 @@ def ajoutPtsECS(liste, ECS):
                 TM=0, 
                 TS=0, 
                 TR=0, 
-                TC=1
+                TC=1,
+                Supp=False
             ))
             liste.save() 
 

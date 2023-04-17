@@ -68,13 +68,17 @@ class Chaufferie(models.Model):
 
     #Fonction permettant de créer les objets chaudières
     def creationChaudiere(self):
-        self.Chaudieres.clear()
         for i in range(self.nbChaudiere):
-            # Initialisation de la liste de chaudière pour affichage dans le formulaire
+            # Configuration de la liste de chaudière pour affichage dans le formulaire
             # Le numéro de la chaudière est automatiquement renseignée
-            # De base, une chaudière possède : 0 brûleur, 1 pompe, 0 vanne 2 voie
-            self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbTemp=1, nbDef=1, nbV2V=0, nbPpe=1)) 
+            if i >= len(self.Chaudieres) :
+                self.Chaudieres.append(Chaudiere(num = i+1, nomChaud= "Chaudière " + str(i+1), nbTemp=1, nbDef=1, nbV2V=0, nbPpe=1)) 
         self.save() #Enregistrement dans la base
+
+        #Permet de supprimer les chaudières supprimées après reconfiguration
+        #La saisie des chaudières est conservée
+        while len(self.Chaudieres) > self.nbChaudiere:
+            self.Chaudieres.pop(len(self.Chaudieres)-1)          
 
     #Fonction permettant d'actualiser les données chaudières
     def updateChaudiere(self, numero, nomChaud, bruleurPres, nbTemp, nbDef, nbV2V, nbPpe):
@@ -97,14 +101,20 @@ class Chaufferie(models.Model):
 
     #Fonction permettant de créer les objets divers
     def creationDivers(self):
-        self.Divers.clear()
+        # self.Divers.clear()
         if self.nbDivers > 0 :
             for i in range(self.nbDivers):
                 # Initialisation de la liste des équipements divers pour affichage dans le formulaire
                 # Le numéro de l'équipement divers est automatiquement renseignée
                 # De base, une équipement divers possède : 1 TS, 1 pompe, 0 vanne 2 voie
-                self.Divers.append(Divers(num = i+1, nomDivers= "Divers " + str(i+1), nbTSsup = 0, nbV2V=0, nbPpe=1)) 
+                if i >= len(self.Divers) :
+                    self.Divers.append(Divers(num = i+1, nomDivers= "Divers " + str(i+1), nbTSsup = 0, nbV2V=0, nbPpe=1)) 
             self.save() #Enregistrement dans la base
+
+        #Permet de supprimer les équipements divers supprimées après reconfiguration
+        #La saisie des équipements divers est conservée
+        while len(self.Divers) > self.nbDivers:
+            self.Divers.pop(len(self.Divers)-1)   
 
     #Fonction permettant d'actualiser les données des équipements divers
     def updateDivers(self, numero, nomDivers, nbTSsup, nbV2V, nbPpe):
@@ -125,13 +135,18 @@ class Chaufferie(models.Model):
 
     #Fonction permettant de créer les objets circuits régulés
     def creationCircReg(self):
-        self.CircReg.clear()
         for i in range(self.nbCircReg):
             # Initialisation de la liste de circuits régulés pour affichage dans le formulaire
             # Le numéro du circuit régulé est automatiquement renseignée
             # De base, un circuit régulé possède : 1 Mesure de température, 1 pompe, 1 vanne 3 voie
-            self.CircReg.append(CircReg(num = i+1, nomCirc= "Circuit Régulé " + str(i+1), nbTemp = 1, nbAmb = 1, nbV3V=1, nbPpe=1)) 
+            if i >= len(self.CircReg) :
+                self.CircReg.append(CircReg(num = i+1, nomCirc= "Circuit Régulé " + str(i+1), nbTemp = 1, nbAmb = 1, nbV3V=1, nbPpe=1)) 
         self.save() #Enregistrement dans la base
+
+        #Permet de supprimer les circuits supprimées après reconfiguration
+        #La saisie des circuits est conservée
+        while len(self.CircReg) > self.nbCircReg:
+            self.CircReg.pop(len(self.CircReg)-1)   
 
     #Fonction permettant d'actualiser les données circuit régulé
     def updateCircReg(self, numero, nomCirc, nbTemp, nbAmb, nbV3V, nbPpe):

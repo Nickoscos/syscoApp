@@ -248,15 +248,16 @@
         <table class="table text-center mt-2">
             <thead>
                 <tr>
-                    <th colspan="6" style="background-color: gray; font-size: 1.3em;">LISTE DE POINTS</th>
+                    <th colspan="7" style="background-color: gray; font-size: 1.3em;">LISTE DE POINTS</th>
                 </tr>
                 <tr style="background-color: gray;">
                     <th class="col-2">Sous-ensemble</th>
-                    <th class="col-6">Libellé</th>
+                    <th class="col-5">Libellé</th>
                     <th class="col-1">TM Température</th>
                     <th class="col-1">TS Digital</th>
                     <th class="col-1">TR 0-10V</th>
                     <th class="col-1">TC Digital</th>
+                    <th class="col-1">Suppression</th>
                 </tr>
             </thead>
             <tbody>
@@ -264,20 +265,28 @@
                     {% if forloop.last %}
                     <tr style="background-color: gray;">
                         <td class="col-2">{{ l.equip }}</td>
-                        <td class="col-6">{{ l.libelle }}</td>
+                        <td class="col-5">{{ l.libelle }}</td>
                         <td class="col-1">{{ l.TM }}</td>
                         <td class="col-1">{{ l.TS }}</td>
                         <td class="col-1">{{ l.TR }}</td>
                         <td class="col-1">{{ l.TC }}</td>
+                        <td class="col-1"></td>
                     </tr>
                     {% else %}
                     <tr>
                         <td class="col-2"><input name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" type="text" style="width: 100%;" value="{{ l.equip }}"></td>
-                        <td class="col-6"><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" style="width: 100%;" value="{{ l.libelle }}"></td>
+                        <td class="col-5"><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" style="width: 100%;" value="{{ l.libelle }}"></td>
                         <td class="col-1"><input name="TM{{ forloop.counter0 }}" id="TM{{ forloop.counter0 }}" type="number" value="{{ l.TM }}"></td>
                         <td class="col-1"><input name="TS{{ forloop.counter0 }}" id="TS{{ forloop.counter0 }}" type="number" value="{{ l.TS }}"></td>
                         <td class="col-1"><input name="TR{{ forloop.counter0 }}" id="TR{{ forloop.counter0 }}" type="number" value="{{ l.TR }}"></td>
                         <td class="col-1"><input name="TC{{ forloop.counter0 }}" id="TC{{ forloop.counter0 }}" type="number" value="{{ l.TC }}"></td>
+                        <td class="col-1">
+                            <form action="" method="post" id="deleteForm">
+                                {% csrf_token %}
+                                <input type="hidden" name="form_type" value="deleteForm">
+                                <button type="submit" class="btn btn-danger" name="Supp" id="Supp" value={{forloop.counter0}}>Suppr</button></td>
+                            </form>
+                            
                     </tr>
                     {% endif %}
                 {% endfor %}

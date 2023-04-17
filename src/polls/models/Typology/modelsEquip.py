@@ -9,6 +9,7 @@ class point(models.Model):
     TS = models.IntegerField()
     TR = models.IntegerField()
     TC = models.IntegerField()
+    Supp = models.BooleanField(default=False)
     
 #Déclaration d'une liste de points
 class Liste(models.Model):
