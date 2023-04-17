@@ -238,6 +238,12 @@
 
     <!-- AFFICHAGE DE LA LISTE DE POINTS -->
     <form action="" method="post" id="listform">
+        {% if listePts.pts|length > 0 %}
+        <div class="col d-flex justify-content-end mt-1">
+            <input type="hidden" name="form_type" value="listform">
+            <button type="submit" class="btn btn-warning">Actualiser liste</button>
+        </div>   
+        {% endif %}
         {% csrf_token %}
         <table class="table text-center mt-2">
             <thead>
@@ -276,12 +282,14 @@
                     {% endif %}
                 {% endfor %}
             </tbody>
-        </table>
-
+        </table>   
+    </form>
+    <form action="" method="post" id="exportExcelList">
+        {% csrf_token %}
         <div class="col d-flex justify-content-end mt-1">
-            <input type="hidden" name="form_type" value="listform">
-            <button type="submit" class="btn btn-warning">Actualiser liste</button>
-        </div>    
+            <input type="hidden" name="form_type" value="exportExcelList">
+            <button type="submit" class="btn btn-primary">Export Liste en xls</button>
+        </div> 
     </form>
 
 {% endblock %}

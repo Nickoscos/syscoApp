@@ -45,7 +45,8 @@ def generationListe(chaufferie):
             )
     
     #Création du fichier EXCEL
-    message = generationXls(liste)
+    # message = generationXls(liste)
+    message = "Prêt pour la génération du fichier Excel"
 
     return message
 

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from ..models.Typology.modelsChaudiere import Chaufferie
 from ..models.Typology.modelsEquip import Liste
 from ..forms.formsChaudiere import nbChaudForm, chaudForm
-from ..ListePTS.listePts import generationListe, updateListe
+from ..ListePTS.listePts import generationListe, updateListe, generationXls
 
 #Page 2: Définition de la configuration de la chaufferie 
 def chaufferieView(request):
@@ -129,12 +129,16 @@ def chaufferieView(request):
 
             cTemplate.save()
             generationListe(cTemplate)
+        # Soumission du formulaire de téléchargement liste de point
+        elif (request.POST.get("form_type") == "exportExcelList"):
+            message = generationXls(listePts)
     else:
         nbChaudform = nbChaudForm()
 
 
     c = Chaufferie.objects.get(id=1) #Relecture pour affichage
     listePts = Liste.objects.get(id=1)
+    print(len(listePts.pts))
     return render(request, 'polls/chaufferie.html', {
         'nbChaudform': nbChaudform, 
         'chaudform': chaudForm, 
