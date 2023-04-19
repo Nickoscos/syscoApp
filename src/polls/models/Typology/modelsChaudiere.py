@@ -48,6 +48,9 @@ class CircReg(models.Model):
 #Déclaration de l'objet chaufferie
 class Chaufferie(models.Model):
     ######CONFIGURATION GENERAL#####
+    #Déclaration du nom de l'installation 
+    nomInstal = models.CharField(max_length=200, default="Nouvelle installation")
+    
     #Déclaration de la liste contenant les objets généraux
     General = []
 

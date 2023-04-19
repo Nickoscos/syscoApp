@@ -1,11 +1,15 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from ..models.Typology.modelsChaudiere import Chaufferie
 from ..models.Typology.modelsEquip import Liste
 from ..forms.formsChaudiere import nbChaudForm, chaudForm
 from ..ListePTS.listePts import generationListe, updateListe, generationXls
 
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 #Page 2: Définition de la configuration de la chaufferie 
-def chaufferieView(request,part_id =None):
+def chaufferieView(request):
     message = "" 
     #Création d'un unique objet chaufferie dans la base de données 
     try:
@@ -32,9 +36,10 @@ def chaufferieView(request,part_id =None):
     #Détection de l'envoie d'un formulaire
     if request.method == "POST":
         #Choix des actions en fonction du formulaire soumit
-        # Soumission du formulaire déterminant le nombre de chaudière
+        # Soumission du formulaire déterminant le nombre de chaudières
         if (request.POST.get("form_type") == "nbChaudform" and nbChaudform.is_valid()):
             message = "Générer la liste de points" 
+            c.nomInstal = request.POST.get('nomInstal') #Récupération du nombre de chaudières saisies
             c.nbChaudiere = int(request.POST.get('nbChaudiere')) #Récupération du nombre de chaudières saisies
             c.nbDivers = int(request.POST.get('nbDivers')) #Récupération du nombre de chaudières saisies
             c.nbCircReg = int(request.POST.get('nbCircReg')) #Récupération du nombre de circuits régulés saisies
@@ -135,17 +140,11 @@ def chaufferieView(request,part_id =None):
             message = generationXls(listePts)
 
         # Soumission du formulaire permettant la suppresion d'une ligne de la liste de points
-        elif (request.POST.get("form_type") == "deleteForm"): #and chaudform.is_valid()):
-            print("Suppression " + request.POST.get('Supp'))
-            print(listePts.pts[int(request.POST.get('Supp'))].libelle)
-            listePts.pts.pop(int(request.POST.get('Supp')))
+        # elif (request.POST.get("form_type") == "deleteForm"): #and chaudform.is_valid()):
+        #     print(listePts.pts[int(request.POST.get('Supp'))].libelle)
+        #     listePts.pts.pop(int(request.POST.get('Supp')))
     else:
         nbChaudform = nbChaudForm()
-
-    if part_id != None :
-        print('test')
-        listPt_select = listePts.pts[part_id]
-        listPt_select.delete()
 
     c = Chaufferie.objects.get(id=1) #Relecture pour affichage
     listePts = Liste.objects.get(id=1)
@@ -156,3 +155,9 @@ def chaufferieView(request,part_id =None):
         'listePts': listePts,
         'message': message
         })
+
+def deletePts(request, id):
+    print('test')
+    print(request)
+    return render(request, 'polls/chaufferie.html')
+

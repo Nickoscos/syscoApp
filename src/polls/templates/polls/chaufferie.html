@@ -35,6 +35,11 @@
             {% csrf_token %}
 
             <div class="row m-1">
+                <label>Nom installation: </label>
+                <input name="nomInstal" id="nomInstal" type="text" value="{{ chaufferie.nomInstal }}" style="width: 50%;">               
+            </div>
+
+            <div class="row m-1">
                 <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
                     <legend class="text-center">Chaudières</legend>
                     <label>Nombres de chaudières: </label>
@@ -248,7 +253,7 @@
         <table class="table text-center mt-2">
             <thead>
                 <tr>
-                    <th colspan="7" style="background-color: gray; font-size: 1.3em;">LISTE DE POINTS</th>
+                    <th colspan="7" style="background-color: gray; font-size: 1.3em;">{{ chaufferie.nomInstal }} - LISTE DE POINTS</th>
                 </tr>
                 <tr style="background-color: gray;">
                     <th class="col-2">Sous-ensemble</th>
@@ -274,19 +279,19 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td class="col-2"><input name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" type="text" style="width: 100%;" value="{{ l.equip }}"></td>
-                        <td class="col-5"><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" style="width: 100%;" value="{{ l.libelle }}"></td>
-                        <td class="col-1"><input name="TM{{ forloop.counter0 }}" id="TM{{ forloop.counter0 }}" type="number" value="{{ l.TM }}"></td>
-                        <td class="col-1"><input name="TS{{ forloop.counter0 }}" id="TS{{ forloop.counter0 }}" type="number" value="{{ l.TS }}"></td>
-                        <td class="col-1"><input name="TR{{ forloop.counter0 }}" id="TR{{ forloop.counter0 }}" type="number" value="{{ l.TR }}"></td>
-                        <td class="col-1"><input name="TC{{ forloop.counter0 }}" id="TC{{ forloop.counter0 }}" type="number" value="{{ l.TC }}"></td>
+                        <td class="col-2" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" type="text" style="width: 100%;" value="{{ l.equip }}"></td>
+                        <td class="col-5" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" style="width: 100%;" value="{{ l.libelle }}"></td>
+                        <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TM{{ forloop.counter0 }}" id="TM{{ forloop.counter0 }}" type="number" value="{{ l.TM }}"></td>
+                        <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TS{{ forloop.counter0 }}" id="TS{{ forloop.counter0 }}" type="number" value="{{ l.TS }}"></td>
+                        <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TR{{ forloop.counter0 }}" id="TR{{ forloop.counter0 }}" type="number" value="{{ l.TR }}"></td>
+                        <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TC{{ forloop.counter0 }}" id="TC{{ forloop.counter0 }}" type="number" value="{{ l.TC }}"></td>
                         <td class="col-1">
-                            <form action="" method="post" id="deleteForm">
+                            <!-- <form action="" method="post" id="deleteForm">
                                 {% csrf_token %}
                                 <input type="hidden" name="form_type" value="deleteForm">
                                 <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{forloop.counter0}}>Supprimer</button></td>
-                            </form>
-                            
+                            </form> -->      
+                            <a href="delete/1">delete</a>                
                     </tr>
                     {% endif %}
                 {% endfor %}
