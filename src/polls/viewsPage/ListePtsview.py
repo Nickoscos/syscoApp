@@ -106,7 +106,10 @@ def chaufferieView(request):
 
             message = generationListe(c)
         elif (request.POST.get("form_type") == "listform"):
-            message = updateListe(listePts, request)
+            if request.POST.get("Supp") !=None:
+                listePts.pts.pop(int(request.POST.get('Supp')))
+            else:
+                message = updateListe(listePts, request)
 
         # Soumission du formulaire de téléchargement liste de point
         elif (request.POST.get("form_type") == "downloadListTemplate"): #and chaudform.is_valid()):
@@ -140,6 +143,7 @@ def chaufferieView(request):
             message = generationXls(listePts)
 
         # Soumission du formulaire permettant la suppresion d'une ligne de la liste de points
+        # print(request.POST.get("Supp"))
         # elif (request.POST.get("form_type") == "deleteForm"): #and chaudform.is_valid()):
         #     print(listePts.pts[int(request.POST.get('Supp'))].libelle)
         #     listePts.pts.pop(int(request.POST.get('Supp')))
@@ -157,7 +161,9 @@ def chaufferieView(request):
         })
 
 def deletePts(request, id):
-    print('test')
-    print(request)
-    return render(request, 'polls/chaufferie.html')
+    print(request.path_info)
+#     return render(request, 'polls/chaufferie.html')
+    # return redirect('chaufferie')
+    # return render(request, 'polls/chaufferie.html')
+    return HttpResponseRedirect("polls/")
 

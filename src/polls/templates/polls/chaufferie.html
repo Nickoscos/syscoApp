@@ -286,12 +286,9 @@
                         <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TR{{ forloop.counter0 }}" id="TR{{ forloop.counter0 }}" type="number" value="{{ l.TR }}"></td>
                         <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TC{{ forloop.counter0 }}" id="TC{{ forloop.counter0 }}" type="number" value="{{ l.TC }}"></td>
                         <td class="col-1">
-                            <!-- <form action="" method="post" id="deleteForm">
-                                {% csrf_token %}
-                                <input type="hidden" name="form_type" value="deleteForm">
-                                <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{forloop.counter0}}>Supprimer</button></td>
-                            </form> -->      
-                            <a href="delete/1">delete</a>                
+
+                            <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{forloop.counter0}}>Supprimer</button></td>
+              
                     </tr>
                     {% endif %}
                 {% endfor %}
