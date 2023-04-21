@@ -12,7 +12,7 @@ from django.urls import reverse
 #Page 1: GENERATION DE LA LISTE DE POINTS
 def genListeView(request):
     message = "" 
-    #Création d'un unique objet chaufferie dans la base de données 
+    #Création d'un unique objet chaufferie dans la base de données  
     try:
         #Si l'objet 1 est existant alors on le récupère
         c = Chaufferie.objects.get(id=1)
