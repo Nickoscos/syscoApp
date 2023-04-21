@@ -1,0 +1,15 @@
+from django.db import models
+
+#Déclaration du modèle d'un PACK
+class Pack(models.Model):
+    id = models.IntegerField()
+    Reference = models.CharField(default="REG"+id)
+    AI = models.IntegerField()
+    DI = models.IntegerField()
+    AO = models.IntegerField()
+    DO = models.IntegerField()
+    priceWIT = models.FloatField()
+    priceTREND = models.FloatField()
+    priceDISTECH = models.FloatField()
+    priceSOFREL = models.FloatField()
+    priceMOY = models.FloatField()
