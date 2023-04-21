@@ -4,11 +4,12 @@ from ..models.Typology.modelsChaudiere import Chaufferie
 from ..models.Typology.modelsEquip import Liste
 from ..forms.formsChaudiere import nbChaudForm, chaudForm
 from ..ListePTS.listePts import generationListe, updateListe, generationXls
+from ..models.Typology.modelsEquip import point
 
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-#Page 2: Définition de la configuration de la chaufferie 
+#Page 1: GENERATION DE LA LISTE DE POINTS
 def genListeView(request):
     message = "" 
     #Création d'un unique objet chaufferie dans la base de données 
@@ -21,9 +22,7 @@ def genListeView(request):
         c.save()
 
     ##Déclaration des deux formulaires
-    initial_data = c
     nbChaudform = nbChaudForm(request.POST)
-    chaudform = chaudForm(request.POST)
 
     #Détection de l'envoie d'un formulaire
     if request.method == "POST":
@@ -110,7 +109,7 @@ def genListeView(request):
         'message': message
         })
 
-
+#Page 2: AFFICHAGE LISTE DE POINTS
 def listePts(request):
     message = "" 
     #Création d'un unique objet chaufferie dans la base de données 
@@ -208,8 +207,16 @@ def listePts(request):
 
             message = generationListe(c)
         elif (request.POST.get("form_type") == "listform"):
+            
+            
             if request.POST.get("Supp") !=None:
                 listePts.pts.pop(int(request.POST.get('Supp')))
+            elif request.POST.get("Add") !=None:
+                print("ajout ligne ")
+                pts = point(equip = listePts.pts[int(request.POST.get('Add'))].equip,TM = 0, TR = 0, TS=0, TC=0)
+                print(pts.equip)
+                listePts.pts.insert(int(request.POST.get('Add'))+1, pts)
+                listePts.save()
             else:
                 message = updateListe(listePts, request)
 
@@ -244,11 +251,6 @@ def listePts(request):
         elif (request.POST.get("form_type") == "exportExcelList"):
             message = generationXls(listePts)
 
-        # Soumission du formulaire permettant la suppresion d'une ligne de la liste de points
-        # print(request.POST.get("Supp"))
-        # elif (request.POST.get("form_type") == "deleteForm"): #and chaudform.is_valid()):
-        #     print(listePts.pts[int(request.POST.get('Supp'))].libelle)
-        #     listePts.pts.pop(int(request.POST.get('Supp')))
     else:
         nbChaudform = nbChaudForm()
 
@@ -256,7 +258,7 @@ def listePts(request):
     listePts = Liste.objects.get(id=1)
     return render(request, 'polls/listePts.html', {
         'nbChaudform': nbChaudform, 
-        'chaudform': chaudForm, 
+        'chaudform': chaudform, 
         'chaufferie': c,
         'listePts': listePts,
         'message': message

@@ -4,7 +4,7 @@ from django.db import models
 #Déclaration de l'objet Général
 class General(models.Model):
     num = models.IntegerField(default=1)
-    nomGen = models.CharField(max_length=200, default="Général ")
+    nomGen = models.CharField(max_length=200, default="Général")
     nbDefaut = models.IntegerField(default=1)
     nbTempExt = models.IntegerField(default=1)
 
