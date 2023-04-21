@@ -336,7 +336,6 @@ def suppPtsChaud(liste, General, Chaudieres, Divers, CirReg, ECS):
         if not exist:
             liste.pts.remove(p)
         # liste.save()
-        print(i)
         i=i+1
     liste.save()
 
