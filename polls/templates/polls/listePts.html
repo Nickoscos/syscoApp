@@ -1,9 +1,5 @@
 {% extends 'polls/header.html' %}
 
-{% block cssfile %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/chaufferie.css' %}">
-{% endblock %}
 
 {% block content %}
     <div class="container-fluid">
@@ -37,37 +33,37 @@
                     <th colspan="7" style="background-color: gray; font-size: 1.3em;">{{ chaufferie.nomInstal }} - LISTE DE POINTS</th>
                 </tr>
                 <tr style="background-color: gray;">
-                    <th class="col-1">Sous-ensemble</th>
-                    <th class="col-5">Libellé</th>
-                    <th class="col-1">TM Température</th>
-                    <th class="col-1">TS Digital</th>
-                    <th class="col-1">TR 0-10V</th>
-                    <th class="col-1">TC Digital</th>
-                    <th class="col-2">Actions</th>
+                    <th>Sous-ensemble</th>
+                    <th>Libellé</th>
+                    <th>TM Température</th>
+                    <th>TS Digital</th>
+                    <th>TR 0-10V</th>
+                    <th>TC Digital</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for l in listePts.pts %}
                     {% if forloop.last %}
                     <tr style="background-color: gray;">
-                        <td class="col-1">{{ l.equip }}</td>
-                        <td class="col-5">{{ l.libelle }}</td>
-                        <td class="col-1">{{ l.TM }}</td>
-                        <td class="col-1">{{ l.TS }}</td>
-                        <td class="col-1">{{ l.TR }}</td>
-                        <td class="col-1">{{ l.TC }}</td>
-                        <td class="col-2"></td>
+                        <td class="end">{{ l.equip }}</td>
+                        <td class="end">{{ l.libelle }}</td>
+                        <td class="end">{{ l.TM }}</td>
+                        <td class="end">{{ l.TS }}</td>
+                        <td class="end">{{ l.TR }}</td>
+                        <td class="end">{{ l.TC }}</td>
+                        <td class="end"></td>
                     </tr>
                     {% else %}
                     <tr>
                         <!-- <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}>{{ l.equip }}</td> -->
-                        <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" type="text" style="width: 100%;" value="{{ l.equip }}"></td>
-                        <td class="col-5" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" style="width: 100%;" value="{{ l.libelle }}"></td>
-                        <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TM{{ forloop.counter0 }}" id="TM{{ forloop.counter0 }}" type="number" value="{{ l.TM }}"></td>
-                        <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TS{{ forloop.counter0 }}" id="TS{{ forloop.counter0 }}" type="number" value="{{ l.TS }}"></td>
-                        <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TR{{ forloop.counter0 }}" id="TR{{ forloop.counter0 }}" type="number" value="{{ l.TR }}"></td>
-                        <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TC{{ forloop.counter0 }}" id="TC{{ forloop.counter0 }}" type="number" value="{{ l.TC }}"></td>
-                        <td class="col-2">
+                        <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" type="text" value="{{ l.equip }}"></td>
+                        <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" value="{{ l.libelle }}"></td>
+                        <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TM{{ forloop.counter0 }}" id="TM{{ forloop.counter0 }}" type="number" value="{{ l.TM }}"></td>
+                        <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TS{{ forloop.counter0 }}" id="TS{{ forloop.counter0 }}" type="number" value="{{ l.TS }}"></td>
+                        <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TR{{ forloop.counter0 }}" id="TR{{ forloop.counter0 }}" type="number" value="{{ l.TR }}"></td>
+                        <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TC{{ forloop.counter0 }}" id="TC{{ forloop.counter0 }}" type="number" value="{{ l.TC }}"></td>
+                        <td>
                             <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{forloop.counter0}}>Supprimer</button>
                             <button type="submit" class="btn btn-success"name="Add" id="Add" value={{forloop.counter0}}>Ajout</button>
                         </td>

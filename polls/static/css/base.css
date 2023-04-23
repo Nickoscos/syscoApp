@@ -6,7 +6,7 @@ position: fixed; /* Stay in place */
 z-index: 1; /* Stay on top */
 top: 0;
 left: 0;
-background-color: #fe570d; /* Black*/
+background-color: #fe570d; 
 overflow-x: hidden; /* Disable horizontal scroll */
 padding-top: 60px; /* Place content 60px from the top */
 transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
@@ -80,3 +80,113 @@ color: #1b2573;
 background-color: #4CAF50;
 color: white;
 }
+
+
+
+
+table {
+    margin: auto;
+    width: 100%;
+}
+
+/* Zebra striping */
+tr:nth-of-type(odd) { 
+    background: #eee; 
+  }
+  th { 
+    background: #333; 
+    color: rgb(8, 8, 8); 
+    font-weight: bold; 
+  }
+  td, th { 
+    padding: 6px; 
+    border: 1px solid #ccc; 
+    text-align: left; 
+  }
+
+
+  
+  @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 10px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}
+
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+    td input { 
+		/* Behave  like a "row" */
+		position: relative;
+        width: 60%;
+        margin-left: 30%;
+	}
+    td button { 
+		/* Behave  like a "row" */
+		position: relative;
+        margin-top: 1%;
+        margin-left: 30%;
+        width: 50%;
+	}  
+    
+    .end:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 10px;
+		left: -123px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}
+
+    .end { 
+		/* Behave  like a "row" */
+		position: relative;
+        width: 60%;
+        margin-left: 30%;
+	}
+
+
+    td:nth-of-type(1):before { content: "Sous-ensemble"; }
+	td:nth-of-type(2):before { content: "Libellé"; }
+	td:nth-of-type(3):before { content: "TM Température"; }
+	td:nth-of-type(4):before { content: "TS Digital"; }
+	td:nth-of-type(5):before { content: "TR 0-10V"; }
+	td:nth-of-type(6):before { content: "TC Digital"; }
+	td:nth-of-type(7):before { content: "Actions";}
+
+    .end:nth-of-type(1):before { content: ""; }
+	.end:nth-of-type(2):before { content: "Synthèse"; }
+	.end:nth-of-type(3):before { content: "TM Température"; }
+	.end:nth-of-type(4):before { content: "TS Digital"; }
+	.end:nth-of-type(5):before { content: "TR 0-10V"; }
+    .end:nth-of-type(6):before { content: "TC Digital";}
+	.end:nth-of-type(7):before { content: "";}
+
+  }

@@ -1,10 +1,5 @@
 {% extends 'polls/header.html' %}
 
-{% block cssfile %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/chaufferie.css' %}">
-{% endblock %}
-
 {% block content %}
     <div class="container-fluid">
         <h1>Génération de la liste de points</h1>
@@ -21,39 +16,43 @@
     <form method="post" id="nbChaudform" class="form">
         <fieldset class="container-fluid border border-primary rounded">
             <div class="row"> 
-                <legend>Configuration de la chaufferie </legend>
+                <legend class="text-center">Configuration de la chaufferie </legend>
             </div>
             
             {% csrf_token %}
 
-            <div class="row m-1">
+            <div class="container-fluid col mt-1 me-1 pb-1">
                 <label>Nom installation: </label>
                 <input name="nomInstal" id="nomInstal" type="text" value="{{ chaufferie.nomInstal }}" style="width: 50%;">               
             </div>
 
-            <div class="row m-1">
+            <div class="container-fluid col mt-1 me-1 pb-1">
                 <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
-                    <legend class="text-center">Chaudières</legend>
+                    <legend>Chaudières</legend>
                     <label>Nombres de chaudières: </label>
                     <input name="nbChaudiere" id="nbChaudiere" type="number" value="{{ chaufferie.nbChaudiere }}" style="width: 20%;">
                 </fieldset>
 
                 <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
-                    <legend class="text-center">ECS</legend>
-                    <label>ECS présent: </label>
-                    <input name="ECSpres" id="ECSpres" type="checkbox" style="width:30px;height:30px;" value="{{ chaufferie.ECSpres }}" {% if chaufferie.ECSpres %} checked {% endif %}>
-                    <label>Préparateur indépendant: </label>
-                    <input name="ECSprepa" id="ECSprepa" type="checkbox" style="width:30px;height:30px;" value="{{ chaufferie.ECSprepa }}" {% if chaufferie.ECSprepa %} checked {% endif %}>
+                    <legend>ECS</legend>
+                    <div class="row">
+                        <label class="col-8">ECS présent: </label>
+                        <input class="col-4" name="ECSpres" id="ECSpres" type="checkbox" style="width:20px;" value="{{ chaufferie.ECSpres }}" {% if chaufferie.ECSpres %} checked {% endif %}>    
+                    </div>
+                    <div class="row">
+                        <label class="col-8">Préparateur indépendant: </label>
+                        <input class="col-4" name="ECSprepa" id="ECSprepa" type="checkbox" style="width:20px;" value="{{ chaufferie.ECSprepa }}" {% if chaufferie.ECSprepa %} checked {% endif %}>    
+                    </div>
                 </fieldset>
                 
                 <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
-                    <legend class="text-center">Circuits</legend>
+                    <legend>Circuits</legend>
                     <label>Nombres de circuits: </label>
                     <input name="nbCircReg" id="nbCircReg" type="number" value="{{ chaufferie.nbCircReg }}">
                 </fieldset>
 
                 <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
-                    <legend class="text-center">Autres:</legend>
+                    <legend>Autres:</legend>
                     <label>Nombres d'équipements divers: </label>
                     <input name="nbDivers" id="nbDivers" type="number" value="{{ chaufferie.nbDivers }}">
                 </fieldset>
@@ -63,7 +62,6 @@
 
                 <div class="col d-flex justify-content-end mt-1">
                     <input type="hidden" name="form_type" value="nbChaudform">
-                    <!-- <input type="submit" value="OK" class="btn btn-primary"> -->
                     <button type="submit" class="btn btn-primary">Configuration</button>
                 </div>                
             </div>
