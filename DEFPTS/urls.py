@@ -18,8 +18,6 @@ from django.urls import include, path
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from rest_framework.authtoken.views import obtain_auth_token
-
 urlpatterns = [
     path('', include('polls.urls')),
     path('admin/', admin.site.urls),
