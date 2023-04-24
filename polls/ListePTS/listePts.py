@@ -3,21 +3,21 @@ from ..models.Typology.modelsChaudiere import Chaufferie
 from .export import generationXls
 
 #Fonction permettant la génération de la liste de points
-def generationListe(chaufferie):
+def generationListe(request, chaufferie):
     #Déclaration d'un point
     pts = point
 
     #Initialisation de la liste de points
     try:
         #Si l'objet 1 est existant alors on le récupère
-        liste = Liste.objects.get(id=1)
+        liste = Liste.objects.get(user=request.user.username)
         #Si la liste est existante on supprime la dermnière ligne des TOTAUX pour les recalculer
         if len(liste.pts)>0 :
             liste.pts.pop()
         # liste.pts.clear()
     except Liste.DoesNotExist:
         #Si l'objet 1 n'existe pas, on ne fait rien
-        liste = Liste.objects.create(id=1)
+        liste = Liste.objects.create(user=request.user.username)
 
     #Ajout des points Général
     ajoutPtsGeneral(liste, chaufferie.General)
@@ -78,7 +78,7 @@ def updateListe(listePts, request):
     return "Mise à jour liste effectué"
 
 #Fonction permettant la génération de la liste de points
-def geneTempListe():
+def geneTempListe(request):
     #Déclaration d'un point
     pts = point
 
@@ -88,11 +88,11 @@ def geneTempListe():
     #Initialisation de la liste de points
     try:
         #Si l'objet 1 est existant alors on le récupère
-        liste = Liste.objects.get(id=1)
+        liste = Liste.objects.get(user=request.user.username)
         liste.pts.clear()
     except Liste.DoesNotExist:
         #Si l'objet 1 n'existe pas, on ne fait rien
-        liste = Liste.objects.create(id=1)
+        liste = Liste.objects.create(user=request.user.username)
 
     # Bouclage en fonction du numéro de la chaudière
     for chaud in c.Chaudieres:

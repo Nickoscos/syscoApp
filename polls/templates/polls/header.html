@@ -35,6 +35,11 @@
   <body>
     <div id="sideNavigation" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}" style="font-size:medium;">Log Out</a>
+      {% else %}
+        <a href="{% url 'login' %}" style="font-size:medium;">Log In</a>
+      {% endif %}
       <a href="{% url 'polls:chaufferie' %}" style="font-size:medium;">Génération Liste de points</a>
       <a href="{% url 'polls:listePts' %}" style="font-size:medium;">Liste de points générée</a>
     </div>

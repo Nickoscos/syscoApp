@@ -1,0 +1,9 @@
+{% extends 'polls/header.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <h2>Log Out</h2>
+    <p>Vous n'êtes plus connectés</p>
+    <a href="{% url 'login' %}">Log In</a>
+{% endblock %}

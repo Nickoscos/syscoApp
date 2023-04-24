@@ -2,83 +2,87 @@
 
 
 {% block content %}
-    <div class="container-fluid">
-        <h1 class="text-center">Liste de points générée</h1>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <!-- Formulaire 1 téléchargement template Liste de points -->
-            <form method="post" id="downloadListTemplate" class="form">
-                {% csrf_token %}
-                <input type="hidden" name="form_type" value="downloadListTemplate">
-                <button type="submit" class="btn btn-secondary">Télécharger liste de points</button>    
-            </form>
+    {% if user.is_authenticated %}
+        <div class="container-fluid">
+            <h1 class="text-center">Liste de points générée</h1>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <!-- Formulaire 1 téléchargement template Liste de points -->
+                <form method="post" id="downloadListTemplate" class="form">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="downloadListTemplate">
+                    <button type="submit" class="btn btn-secondary">Télécharger liste de points</button>    
+                </form>
+            </div>
         </div>
-    </div>
 
-    <span style="color:red">{{message}}</span>
-    <br>
-    <br>
+        <span style="color:red">{{message}}</span>
+        <br>
+        <br>
 
-    <!-- AFFICHAGE DE LA LISTE DE POINTS -->
-    <form action="" method="post" id="listform">
-        {% if listePts.pts|length > 0 %}
-        <div class="col d-flex justify-content-end mt-1">
-            <input type="hidden" name="form_type" value="listform">
-            <button type="submit" class="btn btn-warning">Actualiser liste</button>
-        </div>   
-        {% endif %}
-        {% csrf_token %}
-        <table class="table text-center mt-2">
-            <thead>
-                <tr>
-                    <th colspan="7" style="background-color: gray; font-size: 1.3em;">{{ chaufferie.nomInstal }} - LISTE DE POINTS</th>
-                </tr>
-                <tr style="background-color: gray;">
-                    <th>Sous-ensemble</th>
-                    <th>Libellé</th>
-                    <th>TM Température</th>
-                    <th>TS Digital</th>
-                    <th>TR 0-10V</th>
-                    <th>TC Digital</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for l in listePts.pts %}
-                    {% if forloop.last %}
-                    <tr style="background-color: gray;">
-                        <td class="end">{{ l.equip }}</td>
-                        <td class="end">{{ l.libelle }}</td>
-                        <td class="end">{{ l.TM }}</td>
-                        <td class="end">{{ l.TS }}</td>
-                        <td class="end">{{ l.TR }}</td>
-                        <td class="end">{{ l.TC }}</td>
-                        <td class="end"></td>
-                    </tr>
-                    {% else %}
+        <!-- AFFICHAGE DE LA LISTE DE POINTS -->
+        <form action="" method="post" id="listform">
+            {% if listePts.pts|length > 0 %}
+            <div class="col d-flex justify-content-end mt-1">
+                <input type="hidden" name="form_type" value="listform">
+                <button type="submit" class="btn btn-warning">Actualiser liste</button>
+            </div>   
+            {% endif %}
+            {% csrf_token %}
+            <table class="table text-center mt-2">
+                <thead>
                     <tr>
-                        <!-- <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}>{{ l.equip }}</td> -->
-                        <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" type="text" value="{{ l.equip }}"></td>
-                        <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" value="{{ l.libelle }}"></td>
-                        <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TM{{ forloop.counter0 }}" id="TM{{ forloop.counter0 }}" type="number" value="{{ l.TM }}"></td>
-                        <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TS{{ forloop.counter0 }}" id="TS{{ forloop.counter0 }}" type="number" value="{{ l.TS }}"></td>
-                        <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TR{{ forloop.counter0 }}" id="TR{{ forloop.counter0 }}" type="number" value="{{ l.TR }}"></td>
-                        <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TC{{ forloop.counter0 }}" id="TC{{ forloop.counter0 }}" type="number" value="{{ l.TC }}"></td>
-                        <td>
-                            <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{forloop.counter0}}>Supprimer</button>
-                            <button type="submit" class="btn btn-success"name="Add" id="Add" value={{forloop.counter0}}>Ajout</button>
-                        </td>
+                        <th colspan="7" style="background-color: gray; font-size: 1.3em;">{{ chaufferie.nomInstal }} - LISTE DE POINTS</th>
                     </tr>
-                    {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>   
-    </form>
-    <form action="" method="post" id="exportExcelList">
-        {% csrf_token %}
-        <div class="col d-flex justify-content-end mt-1">
-            <input type="hidden" name="form_type" value="exportExcelList">
-            <button type="submit" class="btn btn-primary">Export Liste en xls</button>
-        </div> 
-    </form>
-
+                    <tr style="background-color: gray;">
+                        <th>Sous-ensemble</th>
+                        <th>Libellé</th>
+                        <th>TM Température</th>
+                        <th>TS Digital</th>
+                        <th>TR 0-10V</th>
+                        <th>TC Digital</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for l in listePts.pts %}
+                        {% if forloop.last %}
+                        <tr style="background-color: gray;">
+                            <td class="end">{{ l.equip }}</td>
+                            <td class="end">{{ l.libelle }}</td>
+                            <td class="end">{{ l.TM }}</td>
+                            <td class="end">{{ l.TS }}</td>
+                            <td class="end">{{ l.TR }}</td>
+                            <td class="end">{{ l.TC }}</td>
+                            <td class="end"></td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <!-- <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}>{{ l.equip }}</td> -->
+                            <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" type="text" value="{{ l.equip }}"></td>
+                            <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" value="{{ l.libelle }}"></td>
+                            <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TM{{ forloop.counter0 }}" id="TM{{ forloop.counter0 }}" type="number" value="{{ l.TM }}"></td>
+                            <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TS{{ forloop.counter0 }}" id="TS{{ forloop.counter0 }}" type="number" value="{{ l.TS }}"></td>
+                            <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TR{{ forloop.counter0 }}" id="TR{{ forloop.counter0 }}" type="number" value="{{ l.TR }}"></td>
+                            <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TC{{ forloop.counter0 }}" id="TC{{ forloop.counter0 }}" type="number" value="{{ l.TC }}"></td>
+                            <td>
+                                <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{forloop.counter0}}>Supprimer</button>
+                                <button type="submit" class="btn btn-success"name="Add" id="Add" value={{forloop.counter0}}>Ajout</button>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>   
+        </form>
+        <form action="" method="post" id="exportExcelList">
+            {% csrf_token %}
+            <div class="col d-flex justify-content-end mt-1">
+                <input type="hidden" name="form_type" value="exportExcelList">
+                <button type="submit" class="btn btn-primary">Export Liste en xls</button>
+            </div> 
+        </form>
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
 {% endblock %}

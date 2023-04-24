@@ -7,6 +7,7 @@ class General(models.Model):
     nomGen = models.CharField(max_length=200, default="Général")
     nbDefaut = models.IntegerField(default=1)
     nbTempExt = models.IntegerField(default=1)
+    user = models.CharField(max_length=200, default="")
 
 
 #Déclaration de l'objet Chaudière
@@ -17,6 +18,7 @@ class Chaudiere(models.Model):
     nbDef = models.IntegerField(default=1)
     nbV2V = models.IntegerField(default=1)
     nbPpe = models.IntegerField(default=1)
+    user = models.CharField(max_length=200, default="")
 
 #Déclaration de l'objet Divers
 class Divers(models.Model):
@@ -25,6 +27,7 @@ class Divers(models.Model):
     nbV2V = models.IntegerField(default=1)
     nbPpe = models.IntegerField(default=1)
     nbTSsup = models.IntegerField(default=1)
+    user = models.CharField(max_length=200, default="")
 
 #Déclaration de l'objet ECS
 class ECS(models.Model):
@@ -35,6 +38,7 @@ class ECS(models.Model):
     nbBallon = models.IntegerField(default=1)
     nbV3V = models.IntegerField(default=1)
     nbPpe = models.IntegerField(default=2)
+    user = models.CharField(max_length=200, default="")
 
 #Déclaration de l'objet Circuit Régulés
 class CircReg(models.Model):
@@ -44,10 +48,14 @@ class CircReg(models.Model):
     nbAmb = models.IntegerField(default=1)
     nbV3V = models.IntegerField(default=1)
     nbPpe = models.IntegerField(default=2)
+    user = models.CharField(max_length=200, default="")
 
 #Déclaration de l'objet chaufferie
 class Chaufferie(models.Model):
-    ######CONFIGURATION GENERAL#####
+    ###### DETECTION USER ############
+    user = models.CharField(max_length=200, default="")
+
+    ###### CONFIGURATION GENERAL #####
     #Déclaration du nom de l'installation 
     nomInstal = models.CharField(max_length=200, default="Nouvelle installation")
     

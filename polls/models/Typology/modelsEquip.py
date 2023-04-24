@@ -14,5 +14,6 @@ class point(models.Model):
 #Déclaration d'une liste de points
 class Liste(models.Model):
     pts = []
+    user = models.CharField(max_length=200, default="")
 
         

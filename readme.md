@@ -11,4 +11,5 @@ Objectif:
 
 AVANT L'UTILISATION:
  1) Installer BOOTSTRAP5 : pip install django-bootstrap5
+ 2) Installer XLSXWRITER : pip install xlsxwriter
 
