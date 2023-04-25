@@ -1,4 +1,5 @@
-from ..models.Typology.modelsEquip import point, Liste
+from ..models.Typology.modelsEquip import point, Liste, Temp, SyntDefaut, DefPpe, CmdChaud, CmdPpe, CmdV2V, FdcV2V
+from ..models.Typology.modelsEquip import CmdV2V, FdcV2V, Info, Amb, CmdV3V, CmdBal
 from ..models.Typology.modelsChaudiere import Chaufferie
 from .export import generationXls
 
@@ -14,7 +15,6 @@ def generationListe(request, chaufferie):
         #Si la liste est existante on supprime la dermnière ligne des TOTAUX pour les recalculer
         if len(liste.pts)>0 :
             liste.pts.pop()
-        # liste.pts.clear()
     except Liste.DoesNotExist:
         #Si l'objet 1 n'existe pas, on ne fait rien
         liste = Liste.objects.create(user=request.user.username)
@@ -34,23 +34,14 @@ def generationListe(request, chaufferie):
     #Ajout des points Circuits Régulés
     ajoutPtsECS(liste, chaufferie.ECS)
 
-    suppPtsChaud(liste, chaufferie.General, chaufferie.Chaudieres, chaufferie.Divers, chaufferie.CircReg, chaufferie.ECS)
+    liste.pts.sort(key=lambda x: x.equip)
+
+    suppPts(liste, chaufferie.General, chaufferie.Chaudieres, chaufferie.Divers, chaufferie.CircReg, chaufferie.ECS)
 
     #Ajout de la dernière ligne de la liste TOTAUX
     calculTotaux(liste)
 
-    #Affichage Liste
-    for listePts in liste.pts:
-        print( listePts.equip +
-            listePts.libelle + 
-            ' TM:' + str(listePts.TM) + 
-            ' TS:' + str(listePts.TS) + 
-            ' TR:' + str(listePts.TR) +
-            ' TC:' + str(listePts.TC)
-            )
-    
     #Création du fichier EXCEL
-    # message = generationXls(liste)
     message = "Prêt pour la génération du fichier Excel"
 
     return message
@@ -66,9 +57,6 @@ def updateListe(listePts, request):
                 liste.TS = int(request.POST.get('TS'+str(i)))
                 liste.TR = int(request.POST.get('TR'+str(i)))
                 liste.TC = int(request.POST.get('TC'+str(i)))  
-
-        # if (liste.TM == 0 and liste.TS == 0 and liste.TR == 0 and liste.TC == 0):
-        #         listePts.pts.remove(liste)
 
         i = i +1
     #Ajout de la dernière ligne de la liste TOTAUX
@@ -162,14 +150,14 @@ def geneTempListe(request):
     # calculTotaux(liste)
 
     #Affichage Liste
-    for listePts in liste.pts:
-        print( listePts.equip +
-            listePts.libelle + 
-            ' TM:' + str(listePts.TM) + 
-            ' TS:' + str(listePts.TS) + 
-            ' TR:' + str(listePts.TR) +
-            ' TC:' + str(listePts.TC)
-            )
+    # for listePts in liste.pts:
+    #     print( listePts.equip +
+    #         listePts.libelle + 
+    #         ' TM:' + str(listePts.TM) + 
+    #         ' TS:' + str(listePts.TS) + 
+    #         ' TR:' + str(listePts.TR) +
+    #         ' TC:' + str(listePts.TC)
+    #         )
     
     #Création du fichier EXCEL
     message = generationXls(liste)
@@ -189,6 +177,7 @@ def ajoutPtsGeneral(liste, General):
                 #Température départ primaire
                 liste.pts.append(point(
                     equip= gen.nomGen,
+                    type= 'Temp',
                     libelle= 'Température extérieure ', 
                     TM=1, 
                     TS=0, 
@@ -201,6 +190,7 @@ def ajoutPtsGeneral(liste, General):
                 #Défaut synthèse
                 liste.pts.append(point(
                     equip= gen.nomGen,
+                    type= 'DefMQE',
                     libelle= 'Défaut manque d\'eau ', 
                     TM=0, 
                     TS=1, 
@@ -214,92 +204,88 @@ def ajoutPtsGeneral(liste, General):
 def ajoutPtsChaud(liste, Chaudieres):
     for chaud in Chaudieres:
         # Détection si l'objet a été ajouté précédemment
-        exist = False
+        existEquip = False
         for pts in liste.pts:
             if pts.equip == chaud.nomChaud:
-                exist = True #L'objet existe déjà dans la liste
+                existEquip = True #L'objet existe déjà dans la liste
+
         #L'objet n'existe pas donc on l'ajoute dans la liste
-        if not exist :   
+        if not existEquip :   
             #Température XX
             for i in range(chaud.nbTemp):
-                liste.pts.append(point(
-                    equip= chaud.nomChaud,
-                    libelle= 'Température ' + str(i+1), 
-                    TM=1, 
-                    TS=0, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
+                pts = Temp(
+                    equip = chaud.nomChaud,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
                 liste.save()  
 
             #Défaut synthèse
             for i in range(chaud.nbDef):
-                liste.pts.append(point(
-                    equip= chaud.nomChaud,
-                    libelle= 'Synthèse défaut ' + str(i+1), 
-                    TM=0, 
-                    TS=1, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save() 
+                pts = SyntDefaut(
+                    equip = chaud.nomChaud,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save()  
 
             #Défaut pompe
             for i in range(chaud.nbPpe):
-                liste.pts.append(point(
-                    equip= chaud.nomChaud,
-                    libelle= 'Défaut pompe '+ str(i+1), 
-                    TM=0, 
-                    TS=1, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = DefPpe(
+                    equip = chaud.nomChaud,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save() 
 
             #Commande pompe
             for i in range(chaud.nbPpe):
-                liste.pts.append(point(
-                    equip= chaud.nomChaud,
-                    libelle= 'Commande pompe + Chaudière '+ str(i+1), 
-                    TM=0, 
-                    TS=0, 
-                    TR=0, 
-                    TC=1,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = CmdPpe(
+                    equip = chaud.nomChaud,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save()
+            
+            #Commande chaudière
+            pts = CmdChaud(
+                equip = chaud.nomChaud,
+                )
+            pts.libelle = pts.libelle
+            liste.pts.append(pts)
+            liste.save()
 
             #Fin de course V2V
             for i in range(chaud.nbV2V):
-                liste.pts.append(point(
-                    equip= chaud.nomChaud,
-                    libelle= 'Fin de course V2V '+ str(i+1), 
-                    TM=0, 
-                    TS=1, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = FdcV2V(
+                    equip = chaud.nomChaud,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save()
 
             #Commande V2V
             for i in range(chaud.nbV2V):
-                liste.pts.append(point(
-                    equip= chaud.nomChaud,
-                    libelle= 'Commande V2V '+ str(i+1), 
-                    TM=0, 
-                    TS=0, 
-                    TR=0, 
-                    TC=1,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = CmdV2V(
+                    equip = chaud.nomChaud,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save()
+        else:
+            #Ajout Température
+            insertPts(liste, nbTotPts=chaud.nbTemp, nomEquip=chaud.nomChaud, type='Temp')
+            #Ajout Défaut Pompe
+            insertPts(liste, nbTotPts=chaud.nbPpe, nomEquip=chaud.nomChaud, type='DefPpe')
+            #Ajout Commande Pompe
+            insertPts(liste, nbTotPts=chaud.nbPpe, nomEquip=chaud.nomChaud, type='CmdPpe')
+            #Ajout Commande V2V
+            insertPts(liste, nbTotPts=chaud.nbV2V, nomEquip=chaud.nomChaud, type='CmdV2V')
+            #Ajout Fin de course V2V
+            insertPts(liste, nbTotPts=chaud.nbV2V, nomEquip=chaud.nomChaud, type='FdcV2V')
 
-#Fonction permettant la suppression des points chaudières
-def suppPtsChaud(liste, General, Chaudieres, Divers, CirReg, ECS):
+#Fonction permettant la suppression des points
+def suppPts(liste, General, Chaudieres, Divers, CirReg, ECS):
     i=0
     for p in reversed(liste.pts):
         exist = False
@@ -336,7 +322,6 @@ def suppPtsChaud(liste, General, Chaudieres, Divers, CirReg, ECS):
         if not exist:
             liste.pts.remove(p)
         # liste.save()
-        print(i)
         i=i+1
     liste.save()
 
@@ -352,68 +337,60 @@ def ajoutPtsDivers(liste, Divers):
         if not exist :   
             #TéléSignalisation supplémentaire
             for i in range(div.nbTSsup):
-                liste.pts.append(point(
-                    equip= div.nomDivers,
-                    libelle= 'Information supplémentaire '+ str(i+1), 
-                    TM=0, 
-                    TS=1, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = Info(
+                    equip = div.nomDivers,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save()
 
             #Défaut pompe
             for i in range(div.nbPpe):
-                liste.pts.append(point(
-                    equip= div.nomDivers,
-                    libelle= 'Défaut pompe '+ str(i+1), 
-                    TM=0, 
-                    TS=1, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = DefPpe(
+                    equip = div.nomDivers,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save()
 
             #Commande pompe
             for i in range(div.nbPpe):
-                liste.pts.append(point(
-                    equip= div.nomDivers,
-                    libelle= 'Commande pompe '+ str(i+1), 
-                    TM=0, 
-                    TS=0, 
-                    TR=1, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = CmdPpe(
+                    equip = div.nomDivers,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save()
 
             #Fin de course V2V
             for i in range(div.nbV2V):       
-                liste.pts.append(point(
-                    equip= div.nomDivers,
-                    libelle= 'Fin de course V2V '+ str(i+1), 
-                    TM=0, 
-                    TS=1, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = FdcV2V(
+                    equip = div.nomDivers,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save() 
 
             #Commande V2V
             for i in range(div.nbV2V): 
-                liste.pts.append(point(
-                    equip= div.nomDivers,
-                    libelle= 'Commande V2V '+ str(i+1), 
-                    TM=0, 
-                    TS=0, 
-                    TR=0, 
-                    TC=1,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = CmdV2V(
+                    equip = div.nomDivers,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save() 
+        else:
+
+            #Ajout Défaut Pompe
+            insertPts(liste, nbTotPts=div.nbPpe, nomEquip=div.nomDivers, type='DefPpe')
+            #Ajout Commande Pompe
+            insertPts(liste, nbTotPts=div.nbPpe, nomEquip=div.nomDivers, type='CmdPpe')
+            #Ajout Commande V2V
+            insertPts(liste, nbTotPts=div.nbV2V, nomEquip=div.nomDivers, type='CmdV2V')
+            #Ajout Fin de course V2V
+            insertPts(liste, nbTotPts=div.nbV2V, nomEquip=div.nomDivers, type='FdcV2V')
+            #Ajout infos supplémentaire
+            insertPts(liste, nbTotPts=div.nbTSsup, nomEquip=div.nomDivers, type='Info')
 
 #Fonction permettant l'ajout des points circuits régulés
 def ajoutPtsCircReg(liste, CircReg):
@@ -426,69 +403,60 @@ def ajoutPtsCircReg(liste, CircReg):
         #L'objet n'existe pas donc on l'ajoute dans la liste
         if not exist :   
             #Mesure de température
-            for i in range(circ.nbTemp): 
-                liste.pts.append(point(
-                    equip= circ.nomCirc,
-                    libelle= 'Température départ '+ str(i+1), 
-                    TM=circ.nbTemp, 
-                    TS=0, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
+            for i in range(circ.nbTemp):
+                pts = Temp(
+                    equip = circ.nomCirc,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
                 liste.save()  
 
             #Mesure de température Ambiant
             for i in range(circ.nbAmb): 
-                liste.pts.append(point(
-                    equip= circ.nomCirc,
-                    libelle= 'Température Ambiant '+ str(i+1), 
-                    TM=circ.nbAmb, 
-                    TS=0, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
+                pts = Amb(
+                    equip = circ.nomCirc,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
                 liste.save()  
 
             #Défaut pompe
             for i in range(circ.nbPpe):
-                liste.pts.append(point(
-                    equip= circ.nomCirc,
-                    libelle= 'Défaut pompe '+ str(i+1), 
-                    TM=0, 
-                    TS=1, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = DefPpe(
+                    equip = circ.nomCirc,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save() 
 
             #Commande pompe
             for i in range(circ.nbPpe):
-                liste.pts.append(point(
-                    equip= circ.nomCirc,
-                    libelle= 'Commande pompe '+ str(i+1), 
-                    TM=0, 
-                    TS=0, 
-                    TR=1, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = CmdPpe(
+                    equip = circ.nomCirc,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save() 
 
             #Commande V3V
             for i in range(circ.nbV3V):
-                liste.pts.append(point(
-                    equip= circ.nomCirc,
-                    libelle= 'Commande V3V '+ str(i+1), 
-                    TM=0, 
-                    TS=0, 
-                    TR=1, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = CmdV3V(
+                    equip = circ.nomCirc,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save() 
+        else:
+            #Ajout Température
+            insertPts(liste, nbTotPts=circ.nbTemp, nomEquip=circ.nomCirc, type='Temp')
+            #Ajout Défaut Pompe
+            insertPts(liste, nbTotPts=circ.nbPpe, nomEquip=circ.nomCirc, type='DefPpe')
+            #Ajout Commande Pompe
+            insertPts(liste, nbTotPts=circ.nbPpe, nomEquip=circ.nomCirc, type='CmdPpe')
+            #Ajout Commande V3V
+            insertPts(liste, nbTotPts=circ.nbV3V, nomEquip=circ.nomCirc, type='CmdV3V')
+            #Ajout Température Ambiant
+            insertPts(liste, nbTotPts=circ.nbAmb, nomEquip=circ.nomCirc, type='Amb')
 
 #Fonction permettant l'ajout des points Divers
 def ajoutPtsECS(liste, ECS):
@@ -502,81 +470,84 @@ def ajoutPtsECS(liste, ECS):
         if not exist :          
             #Mesure de température
             for i in range(e.nbTemp):
-                liste.pts.append(point(
-                    equip= e.nomECS,
-                    libelle= 'Température départ/retour '+ str(i+1), 
-                    TM=1, 
-                    TS=0, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
+                pts = Temp(
+                    equip = e.nomECS,
+                    )
+                pts.libelle = 'Température départ/retour'
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
                 liste.save()  
+
+            #Défaut ECS
+            for i in range(e.nbDef):
+                pts = SyntDefaut(
+                    equip = e.nomECS,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save() 
 
             #Défaut pompe
             for i in range(e.nbPpe):
-                liste.pts.append(point(
-                    equip= e.nomECS,
-                    libelle= 'Défaut pompe '+ str(i+1), 
-                    TM=0, 
-                    TS=1, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = DefPpe(
+                    equip = e.nomECS,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save() 
 
             #Commande pompe
             for i in range(e.nbPpe):
-                liste.pts.append(point(
-                    equip= e.nomECS,
-                    libelle= 'Commande pompe '+ str(i+1), 
-                    TM=0, 
-                    TS=0, 
-                    TR=1, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = CmdPpe(
+                    equip = e.nomECS,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save()
 
             #Commande V3V
             for i in range(e.nbV3V):
-                liste.pts.append(point(
-                    equip= e.nomECS,
-                    libelle= 'Commande V3V '+ str(i+1), 
-                    TM=0, 
-                    TS=0, 
-                    TR=1, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+                pts = CmdV3V(
+                    equip = e.nomECS,
+                    )
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
+                liste.save() 
 
             #Mesure température ballon
             for i in range(e.nbBallon):
-                liste.pts.append(point(
-                    equip= e.nomECS,
-                    libelle= 'Température ballon '+ str(i+1), 
-                    TM=1, 
-                    TS=0, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
+                pts = Temp(
+                    equip = e.nomECS,
+                    )
+                pts.libelle = 'Température ballon '
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
                 liste.save()  
 
             #Mesure épingle ballon
             for i in range(e.nbBallon):
-                liste.pts.append(point(
-                    equip= e.nomECS,
-                    libelle= 'Epingle ballon '+ str(i+1), 
-                    TM=0, 
-                    TS=0, 
-                    TR=0, 
-                    TC=1,
-                    Supp=False
-                ))
+                pts = CmdBal(
+                    equip = e.nomECS,
+                    )
+                pts.libelle = 'Epingle ballon '
+                pts.libelle = pts.libelle + str(i+1)
+                liste.pts.append(pts)
                 liste.save() 
+        else:
+            #Ajout Température
+            insertPts(liste, nbTotPts=e.nbTemp, nomEquip=e.nomECS, type='Temp')
+            #Ajout Défaut ECS
+            insertPts(liste, nbTotPts=e.nbDef, nomEquip=e.nomECS, type='SynthDef')
+            #Ajout Défaut Pompe
+            insertPts(liste, nbTotPts=e.nbPpe, nomEquip=e.nomECS, type='DefPpe')
+            #Ajout Commande Pompe
+            insertPts(liste, nbTotPts=e.nbPpe, nomEquip=e.nomECS, type='CmdPpe')
+            #Ajout Commande V3V
+            insertPts(liste, nbTotPts=e.nbV3V, nomEquip=e.nomECS, type='CmdV3V')
+            #Ajout Température Ballon
+            insertPts(liste, nbTotPts=e.nbBallon, nomEquip=e.nomECS, type='Temp')
+            #Ajout Comande épingle ballon
+            insertPts(liste, nbTotPts=e.nbBallon, nomEquip=e.nomECS, type='CmdBal')
 
 #Calcul des totaux par type d'entrées/sorties
 def calculTotaux(liste):
@@ -602,3 +573,75 @@ def calculTotaux(liste):
             TC=TotTC
         ))
 
+#Fonction insertion points 
+def insertPts(liste,nbTotPts, nomEquip, type):
+    #Détection du nombre des points à insérer
+    y=0
+    index_lastType = 0
+    for index,pts in enumerate(liste.pts):
+        if pts.equip == nomEquip and pts.type==type and y<=nbTotPts:
+            y=y+1
+            index_lastType = index
+
+    ajoutNb = nbTotPts - y
+    valInit = y
+
+    #Insertion dans le fichier en faisant un regroupement par type
+    for i in range(ajoutNb):
+        #Détection du type de point à insérer
+        if type == 'Temp':
+            ptsInsert = Temp(
+                equip = nomEquip,
+                )
+            ptsInsert.libelle = ptsInsert.libelle + str(valInit+1)
+        elif type == 'DefPpe':
+            ptsInsert = DefPpe(
+                equip = nomEquip,
+                )
+            ptsInsert.libelle = ptsInsert.libelle + str(valInit+1)
+        elif type == 'CmdPpe':
+            ptsInsert = CmdPpe(
+                equip = nomEquip,
+                )
+            ptsInsert.libelle = ptsInsert.libelle + str(valInit+1)
+        elif type == 'CmdV2V':
+            ptsInsert = CmdV2V(
+                equip = nomEquip,
+                )
+            ptsInsert.libelle = ptsInsert.libelle + str(valInit+1)   
+        elif type == 'FdcV2V':
+            ptsInsert = FdcV2V(
+                equip = nomEquip,
+                )
+            ptsInsert.libelle = ptsInsert.libelle + str(valInit+1)           
+        elif type == 'Info':
+            ptsInsert = Info(
+                equip = nomEquip,
+                )
+            ptsInsert.libelle = ptsInsert.libelle + str(valInit+1)    
+        elif type == 'Amb':
+            ptsInsert = Amb(
+                equip = nomEquip,
+                )
+            ptsInsert.libelle = ptsInsert.libelle + str(valInit+1)   
+        elif type == 'CmdV3V':
+            ptsInsert = CmdV3V(
+                equip = nomEquip,
+                )
+            ptsInsert.libelle = ptsInsert.libelle + str(valInit+1)   
+        elif type == 'CmdBal':
+            ptsInsert = CmdV3V(
+                equip = nomEquip,
+                )
+            ptsInsert.libelle = ptsInsert.libelle + str(valInit+1)  
+        elif type == 'SynthDef':
+            ptsInsert = SyntDefaut(
+                equip = nomEquip,
+                )
+            ptsInsert.libelle = ptsInsert.libelle + str(valInit+1)  
+        #Insertion
+        liste.pts.insert(index_lastType+1, ptsInsert)
+        index_lastType += 1
+        valInit += 1
+
+    

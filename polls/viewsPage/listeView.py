@@ -34,7 +34,7 @@ def genListeView(request):
             # Choix des actions en fonction du formulaire soumit
             # Soumission du formulaire déterminant le nombre de chaudières
             if (request.POST.get("form_type") == "nbChaudform" and nbChaudform.is_valid()):
-                message = "Générer la liste de points" 
+                message = "Ajuster le nombre de points puis générer liste de points" 
                 c.nomInstal = request.POST.get('nomInstal') #Récupération du nombre de chaudières saisies
                 c.nbChaudiere = int(request.POST.get('nbChaudiere')) #Récupération du nombre de chaudières saisies
                 c.nbDivers = int(request.POST.get('nbDivers')) #Récupération du nombre de chaudières saisies
@@ -145,17 +145,18 @@ def listePts(request):
 
     #Détection de l'envoie d'un formulaire
     if request.method == "POST":
+        print(request.POST.get("form_type"))
         #Choix des actions en fonction du formulaire soumit
         # Soumission du formulaire déterminant le nombre de chaudières
         if (request.POST.get("form_type") == "nbChaudform" and nbChaudform.is_valid()):
-            message = "Générer la liste de points" 
+            message = "Nommer les libellés si nécessaire, ajuster les points puis exporter en Xls" 
             c.nomInstal = request.POST.get('nomInstal') #Récupération du nombre de chaudières saisies
             c.nbChaudiere = int(request.POST.get('nbChaudiere')) #Récupération du nombre de chaudières saisies
             c.nbDivers = int(request.POST.get('nbDivers')) #Récupération du nombre de chaudières saisies
             c.nbCircReg = int(request.POST.get('nbCircReg')) #Récupération du nombre de circuits régulés saisies
             c.ECSpres = bool(request.POST.get('ECSpres'))
             c.ECSprepa = bool(request.POST.get('ECSprepa'))
-
+            
             Chaufferie.creationGeneral(c) #Ajout partie générale dans la base de données
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
             Chaufferie.creationDivers(c) #Ajout des équipements Divers dans la base de données
@@ -221,9 +222,7 @@ def listePts(request):
             if request.POST.get("Supp") !=None:
                 listePts.pts.pop(int(request.POST.get('Supp')))
             elif request.POST.get("Add") !=None:
-                print("ajout ligne ")
                 pts = point(equip = listePts.pts[int(request.POST.get('Add'))].equip,TM = 0, TR = 0, TS=0, TC=0)
-                print(pts.equip)
                 listePts.pts.insert(int(request.POST.get('Add'))+1, pts)
                 listePts.save()
             else:

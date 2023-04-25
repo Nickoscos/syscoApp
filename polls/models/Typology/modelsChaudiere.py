@@ -101,6 +101,7 @@ class Chaufferie(models.Model):
                 chaud.nbDef = nbDef
                 chaud.nbV2V = nbV2V
                 chaud.nbPpe = nbPpe
+        print(chaud.nbPpe)
         self.save() #Enregistrement dans la base
 
     ######CONFIGURATION DIVERS#####
