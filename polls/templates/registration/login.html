@@ -6,7 +6,12 @@
     <h2>Log In</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <label for="id_username">Nom d’utilisateur :</label>
+        <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
+        
+        <label for="id_password">Mot de passe :</label>
+        <input type="password" name="password" autocomplete="current-password" required="" id="id_password">
+        <!-- {{ form.as_p }} -->
         <button type="submit">Log In</button>
     </form>
 {% endblock %}

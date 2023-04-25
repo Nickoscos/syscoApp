@@ -10,7 +10,7 @@
                 <form method="post" id="downloadListTemplate" class="form">
                     {% csrf_token %}
                     <input type="hidden" name="form_type" value="downloadListTemplate">
-                    <button type="submit" class="btn btn-secondary">Télécharger liste de points</button>    
+                    <button type="submit" class="btn btn-secondary">Télécharger Template liste</button>    
                 </form>
             </div>
         </div>
@@ -58,7 +58,8 @@
                         {% else %}
                         <tr>
                             <!-- <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}>{{ l.equip }}</td> -->
-                            <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" type="text" value="{{ l.equip }}"></td>
+                            <!-- <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><a name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" type="text" value="{{ l.equip }}"></td> -->
+                            <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><p name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" >{{ l.equip }}</p></td>
                             <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" value="{{ l.libelle }}"></td>
                             <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TM{{ forloop.counter0 }}" id="TM{{ forloop.counter0 }}" type="number" value="{{ l.TM }}"></td>
                             <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TS{{ forloop.counter0 }}" id="TS{{ forloop.counter0 }}" type="number" value="{{ l.TS }}"></td>
@@ -86,3 +87,5 @@
         <a href="{% url 'login' %}">Log In</a>
     {% endif %}
 {% endblock %}
+
+<a></a>

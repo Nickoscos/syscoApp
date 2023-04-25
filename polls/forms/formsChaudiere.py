@@ -14,3 +14,5 @@ class chaudForm(forms.ModelForm):
     model = Chaudiere
     fields = ["nomChaud","nbPpe", "nbV2V"]
     labels = {'nomChaud': "Nom", 'nbPpe': "Nombre de pompes", 'nbV2V':"Nombre de V2V"}
+
+    
