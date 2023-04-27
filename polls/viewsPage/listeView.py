@@ -222,8 +222,8 @@ def listePts(request):
             if request.POST.get("Supp") !=None:
                 listePts.pts.pop(int(request.POST.get('Supp')))
             elif request.POST.get("Add") !=None:
-                pts = point(equip = listePts.pts[int(request.POST.get('Add'))].equip,TM = 0, TR = 0, TS=0, TC=0)
-                listePts.pts.insert(int(request.POST.get('Add'))+1, pts)
+                pts = point(equip = listePts.pts[int(request.POST.get('Add'))-1].equip,TM = 0, TR = 0, TS=0, TC=0)
+                listePts.pts.insert(int(request.POST.get('Add')), pts)
                 listePts.save()
             else:
                 message = updateListe(listePts, request)

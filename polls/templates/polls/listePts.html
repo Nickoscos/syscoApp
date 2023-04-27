@@ -31,10 +31,10 @@
             <table class="table text-center mt-2">
                 <thead>
                     <tr>
-                        <th colspan="7" style="background-color: gray; font-size: 1.3em;">{{ chaufferie.nomInstal }} - LISTE DE POINTS</th>
+                        <th colspan="6" style="background-color: gray; font-size: 1.3em;">{{ chaufferie.nomInstal }} - LISTE DE POINTS</th>
                     </tr>
                     <tr style="background-color: gray;">
-                        <th>Sous-ensemble</th>
+                        <!-- <th>Sous-ensemble</th> -->
                         <th>Libellé</th>
                         <th>TM Température</th>
                         <th>TS Digital</th>
@@ -47,7 +47,7 @@
                     {% for l in listePts.pts %}
                         {% if forloop.last %}
                         <tr style="background-color: gray;">
-                            <td class="end">{{ l.equip }}</td>
+                            <!-- <td class="end">{{ l.equip }}</td> -->
                             <td class="end">{{ l.libelle }}</td>
                             <td class="end">{{ l.TM }}</td>
                             <td class="end">{{ l.TS }}</td>
@@ -57,18 +57,38 @@
                         </tr>
                         {% else %}
                         <tr>
-                            <!-- <td class="col-1" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}>{{ l.equip }}</td> -->
-                            <!-- <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><a name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" type="text" value="{{ l.equip }}"></td> -->
-                            <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><p name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" >{{ l.equip }}</p></td>
-                            <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" value="{{ l.libelle }}"></td>
+                            {% ifchanged l.equip %}
+                                {% if not forloop.first %}
+                                <tr>
+                                    <td class="tdvide"></td>
+                                    <td class="tdvide"></td>
+                                    <td class="tdvide"></td>
+                                    <td class="tdvide"></td>
+                                    <td class="tdvide"></td>
+                                    <td>
+                                        <button type="submit" class="btn btn-success"name="Add" id="Add" value={{forloop.counter0}}>Ajout</button>
+                                    </td> 
+                                </tr>
+                                {% endif %}
+                                <td class="equip" colspan="6" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><p name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" >{{ l.equip }}</p></td>
+                            {% else %}
+                                <!-- <td></td> -->
+                                <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" value="{{ l.libelle }}"></td>
+                                <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TM{{ forloop.counter0 }}" id="TM{{ forloop.counter0 }}" type="number" value="{{ l.TM }}"></td>
+                                <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TS{{ forloop.counter0 }}" id="TS{{ forloop.counter0 }}" type="number" value="{{ l.TS }}"></td>
+                                <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TR{{ forloop.counter0 }}" id="TR{{ forloop.counter0 }}" type="number" value="{{ l.TR }}"></td>
+                                <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TC{{ forloop.counter0 }}" id="TC{{ forloop.counter0 }}" type="number" value="{{ l.TC }}"></td>
+                                <td>
+                                    <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{forloop.counter0}}>Supprimer</button>
+                                    <!-- <button type="submit" class="btn btn-success"name="Add" id="Add" value={{forloop.counter0}}>Ajout</button> -->
+                                </td>
+                            {% endifchanged %}
+                            <!-- <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><p name="nomEquip{{ forloop.counter0 }}" id="nomEquip{{ forloop.counter0 }}" >{{ l.equip }}</p></td> -->
+                            <!-- <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="libelle{{ forloop.counter0 }}" id="libelle{{ forloop.counter0 }}" type="text" value="{{ l.libelle }}"></td>
                             <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TM{{ forloop.counter0 }}" id="TM{{ forloop.counter0 }}" type="number" value="{{ l.TM }}"></td>
                             <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TS{{ forloop.counter0 }}" id="TS{{ forloop.counter0 }}" type="number" value="{{ l.TS }}"></td>
                             <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TR{{ forloop.counter0 }}" id="TR{{ forloop.counter0 }}" type="number" value="{{ l.TR }}"></td>
-                            <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TC{{ forloop.counter0 }}" id="TC{{ forloop.counter0 }}" type="number" value="{{ l.TC }}"></td>
-                            <td>
-                                <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{forloop.counter0}}>Supprimer</button>
-                                <button type="submit" class="btn btn-success"name="Add" id="Add" value={{forloop.counter0}}>Ajout</button>
-                            </td>
+                            <td {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 %} style="background-color: red;" {% endif %}><input name="TC{{ forloop.counter0 }}" id="TC{{ forloop.counter0 }}" type="number" value="{{ l.TC }}"></td> -->
                         </tr>
                         {% endif %}
                     {% endfor %}

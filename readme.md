@@ -13,3 +13,9 @@ AVANT L'UTILISATION:
  1) Installer BOOTSTRAP5 : pip install django-bootstrap5
  2) Installer XLSXWRITER : pip install xlsxwriter
 
+Pour la mise en place sur le serveur:
+ 1) Dans le fichier settings.py, placer DEBUG à FALSE
+ 2) Dans le fichier settings.py, commenter la ligne ALLOWED_HOSTS = []
+ 3) Dans le fichier settings.py, Décommenter la ligne # ALLOWED_HOSTS = ['xxxxx.xxxxx.com']
+
+Si une modification est faite dans un fichier CSS, penser à recharger les fichiers statiques:  python manage.py collectstatic
