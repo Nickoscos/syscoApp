@@ -6,7 +6,7 @@ from ..forms.formsChaudiere import nbChaudForm, chaudForm
 from ..ListePTS.listePts import generationListe, updateListe, generationXls
 from ..models.Typology.modelsEquip import point
 
-from django.http import HttpResponse
+
 
 
 #Page 1: GENERATION DE LA LISTE DE POINTS
@@ -257,7 +257,7 @@ def listePts(request):
 
         # Soumission du formulaire de téléchargement liste de point
         elif (request.POST.get("form_type") == "exportExcelList"):
-            message = generationXls(listePts)
+            message = generationXls(request, listePts)
 
     else:
         nbChaudform = nbChaudForm()
