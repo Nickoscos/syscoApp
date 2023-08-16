@@ -7,8 +7,6 @@ from ..ListePTS.listePts import generationListe, updateListe, generationXls
 from ..models.Typology.modelsEquip import point
 
 
-
-
 #Page 1: GENERATION DE LA LISTE DE POINTS
 def genListeView(request):
     message = "" 
@@ -272,3 +270,42 @@ def listePts(request):
         'message': message
         })
 
+# Import mimetypes module
+import mimetypes
+# import os module
+import os
+import pandas as pd
+from io import BytesIO
+# Import HttpResponse module
+from django.http.response import HttpResponse
+
+#Page Download LISTE DE POINTS
+def download_file(request):
+    # Define Django project base directory
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    # Define text file name
+    filename = 'listedepoints.xlsx'
+    # Define the full file path
+    filepath = BASE_DIR + "\\" + filename
+    print(filepath)
+    # Open the file for reading content
+    # path = pd.read_excel('listedepoints.xlsx', engine='openpyxl')
+    # print(path)
+
+    with BytesIO() as b
+    with pd.ExcelWriter(b) as writer:
+        # You can add multiple Dataframes to an excel file
+        # Using the sheet_name attribute
+      data1.to_excel(writer, sheet_name="DATA 1", index=False)
+        data2.to_excel(writer, sheet_name="DATA 2", index=False)
+    
+    filename = "analytics_data.xlsx"
+    
+    # Set the mime type
+    mime_type, _ = mimetypes.guess_type(filepath)
+    # Set the return value of the HttpResponse
+    response = HttpResponse(path, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    # Set the HTTP header for sending to browser
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    # Return the response value
+    return response

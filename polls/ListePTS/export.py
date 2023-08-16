@@ -66,7 +66,7 @@ def generationXls(request, liste):
             worksheet.write("F"+str(pos), point.TC, style)
             worksheet.write("G"+str(pos), "", style)
 
-    return redirect("polls:downloadListe")
+    return redirect("polls:downloadfile")
 
     # message = "Liste de points générée"
 

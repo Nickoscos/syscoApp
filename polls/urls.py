@@ -9,5 +9,5 @@ urlpatterns = [
     # ex: /polls/
     path('', listeView.genListeView, name='chaufferie'),
     path('liste/', listeView.listePts, name='listePts'),
-    path('downloadListe/', export.download, name='downloadListe'),
+    path('downloadfile/', listeView.download_file, name='downloadfile'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
