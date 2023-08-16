@@ -34,7 +34,7 @@ def generationListe(request, chaufferie):
     #Ajout des points Circuits Régulés
     ajoutPtsECS(liste, chaufferie.ECS)
 
-    liste.pts.sort(key=lambda x: x.equip)
+    # liste.pts.sort(key=lambda x: x.equip)
 
     suppPts(liste, chaufferie.General, chaufferie.Chaudieres, chaufferie.Divers, chaufferie.CircReg, chaufferie.ECS)
 
@@ -53,10 +53,14 @@ def updateListe(listePts, request):
         if (i != len(listePts.pts) - 1):
                 liste.equip = request.POST.get('nomEquip'+str(i))
                 liste.libelle = request.POST.get('libelle'+str(i))
-                liste.TM = int(request.POST.get('TM'+str(i)))
-                liste.TS = int(request.POST.get('TS'+str(i)))
-                liste.TR = int(request.POST.get('TR'+str(i)))
-                liste.TC = int(request.POST.get('TC'+str(i)))  
+                if (request.POST.get('TM'+str(i)) is not None):
+                    liste.TM = int(request.POST.get('TM'+str(i)))
+                if (request.POST.get('TS'+str(i)) is not None):
+                    liste.TS = int(request.POST.get('TS'+str(i)))
+                if (request.POST.get('TR'+str(i)) is not None):
+                    liste.TR = int(request.POST.get('TR'+str(i)))
+                if (request.POST.get('TC'+str(i)) is not None):
+                    liste.TC = int(request.POST.get('TC'+str(i)))  
 
         i = i +1
     #Ajout de la dernière ligne de la liste TOTAUX
@@ -320,6 +324,7 @@ def suppPts(liste, General, Chaudieres, Divers, CirReg, ECS):
                     break
 
         if not exist:
+            print(p.equip)
             liste.pts.remove(p)
         # liste.save()
         i=i+1
