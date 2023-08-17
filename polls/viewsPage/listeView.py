@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from ..models.Typology.modelsChaudiere import Chaufferie
 from ..models.Typology.modelsEquip import Liste
 from ..forms.formsChaudiere import nbChaudForm, chaudForm
-from ..ListePTS.listePts import generationListe, updateListe, generationXls
+from ..ListePTS.listePts import generationListe, updateListe, generationXls, calculTotaux
 from ..models.Typology.modelsEquip import point
 
 
@@ -101,10 +101,6 @@ def genListeView(request):
                 message = generationListe(request, c)
                 return redirect("polls:listePts")
 
-        # else:
-        #     nbChaudform = nbChaudForm()
-        #     chaudform = chaudForm()
-
         c = Chaufferie.objects.get(user=request.user.username) #Relecture pour affichage
         # listePts = Liste.objects.get(user=request.user.username)
         return render(request, 'polls/chaufferie.html', {
@@ -131,7 +127,8 @@ def listePts(request):
     #Initialisation de la liste de points
     try:
         #Si l'objet 1 est existant alors on le récupère
-        listePts = Liste.objects.get(user=request.user.username)
+        # listePts = Liste.objects.get(user=request.user.username)
+        listePts = Liste(request.user.username)
     except Liste.DoesNotExist:
         #Si l'objet 1 n'existe pas, on ne fait rien
         listePts = Liste.objects.create(user=request.user.username)
@@ -222,9 +219,13 @@ def listePts(request):
             elif request.POST.get("Add") !=None:
                 pts = point(equip = listePts.pts[int(request.POST.get('Add'))-1].equip,TM = 0, TR = 0, TS=0, TC=0)
                 listePts.pts.insert(int(request.POST.get('Add')), pts)
-                listePts.save()
+                # listePts.save()
             else:
                 message = updateListe(listePts, request)
+            #Si la liste est existante on supprime la dermnière ligne des TOTAUX pour les recalculer
+            if len(listePts.pts)>0 :
+                listePts.pts.pop()
+            calculTotaux(listePts)
 
         # Soumission du formulaire de téléchargement liste de point
         elif (request.POST.get("form_type") == "downloadListTemplate"): #and chaudform.is_valid()):
@@ -240,7 +241,8 @@ def listePts(request):
         nbChaudform = nbChaudForm()
 
     c = Chaufferie.objects.get(user=request.user.username) #Relecture pour affichage
-    listePts = Liste.objects.get(user=request.user.username)
+    # listePts = Liste.objects.get(user=request.user.username)
+    listePts = Liste(request.user.username)
     return render(request, 'polls/listePts.html', {
         'nbChaudform': nbChaudform, 
         'chaudform': chaudform, 

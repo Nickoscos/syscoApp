@@ -11,10 +11,12 @@ def generationListe(request, chaufferie):
     #Initialisation de la liste de points
     try:
         #Si l'objet 1 est existant alors on le récupère
-        liste = Liste.objects.get(user=request.user.username)
+        # liste = Liste.objects.get(user=request.user.username)
+        liste = Liste(request.user.username)
         #Si la liste est existante on supprime la dermnière ligne des TOTAUX pour les recalculer
         if len(liste.pts)>0 :
             liste.pts.pop()
+        
     except Liste.DoesNotExist:
         #Si l'objet 1 n'existe pas, on ne fait rien
         liste = Liste.objects.create(user=request.user.username)
@@ -34,9 +36,11 @@ def generationListe(request, chaufferie):
     #Ajout des points Circuits Régulés
     ajoutPtsECS(liste, chaufferie.ECS)
 
-    # liste.pts.sort(key=lambda x: x.equip)
+    liste.pts.sort(key=lambda x: x.equip)
 
-    suppPts(liste, chaufferie.General, chaufferie.Chaudieres, chaufferie.Divers, chaufferie.CircReg, chaufferie.ECS)
+    
+
+    # suppPts(liste, chaufferie.General, chaufferie.Chaudieres, chaufferie.Divers, chaufferie.CircReg, chaufferie.ECS)
 
     #Ajout de la dernière ligne de la liste TOTAUX
     calculTotaux(liste)
@@ -51,7 +55,7 @@ def updateListe(listePts, request):
     i = 0
     for liste in listePts.pts:
         if (i != len(listePts.pts) - 1):
-                liste.equip = request.POST.get('nomEquip'+str(i))
+                # liste.equip = request.POST.get('nomEquip'+str(i))
                 liste.libelle = request.POST.get('libelle'+str(i))
                 if (request.POST.get('TM'+str(i)) is not None):
                     liste.TM = int(request.POST.get('TM'+str(i)))
@@ -66,7 +70,7 @@ def updateListe(listePts, request):
     #Ajout de la dernière ligne de la liste TOTAUX
     listePts.pts.pop()
     calculTotaux(listePts)       
-    listePts.save()
+    # listePts.save()
     return "Mise à jour liste effectué"
 
 #Fonction permettant la génération de la liste de points
@@ -176,33 +180,43 @@ def ajoutPtsGeneral(liste, General):
         if pts.equip == General[0].nomGen:
             exist = True #L'objet existe déjà dans la liste
     #L'objet n'existe pas donc on l'ajoute dans la liste
-    if not exist :         
+    if not exist :        
         for gen in General:
-                #Température départ primaire
-                liste.pts.append(point(
-                    equip= gen.nomGen,
-                    type= 'Temp',
-                    libelle= 'Température extérieure ', 
-                    TM=1, 
-                    TS=0, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save()  
+            liste.pts.append(point(
+                equip= gen.nomGen,
+                type= '',
+                libelle= '', 
+                TM=0, 
+                TS=0, 
+                TR=0, 
+                TC=0,
+                Supp=False
+            )) 
+            #Température départ primaire
+            liste.pts.append(point(
+                equip= gen.nomGen,
+                type= 'Temp',
+                libelle= 'Température extérieure ', 
+                TM=1, 
+                TS=0, 
+                TR=0, 
+                TC=0,
+                Supp=False
+            ))
+            # liste.save()  
 
-                #Défaut synthèse
-                liste.pts.append(point(
-                    equip= gen.nomGen,
-                    type= 'DefMQE',
-                    libelle= 'Défaut manque d\'eau ', 
-                    TM=0, 
-                    TS=1, 
-                    TR=0, 
-                    TC=0,
-                    Supp=False
-                ))
-                liste.save() 
+            #Défaut synthèse
+            liste.pts.append(point(
+                equip= gen.nomGen,
+                type= 'DefMQE',
+                libelle= 'Défaut manque d\'eau ', 
+                TM=0, 
+                TS=1, 
+                TR=0, 
+                TC=0,
+                Supp=False
+            ))
+            # liste.save() 
 
 #Fonction permettant l'ajout des points chaudières
 def ajoutPtsChaud(liste, Chaudieres):
@@ -213,6 +227,17 @@ def ajoutPtsChaud(liste, Chaudieres):
             if pts.equip == chaud.nomChaud:
                 existEquip = True #L'objet existe déjà dans la liste
 
+        liste.pts.append(point(
+                equip= chaud.nomChaud,
+                type= '',
+                libelle= '', 
+                TM=0, 
+                TS=0, 
+                TR=0, 
+                TC=0,
+                Supp=False
+            )) 
+        
         #L'objet n'existe pas donc on l'ajoute dans la liste
         if not existEquip :   
             #Température XX
@@ -222,7 +247,7 @@ def ajoutPtsChaud(liste, Chaudieres):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save()  
+                # liste.save()  
 
             #Défaut synthèse
             for i in range(chaud.nbDef):
@@ -231,7 +256,7 @@ def ajoutPtsChaud(liste, Chaudieres):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save()  
+                # liste.save()  
 
             #Défaut pompe
             for i in range(chaud.nbPpe):
@@ -240,7 +265,7 @@ def ajoutPtsChaud(liste, Chaudieres):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save() 
+                #liste.save() 
 
             #Commande pompe
             for i in range(chaud.nbPpe):
@@ -249,7 +274,7 @@ def ajoutPtsChaud(liste, Chaudieres):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save()
+                #liste.save()
             
             #Commande chaudière
             pts = CmdChaud(
@@ -257,7 +282,7 @@ def ajoutPtsChaud(liste, Chaudieres):
                 )
             pts.libelle = pts.libelle
             liste.pts.append(pts)
-            liste.save()
+            #liste.save()
 
             #Fin de course V2V
             for i in range(chaud.nbV2V):
@@ -266,7 +291,7 @@ def ajoutPtsChaud(liste, Chaudieres):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save()
+                #liste.save()
 
             #Commande V2V
             for i in range(chaud.nbV2V):
@@ -275,7 +300,7 @@ def ajoutPtsChaud(liste, Chaudieres):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save()
+                #liste.save()
         else:
             #Ajout Température
             insertPts(liste, nbTotPts=chaud.nbTemp, nomEquip=chaud.nomChaud, type='Temp')
@@ -325,10 +350,12 @@ def suppPts(liste, General, Chaudieres, Divers, CirReg, ECS):
 
         if not exist:
             print(p.equip)
-            liste.pts.remove(p)
-        # liste.save()
+
+            liste.pts.remove(p.equip)
+            #liste.save()
+
         i=i+1
-    liste.save()
+    #liste.save()
 
 #Fonction permettant l'ajout des points Divers
 def ajoutPtsDivers(liste, Divers):
@@ -338,6 +365,18 @@ def ajoutPtsDivers(liste, Divers):
         for pts in liste.pts:
             if pts.equip == div.nomDivers:
                 exist = True #L'objet existe déjà dans la liste
+
+        liste.pts.append(point(
+                equip= div.nomDivers,
+                type= '',
+                libelle= '', 
+                TM=0, 
+                TS=0, 
+                TR=0, 
+                TC=0,
+                Supp=False
+            )) 
+                
         #L'objet n'existe pas donc on l'ajoute dans la liste
         if not exist :   
             #TéléSignalisation supplémentaire
@@ -405,6 +444,18 @@ def ajoutPtsCircReg(liste, CircReg):
         for pts in liste.pts:
             if pts.equip == circ.nomCirc:
                 exist = True #L'objet existe déjà dans la liste
+
+        liste.pts.append(point(
+                equip= circ.nomCirc,
+                type= '',
+                libelle= '', 
+                TM=0, 
+                TS=0, 
+                TR=0, 
+                TC=0,
+                Supp=False
+            )) 
+        
         #L'objet n'existe pas donc on l'ajoute dans la liste
         if not exist :   
             #Mesure de température
@@ -414,7 +465,7 @@ def ajoutPtsCircReg(liste, CircReg):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save()  
+                #liste.save()  
 
             #Mesure de température Ambiant
             for i in range(circ.nbAmb): 
@@ -423,7 +474,7 @@ def ajoutPtsCircReg(liste, CircReg):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save()  
+                #liste.save()  
 
             #Défaut pompe
             for i in range(circ.nbPpe):
@@ -432,7 +483,7 @@ def ajoutPtsCircReg(liste, CircReg):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save() 
+                #liste.save() 
 
             #Commande pompe
             for i in range(circ.nbPpe):
@@ -441,7 +492,7 @@ def ajoutPtsCircReg(liste, CircReg):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save() 
+                #liste.save() 
 
             #Commande V3V
             for i in range(circ.nbV3V):
@@ -450,7 +501,7 @@ def ajoutPtsCircReg(liste, CircReg):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save() 
+                #liste.save() 
         else:
             #Ajout Température
             insertPts(liste, nbTotPts=circ.nbTemp, nomEquip=circ.nomCirc, type='Temp')
@@ -471,6 +522,18 @@ def ajoutPtsECS(liste, ECS):
         for pts in liste.pts:
             if pts.equip == e.nomECS:
                 exist = True #L'objet existe déjà dans la liste
+
+        liste.pts.append(point(
+                equip= e.nomECS,
+                type= '',
+                libelle= '', 
+                TM=0, 
+                TS=0, 
+                TR=0, 
+                TC=0,
+                Supp=False
+            )) 
+        
         #L'objet n'existe pas donc on l'ajoute dans la liste
         if not exist :          
             #Mesure de température
@@ -481,7 +544,7 @@ def ajoutPtsECS(liste, ECS):
                 pts.libelle = 'Température départ/retour'
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save()  
+                #liste.save()  
 
             #Défaut ECS
             for i in range(e.nbDef):
@@ -490,7 +553,7 @@ def ajoutPtsECS(liste, ECS):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save() 
+                #liste.save() 
 
             #Défaut pompe
             for i in range(e.nbPpe):
@@ -499,7 +562,7 @@ def ajoutPtsECS(liste, ECS):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save() 
+                #liste.save() 
 
             #Commande pompe
             for i in range(e.nbPpe):
@@ -508,7 +571,7 @@ def ajoutPtsECS(liste, ECS):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save()
+                #liste.save()
 
             #Commande V3V
             for i in range(e.nbV3V):
@@ -517,7 +580,7 @@ def ajoutPtsECS(liste, ECS):
                     )
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save() 
+                #liste.save() 
 
             #Mesure température ballon
             for i in range(e.nbBallon):
@@ -527,7 +590,7 @@ def ajoutPtsECS(liste, ECS):
                 pts.libelle = 'Température ballon '
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save()  
+                #liste.save()  
 
             #Mesure épingle ballon
             for i in range(e.nbBallon):
@@ -537,7 +600,7 @@ def ajoutPtsECS(liste, ECS):
                 pts.libelle = 'Epingle ballon '
                 pts.libelle = pts.libelle + str(i+1)
                 liste.pts.append(pts)
-                liste.save() 
+                #liste.save() 
         else:
             #Ajout Température
             insertPts(liste, nbTotPts=e.nbTemp, nomEquip=e.nomECS, type='Temp')
@@ -575,7 +638,9 @@ def calculTotaux(liste):
             TM=TotTM, 
             TS=TotTS, 
             TR=TotTR, 
-            TC=TotTC
+            TC=TotTC,
+            type='',
+            Supp=False
         ))
 
 #Fonction insertion points 
