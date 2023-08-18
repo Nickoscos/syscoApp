@@ -1,0 +1,78 @@
+{% extends 'polls/header.html' %}
+
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container-fluid">
+            <h1 class="text-center">PACKS SYSCO</h1>
+        </div>
+
+        <span style="color:red">{{message}}</span>
+        <br>
+        <br>
+
+        <!-- AFFICHAGE DU TABLEAU DES PACKS -->
+        <form action="" method="post" id="listPackform">
+            <input type="hidden" name="form_type" value="listPackform">
+            {% csrf_token %}
+            <table class="table text-center mt-2">
+                <thead>
+                    <tr>
+                        <th colspan="11" style="background-color: gray; font-size: 1.3em;"> TABLEAU DES PACKS ACTUELS</th>
+                    </tr>
+                    <tr style="background-color: gray;">
+                        <!-- <th>Sous-ensemble</th> -->
+                        <th>Référence</th>
+                        <th>AI</th>
+                        <th>DI</th>
+                        <th>AO</th>
+                        <th>DO</th>
+                        <th>Prix WIT</th>
+                        <th>Prix TREND</th>
+                        <th>Prix DISTECH</th>
+                        <th>Prix SOFREL</th>
+                        <th>Prix Moyen</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in listePack.pack %}
+                    <tr>
+                        <td class="packText"><p name="{{ p.Reference }}" id="{{ p.Reference }}" type="text" value="{{ p.Reference }}">{{ p.Reference }}</p></td>
+                        <td class="packES"><p name="{{ p.AI }}" id="{{ p.AI }}">{{ p.AI }}</p></td>
+                        <td class="packES"><p name="{{ p.DI }}" id="{{ p.DI }}">{{ p.DI }}</p></td>
+                        <td class="packES"><p name="{{ p.AO }}" id="{{ p.AO }}">{{ p.AO }}</p></td>
+                        <td class="packES"><p name="{{ p.DO }}" id="{{ p.DO }}">{{ p.DO }}</p></td>
+                        <td class="packPrix"><p name="{{ p.priceWIT }}" id="{{ p.priceWIT }}">{{ p.priceWIT }}</p></td>
+                        <td class="packPrix"><p name="{{ p.priceTREND }}" id="{{ p.priceTREND }}">{{ p.priceTREND }}</p></td>
+                        <td class="packPrix"><p name="{{ p.priceDISTECH }}" id="{{ p.priceDISTECH }}">{{ p.priceDISTECH }}</p></td>
+                        <td class="packPrix"><p name="{{ p.priceSOFREL }}" id="{{ p.priceSOFREL }}">{{ p.priceSOFREL }}</p></td>
+                        <td class="packPrix"><p name="{{ p.priceMOY }}" id="{{ p.priceMOY }}">{{ p.priceMOY }}</p></td>
+                        <td>
+                            <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{forloop.counter0}}>Supprimer</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td class="packText"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
+                        <td class="packES"><input name="AI_Add" id="AI_Add" type="number" value=0></td>
+                        <td class="packES"><input name="DI_Add" id="DI_Add" type="number" value=0></td>
+                        <td class="packES"><input name="AO_Add" id="AO_Add" type="number" value=0></td>
+                        <td class="packES"><input name="DO_Add" id="DO_Add" type="number" value=0></td>
+                        <td class="packPrix"><input name="priceWIT_Add" id="priceWIT_Add" type="number" value=0></td>
+                        <td class="packPrix"><input name="priceTREND_Add" id="priceTREND_Add" type="number" value=0></td>
+                        <td class="packPrix"><input name="priceDISTECH_Add" id="priceDISTECH_Add" type="number" value=0></td>
+                        <td class="packPrix"><input name="priceSOFREL_Add" id="priceSOFREL_Add" type="number" value=0></td>
+                        <td class="packPrix"><input name="priceMOY_Add" id="priceMOY_Add" type="number" value=0></td>
+                        <td>
+                            <button type="submit" class="btn btn-success"name="Add" id="Add" value=1>Ajout</button>
+                        </td> 
+                    </tr>
+                </tbody>
+            </table>  
+        </form> 
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+{% endblock %}

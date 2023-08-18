@@ -10,5 +10,5 @@ urlpatterns = [
     path('', listeView.genListeView, name='chaufferie'),
     path('liste/', listeView.listePts, name='listePts'),
     path('downloadfile/<str:filename>', export.download_file, name='downloadfile'),
-    path('packs/', packsView.choicePack, name='packsView'),
+    path('packs/', packsView.choixPack, name='packsView'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

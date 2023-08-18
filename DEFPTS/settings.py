@@ -15,6 +15,7 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+print(BASE_DIR)
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login'
 # STATIC_ROOT = os.path.join(BASE_DIR, "static")
@@ -124,9 +125,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 STATICFILES_DIRS = [
     BASE_DIR / "polls/static/",
 ]
+
 MEDIA_URL = 'polls/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # MEDIAFILES_DIRS = [

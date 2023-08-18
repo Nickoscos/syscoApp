@@ -9,6 +9,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}" media="screen">
     <link rel="stylesheet" href="{% static 'css/liste.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'css/pack.css' %}" media="screen">
 
     {% load django_bootstrap5 %}
 
@@ -41,7 +42,7 @@
       {% endif %}
       <a href="{% url 'polls:chaufferie' %}" style="font-size:medium;">Génération Liste de points</a>
       <a href="{% url 'polls:listePts' %}" style="font-size:medium;">Liste de points générée</a>
-      <a href="{% url 'polls:packs' %}" style="font-size:medium;">pack SYSCO</a>
+      <a href="{% url 'polls:packsView' %}" style="font-size:medium;">Packs SYSCO</a>
     </div>
   
     <nav class="topnav">
