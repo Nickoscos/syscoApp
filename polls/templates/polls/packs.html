@@ -12,13 +12,13 @@
         <br>
 
         <!-- AFFICHAGE DU TABLEAU DES PACKS -->
-        <form action="" method="post" id="listPackform">
-            <input type="hidden" name="form_type" value="listPackform">
+        <form action="" method="post" id="listPackTGform">
+            <input type="hidden" name="form_type" value="listPackTGform">
             {% csrf_token %}
             <table class="table text-center mt-2">
                 <thead>
                     <tr>
-                        <th colspan="11" style="background-color: gray; font-size: 1.3em;"> TABLEAU DES PACKS ACTUELS</th>
+                        <th colspan="11" style="background-color: gray; font-size: 1.3em;"> PACKS TELEGESTION</th>
                     </tr>
                     <tr style="background-color: gray;">
                         <!-- <th>Sous-ensemble</th> -->
@@ -36,20 +36,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for p in listePack.pack %}
+                    {% for p in packsTG %}
                     <tr>
                         <td class="packText"><p name="{{ p.Reference }}" id="{{ p.Reference }}" type="text" value="{{ p.Reference }}">{{ p.Reference }}</p></td>
                         <td class="packES"><p name="{{ p.AI }}" id="{{ p.AI }}">{{ p.AI }}</p></td>
                         <td class="packES"><p name="{{ p.DI }}" id="{{ p.DI }}">{{ p.DI }}</p></td>
                         <td class="packES"><p name="{{ p.AO }}" id="{{ p.AO }}">{{ p.AO }}</p></td>
                         <td class="packES"><p name="{{ p.DO }}" id="{{ p.DO }}">{{ p.DO }}</p></td>
-                        <td class="packPrix"><p name="{{ p.priceWIT }}" id="{{ p.priceWIT }}">{{ p.priceWIT }}</p></td>
-                        <td class="packPrix"><p name="{{ p.priceTREND }}" id="{{ p.priceTREND }}">{{ p.priceTREND }}</p></td>
-                        <td class="packPrix"><p name="{{ p.priceDISTECH }}" id="{{ p.priceDISTECH }}">{{ p.priceDISTECH }}</p></td>
-                        <td class="packPrix"><p name="{{ p.priceSOFREL }}" id="{{ p.priceSOFREL }}">{{ p.priceSOFREL }}</p></td>
-                        <td class="packPrix"><p name="{{ p.priceMOY }}" id="{{ p.priceMOY }}">{{ p.priceMOY }}</p></td>
+                        <td class="packPrix"><p name="{{ p.priceWIT }}" id="{{ p.priceWIT }}">{{ p.priceWIT }} €</p></td>
+                        <td class="packPrix"><p name="{{ p.priceTREND }}" id="{{ p.priceTREND }}">{{ p.priceTREND }} €</p></td>
+                        <td class="packPrix"><p name="{{ p.priceDISTECH }}" id="{{ p.priceDISTECH }}">{{ p.priceDISTECH }} €</p></td>
+                        <td class="packPrix"><p name="{{ p.priceSOFREL }}" id="{{ p.priceSOFREL }}">{{ p.priceSOFREL }} €</p></td>
+                        <td class="packPrix"><p name="{{ p.priceMOY }}" id="{{ p.priceMOY }}">{{ p.priceMOY }} €</p></td>
                         <td>
-                            <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{forloop.counter0}}>Supprimer</button>
+                            <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.Reference}}>Supprimer</button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -59,11 +59,61 @@
                         <td class="packES"><input name="DI_Add" id="DI_Add" type="number" value=0></td>
                         <td class="packES"><input name="AO_Add" id="AO_Add" type="number" value=0></td>
                         <td class="packES"><input name="DO_Add" id="DO_Add" type="number" value=0></td>
-                        <td class="packPrix"><input name="priceWIT_Add" id="priceWIT_Add" type="number" value=0></td>
-                        <td class="packPrix"><input name="priceTREND_Add" id="priceTREND_Add" type="number" value=0></td>
-                        <td class="packPrix"><input name="priceDISTECH_Add" id="priceDISTECH_Add" type="number" value=0></td>
-                        <td class="packPrix"><input name="priceSOFREL_Add" id="priceSOFREL_Add" type="number" value=0></td>
-                        <td class="packPrix"><input name="priceMOY_Add" id="priceMOY_Add" type="number" value=0></td>
+                        <td class="packPrix"><input name="priceWIT_Add" id="priceWIT_Add" type="number" step="0.01" value=0></td>
+                        <td class="packPrix"><input name="priceTREND_Add" id="priceTREND_Add" type="number" step="0.01" value=0></td>
+                        <td class="packPrix"><input name="priceDISTECH_Add" id="priceDISTECH_Add" type="number" step="0.01" value=0></td>
+                        <td class="packPrix"><input name="priceSOFREL_Add" id="priceSOFREL_Add" type="number" step="0.01" value=0></td>
+                        <td class="packPrix"><input name="priceMOY_Add" id="priceMOY_Add" type="number" step="0.01" value=0></td>
+                        <td>
+                            <button type="submit" class="btn btn-success"name="Add" id="Add" value=1>Ajout</button>
+                        </td> 
+                    </tr>
+                </tbody>
+            </table>  
+        </form> 
+        <form action="" method="post" id="listPackOPTform">
+            <input type="hidden" name="form_type" value="listPackOPTform">
+            {% csrf_token %}
+            <table class="table text-center mt-2">
+                <thead>
+                    <tr>
+                        <th colspan="8" style="background-color: gray; font-size: 1.3em;"> PACKS OPTIMISATION IOT</th>
+                    </tr>
+                    <tr style="background-color: gray;">
+                        <!-- <th>Sous-ensemble</th> -->
+                        <th>Référence</th>
+                        <th>Température Ambiant</th>
+                        <th>Température ECS</th>
+                        <th>Prix Passerelle</th>
+                        <th>Prix Température Ambiant</th>
+                        <th>Prix Température ECS</th>
+                        <th>Prix TOTAL</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in packsOPT %}
+                    <tr>
+                        <td class="packText"><p name="{{ p.Reference }}" id="{{ p.Reference }}" type="text" value="{{ p.Reference }}">{{ p.Reference }}</p></td>
+                        <td class="packES"><p name="{{ p.Tamb }}" id="{{ p.Tamb }}">{{ p.Tamb }}</p></td>
+                        <td class="packES"><p name="{{ p.TECS }}" id="{{ p.TECS }}">{{ p.TECS }}</p></td>
+                        <td class="packPrix"><p name="{{ p.pricePAS }}" id="{{ p.pricePAS }}">{{ p.pricePAS }} €</p></td>
+                        <td class="packPrix"><p name="{{ p.priceTamb }}" id="{{ p.priceTamb }}">{{ p.priceTamb }} €</p></td>
+                        <td class="packPrix"><p name="{{ p.priceTECS }}" id="{{ p.priceTECS }}">{{ p.priceTECS }} €</p></td>
+                        <td class="packPrix"><p name="{{ p.priceTOT }}" id="{{ p.priceTOT }}">{{ p.priceTOT }} €</p></td>
+                        <td>
+                            <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.Reference}}>Supprimer</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td class="packText"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
+                        <td class="packES"><input name="Tamb_Add" id="Tamb_Add" type="number" value=0></td>
+                        <td class="packES"><input name="TECS_Add" id="TECS_Add" type="number" value=0></td>
+                        <td class="packPrix"><input name="pricePAS_Add" id="pricePAS_Add" type="number" step="0.01" value=0></td>
+                        <td class="packPrix"><input name="priceTamb_Add" id="priceTamb_Add" type="number" step="0.01" value=0></td>
+                        <td class="packPrix"><input name="priceTECS_Add" id="priceTECS_Add" type="number" step="0.01" value=0></td>
+                        <td class="packPrix"><input name="priceTOT_Add" id="priceTOT_Add" type="number" step="0.01" value=0></td>
                         <td>
                             <button type="submit" class="btn btn-success"name="Add" id="Add" value=1>Ajout</button>
                         </td> 

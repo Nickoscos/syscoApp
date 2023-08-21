@@ -1,9 +1,8 @@
 from django.db import models
 
-#Déclaration du modèle d'un PACK
-class Pack(models.Model):
-    # id = models.IntegerField()
-    Reference = models.CharField(max_length=200, default="")
+#Déclaration du modèle d'un PACK TELEGESTION
+class PackTG(models.Model):
+    Reference = models.CharField(max_length=200, default="", unique=True)
     AI = models.IntegerField()
     DI = models.IntegerField()
     AO = models.IntegerField()
@@ -14,8 +13,18 @@ class Pack(models.Model):
     priceSOFREL = models.FloatField()
     priceMOY = models.FloatField()
 
+#Déclaration du modèle d'un PACK OPTIMISATION IOT
+class PackOPT(models.Model):
+    Reference = models.CharField(max_length=200, default="", unique=True)
+    Tamb = models.IntegerField()
+    TECS = models.IntegerField()
+    pricePAS = models.FloatField()
+    priceTamb = models.FloatField()
+    priceTECS = models.FloatField()
+    priceTOT = models.FloatField()
+
 #Déclaration d'une liste de points
 class listePacks(models.Model):
-    id = models.IntegerField(default=1, primary_key=True)
+    num = models.IntegerField(default=1)
     pack = []
 
