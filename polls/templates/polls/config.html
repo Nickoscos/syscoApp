@@ -1,0 +1,79 @@
+{% extends 'polls/header.html' %}
+
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container-fluid">
+            <h1 class="text-center">PACK RETENU</h1>
+        </div>
+
+        <span style="color:red">{{message}}</span>
+        <br>
+        <br>
+
+        {% csrf_token %}
+            <table class="table text-center mt-2" style="width: 50%;">
+                <tbody>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Référence</td>
+                        <td class="packText" style="font-size: 1.2em;color:black;font-weight: bold;"><p name="{{ packOK.Reference }}" id="{{ packOK.Reference }}" type="text" value="{{ packOK.Reference }}">{{ packOK.Reference }}</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Entrées Analogiques</td>
+                        <td class="packES"><p name="{{ packOK.AI }}" id="{{ packOK.AI }}">{{ packOK.AI }}</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Entrées Digitales</td>
+                        <td class="packES"><p name="{{ packOK.DI }}" id="{{ packOK.DI }}">{{ packOK.DI }}</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Sorties Analogiques</td>
+                        <td class="packES"><p name="{{ packOK.AO }}" id="{{ packOK.AO }}">{{ packOK.AO }}</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Sorties Digitales</td>
+                        <td class="packES"><p name="{{ packOK.DO }}" id="{{ packOK.DO }}">{{ packOK.DO }}</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Réserve Entrées Analogiques</td>
+                        <td class="packES"><p name="{{ packOK.AIres }}" id="{{ packOK.AIres }}">{{ packOK.AIres }}</p></td>
+                    </tr>
+                    <tr>
+                        <td  style="background-color: gray;font-size: 1.2em; color: white" width="30%">Réserve Entrées Digitales</td>
+                        <td class="packES"><p name="{{ packOK.DIres }}" id="{{ packOK.DIres }}">{{ packOK.DIres }}</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Réserve Sorties Analogiques</td>
+                        <td class="packES"><p name="{{ packOK.AOres }}" id="{{ packOK.AOres }}">{{ packOK.AOres }}</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Réserve Sorties Digitales</td>
+                        <td class="packES"><p name="{{ packOK.DOres }}" id="{{ packOK.DOres }}">{{ packOK.DOres }}</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Prix WIT</td>
+                        <td class="packPrix"><p name="{{ packOK.priceWIT }}" id="{{ packOK.priceWIT }}">{{ packOK.priceWIT }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Prix TREND</td>
+                        <td class="packPrix"><p name="{{ packOK.priceTREND }}" id="{{ packOK.priceTREND }}">{{ packOK.priceTREND }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Prix DISTECH</td>
+                        <td class="packPrix"><p name="{{ packOK.priceDISTECH }}" id="{{ packOK.priceDISTECH }}">{{ packOK.priceDISTECH }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Prix SOFREL</td>
+                        <td class="packPrix"><p name="{{ packOK.priceSOFREL }}" id="{{ packOK.priceSOFREL }}">{{ packOK.priceSOFREL }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white" width="30%">Prix MOYEN</td>
+                        <td class="packPrix" style="font-size: 1.2em;color:black;font-weight: bold;"><p name="{{ packOK.priceMOY }}" id="{{ packOK.priceMOY }}">{{ packOK.priceMOY }} €</p></td>
+                    </tr>
+                </tbody>
+            </table>  
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+{% endblock %}

@@ -1,9 +1,7 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
-from ..models.Typology.modelsEquip import Liste
-from ..models.Pack.modelsPacks import listePacks, PackTG, PackOPT
+from ..models.Pack.modelsPacks import PackTG, PackOPT
 
-def choixPack(request):
+def listPack(request):
     message = ''
 
     print("requete:", request)
