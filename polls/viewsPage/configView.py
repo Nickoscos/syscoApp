@@ -26,11 +26,9 @@ def newConfig(request):
             nbDI = liste.pts[-1].TS
             nbAO = liste.pts[-1].TR
             nbDO = liste.pts[-1].TC
-            print("nbAI:" , str(nbAI) , " nbDI: " , str(nbDI) , " nbAO: " , str(nbAO) , " nbDO " , str(nbDO))
             for p in packsTG:
                 if nbAI <= p.AI and nbDI <= p.DI and nbAO <= p.AO and nbDO <= p.DO:
                     packsValide.append([p.Reference, p.AI-nbAI, p.DI-nbDI, p.AO-nbAO, p.DO-nbDO])
-            print(packsValide)
             
             packOK = {
                 "Reference" : "",
@@ -71,7 +69,6 @@ def newConfig(request):
                     packOK["priceTREND"] = p.priceTREND
                     packOK["priceSOFREL"] = p.priceSOFREL
                     packOK["priceMOY"] = p.priceMOY
-            print(packOK)
         else:
             return redirect("polls:chaufferie")
                
