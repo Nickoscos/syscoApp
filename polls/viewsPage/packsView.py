@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from ..models.Pack.modelsPacks import PackTG, PackOPT
 
 def listPack(request):
@@ -50,7 +50,8 @@ def listPack(request):
             'packsOPT': packsOPT
             })
     else :
-        return render(request, "registration/login.html")
+        return redirect("polls:login")
+        # return render(request, "registration/login.html")
     
 # def addPack():
 #     listePack = listePacks

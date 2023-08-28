@@ -77,4 +77,5 @@ def newConfig(request):
             'packOK' : packOK,
             })
     else :
-        return render(request, "registration/login.html")
+        return redirect("polls:login")
+        # return render(request, "registration/login.html")
