@@ -55,6 +55,7 @@
                         </td>
                     </tr>
                     {% endfor %}
+                    {% if user.group == "SYSCO" %}
                     <tr>
                         <td class="packText"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
                         <td class="packES"><input name="AI_Add" id="AI_Add" type="number" value=0></td>
@@ -70,6 +71,7 @@
                             <button type="submit" class="btn btn-success"name="Add" id="Add" value=1>Ajout</button>
                         </td> 
                     </tr>
+                    {% endif %}
                 </tbody>
             </table>  
         </form> 
@@ -104,10 +106,13 @@
                         <td class="packPrix"><p name="{{ p.priceTECS }}" id="{{ p.priceTECS }}">{{ p.priceTECS }} €</p></td>
                         <td class="packPrix"><p name="{{ p.priceTOT }}" id="{{ p.priceTOT }}">{{ p.priceTOT }} €</p></td>
                         <td>
+                            {% if user.group == "SYSCO" %}
                             <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.Reference}}>Supprimer</button>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
+                    {% if user.group == "SYSCO" %}
                     <tr>
                         <td class="packText"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
                         <td class="packES"><input name="Tamb_Add" id="Tamb_Add" type="number" value=0></td>
@@ -120,6 +125,7 @@
                             <button type="submit" class="btn btn-success"name="Add" id="Add" value=1>Ajout</button>
                         </td> 
                     </tr>
+                    {% endif %}
                 </tbody>
             </table>  
         </form> 
