@@ -20,9 +20,9 @@
                     <tr>
                         <th
                         {% if user.groups.first.name == "SYSCO" %} 
-                            colspan="10" 
-                        {% else %}
                             colspan="11" 
+                        {% else %}
+                            colspan="10" 
                         {% endif %}
                         style="background-color: gray; font-size: 1.3em;"> PACKS TELEGESTION</th>
                     </tr>
@@ -89,7 +89,13 @@
             <table class="table text-center mt-2">
                 <thead>
                     <tr>
-                        <th colspan="8" style="background-color: gray; font-size: 1.3em;"> PACKS OPTIMISATION IOT</th>
+                        <th
+                        {% if user.groups.first.name == "SYSCO" %} 
+                            colspan="8" 
+                        {% else %}
+                            colspan="7" 
+                        {% endif %} 
+                        style="background-color: gray; font-size: 1.3em;"> PACKS OPTIMISATION IOT</th>
                     </tr>
                     <tr style="background-color: gray;">
                         <!-- <th>Sous-ensemble</th> -->
@@ -100,7 +106,9 @@
                         <th>Prix Température Ambiant</th>
                         <th>Prix Température ECS</th>
                         <th>Prix TOTAL</th>
+                        {% if user.groups.first.name == "SYSCO" %}
                         <th>Action</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
