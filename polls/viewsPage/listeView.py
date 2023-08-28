@@ -110,7 +110,8 @@ def genListeView(request):
             'message': message
             })
     else :
-        return render(request, "registration/login.html")
+        return redirect("polls:login")
+        # return render(request, "registration/login.html")
 
 #Page 2: AFFICHAGE LISTE DE POINTS
 def listePts(request):

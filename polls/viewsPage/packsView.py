@@ -49,8 +49,8 @@ def listPack(request):
             'packsTG': packsTG,
             'packsOPT': packsOPT
             })
-    else :
-        return redirect("polls:login")
+    # else :
+    #     return redirect("polls:login")
         # return render(request, "registration/login.html")
     
 # def addPack():
