@@ -39,7 +39,16 @@ def generationListe(request, chaufferie):
 
     # liste.pts.sort(key=lambda x: x.equip)
 
-    
+    liste.pts.append(point(
+        equip= '',
+        type= '',
+        libelle= '', 
+        TM=0, 
+        TS=0, 
+        TR=0, 
+        TC=0,
+        Supp=False
+    )) 
 
     # suppPts(liste, chaufferie.General, chaufferie.Chaudieres, chaufferie.Divers, chaufferie.CircReg, chaufferie.ECS)
 
@@ -633,16 +642,6 @@ def calculTotaux(liste):
         TotTR =  TotTR + listPts.TR
         TotTC =  TotTC + listPts.TC
 
-    liste.pts.append(point(
-            equip= '',
-            type= '',
-            libelle= '', 
-            TM=0, 
-            TS=0, 
-            TR=0, 
-            TC=0,
-            Supp=False
-        )) 
     liste.pts.append(point(
             equip = '',
             libelle= ' TOTAUX (' + str(TotTM+TotTS+TotTR+TotTC) + ' points)', 
