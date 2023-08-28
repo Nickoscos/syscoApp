@@ -109,8 +109,8 @@ def genListeView(request):
             'chaufferie': c,
             'message': message
             })
-    else :
-        return redirect("polls:login")
+    # else :
+    #     return redirect("polls:login")
         # return render(request, "registration/login.html")
 
 #Page 2: AFFICHAGE LISTE DE POINTS
