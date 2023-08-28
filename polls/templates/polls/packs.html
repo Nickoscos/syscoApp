@@ -18,7 +18,13 @@
             <table class="table text-center mt-2">
                 <thead>
                     <tr>
-                        <th colspan="11" style="background-color: gray; font-size: 1.3em;"> PACKS TELEGESTION</th>
+                        <th
+                        {% if user.groups.first.name == "SYSCO" %} 
+                            colspan="10" 
+                        {% else %}
+                            colspan="11" 
+                        {% endif %}
+                        style="background-color: gray; font-size: 1.3em;"> PACKS TELEGESTION</th>
                     </tr>
                     <tr style="background-color: gray;">
                         <!-- <th>Sous-ensemble</th> -->
@@ -32,7 +38,9 @@
                         <th>Prix DISTECH</th>
                         <th>Prix SOFREL</th>
                         <th>Prix Moyen</th>
+                        {% if user.groups.first.name == "SYSCO" %}
                         <th>Action</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
