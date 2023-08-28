@@ -51,7 +51,7 @@
                         <td>
                             {% if user.groups.filter(name='SYSCO').exists() %} 
                             <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.Reference}}>Supprimer</button>
-                            {% endfor %}
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
