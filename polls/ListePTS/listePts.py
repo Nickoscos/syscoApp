@@ -15,8 +15,8 @@ def generationListe(request, chaufferie):
         liste = Liste(request.user.username)
         liste.pts.clear()
         #Si la liste est existante on supprime la dermnière ligne des TOTAUX pour les recalculer
-        if len(liste.pts)>0 :
-            liste.pts.pop()
+        # if len(liste.pts)>0 :
+        #     liste.pts.pop()
         
     except Liste.DoesNotExist:
         #Si l'objet 1 n'existe pas, on ne fait rien
