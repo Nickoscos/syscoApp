@@ -13,6 +13,7 @@ def generationListe(request, chaufferie):
         #Si l'objet 1 est existant alors on le récupère
         # liste = Liste.objects.get(user=request.user.username)
         liste = Liste(request.user.username)
+        liste.pts.clear()
         #Si la liste est existante on supprime la dermnière ligne des TOTAUX pour les recalculer
         if len(liste.pts)>0 :
             liste.pts.pop()
@@ -143,16 +144,16 @@ def geneTempListe(request):
     ajoutPtsChaud(liste, c.Chaudieres)
 
     #Ajout des points Divers
-    # ajoutPtsDivers(liste, chaufferie.Divers)
+    # ajoutPtsDivers(liste, c.Divers)
 
     #Ajout des points Circuits Constants
-    # ajoutPtsCircCst(liste, chaufferie.CircCst)
+    # ajoutPtsCircCst(liste, c.CircCst)
 
     #Ajout des points Circuits Régulés
-    # ajoutPtsCircReg(liste, chaufferie.CircReg)
+    # ajoutPtsCircReg(liste, c.CircReg)
 
     #Ajout des points Circuits Régulés
-    # ajoutPtsECS(liste, chaufferie.ECS)
+    # ajoutPtsECS(liste, c.ECS)
 
     #Ajout de la dernière ligne de la liste TOTAUX
     # calculTotaux(liste)
