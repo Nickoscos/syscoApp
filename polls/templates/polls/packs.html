@@ -4,7 +4,7 @@
 {% block content %}
     {% if user.is_authenticated %}
         <div class="container-fluid">
-            <h1 class="text-center">PACKS SYSCO {{ user.groups.first.name }}</h1>
+            <h1 class="text-center">PACKS SYSCO</h1>
         </div>
 
         <span style="color:red">{{message}}</span>
@@ -49,13 +49,13 @@
                         <td class="packPrix"><p name="{{ p.priceSOFREL }}" id="{{ p.priceSOFREL }}">{{ p.priceSOFREL }} €</p></td>
                         <td class="packPrix"><p name="{{ p.priceMOY }}" id="{{ p.priceMOY }}">{{ p.priceMOY }} €</p></td>
                         <td>
-                            {% if user.group == "SYSCO" %} 
+                            {% if user.groups.first.name == "SYSCO" %} 
                             <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.Reference}}>Supprimer</button>
                             {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
-                    {% if user.group == "SYSCO" %}
+                    {% if user.groups.first.name == "SYSCO" %}
                     <tr>
                         <td class="packText"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
                         <td class="packES"><input name="AI_Add" id="AI_Add" type="number" value=0></td>
@@ -106,13 +106,13 @@
                         <td class="packPrix"><p name="{{ p.priceTECS }}" id="{{ p.priceTECS }}">{{ p.priceTECS }} €</p></td>
                         <td class="packPrix"><p name="{{ p.priceTOT }}" id="{{ p.priceTOT }}">{{ p.priceTOT }} €</p></td>
                         <td>
-                            {% if user.group == "SYSCO" %}
+                            {% if user.groups.first.name == "SYSCO" %}
                             <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.Reference}}>Supprimer</button>
                             {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
-                    {% if user.group == "SYSCO" %}
+                    {% if user.groups.first.name == "SYSCO" %}
                     <tr>
                         <td class="packText"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
                         <td class="packES"><input name="Tamb_Add" id="Tamb_Add" type="number" value=0></td>
