@@ -4,7 +4,7 @@
 {% block content %}
     {% if user.is_authenticated %}
         <div class="container-fluid">
-            <h1 class="text-center">PACKS SYSCO {{ user.get_group_permissions }}</h1>
+            <h1 class="text-center">PACKS SYSCO {{ user.groups }}</h1>
         </div>
 
         <span style="color:red">{{message}}</span>
