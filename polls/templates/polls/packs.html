@@ -49,7 +49,7 @@
                         <td class="packPrix"><p name="{{ p.priceSOFREL }}" id="{{ p.priceSOFREL }}">{{ p.priceSOFREL }} €</p></td>
                         <td class="packPrix"><p name="{{ p.priceMOY }}" id="{{ p.priceMOY }}">{{ p.priceMOY }} €</p></td>
                         <td>
-                            {% if user.is_member("SYSCO") %}
+                            {% if request.user|has_group:"SYSCO" %} 
                             <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.Reference}}>Supprimer</button>
                             {% endfor %}
                         </td>
