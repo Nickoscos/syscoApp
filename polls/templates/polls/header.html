@@ -54,10 +54,13 @@
             <path d="M0,23 30,23" stroke="#000" stroke-width="5"/>
         </svg>
       </a>
-        <h1 style="text-align: center;" >SYSCO APP</h1>
-        <div style="text-align: right;" >
-          <h4>Login: {{user.username}}</h4>
-          <h4>Group: {{user.groups.first.name}}</h4>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col"><h1 class="col" style="text-align: center;" >SYSCO APP</h1></div>
+          <div class="col" style="text-align: right;" >
+            <p>Login: {{user.username}}</p>
+            <p>Group: {{user.groups.first.name}}</p>
+          </div>
         </div>
     </nav>
   
