@@ -375,7 +375,7 @@ def ajoutPtsCircReg(liste, CircReg):
                 pts = Temp(
                     equip = circ.nomCirc,
                     )
-                pts.libelle = pts.libelle + str(i+1)
+                pts.libelle = pts.libelle + " " + str(i+1)
                 liste.pts.append(pts)
                 #liste.save()  
 
@@ -384,7 +384,7 @@ def ajoutPtsCircReg(liste, CircReg):
                 pts = Amb(
                     equip = circ.nomCirc,
                     )
-                pts.libelle = pts.libelle + str(i+1)
+                pts.libelle = pts.libelle + " " + str(i+1)
                 liste.pts.append(pts)
                 #liste.save()  
 
@@ -393,7 +393,7 @@ def ajoutPtsCircReg(liste, CircReg):
                 pts = DefPpe(
                     equip = circ.nomCirc,
                     )
-                pts.libelle = pts.libelle + str(i+1)
+                pts.libelle = pts.libelle + " " + str(i+1)
                 liste.pts.append(pts)
                 #liste.save() 
 
@@ -402,7 +402,7 @@ def ajoutPtsCircReg(liste, CircReg):
                 pts = CmdPpe(
                     equip = circ.nomCirc,
                     )
-                pts.libelle = pts.libelle + str(i+1)
+                pts.libelle = pts.libelle + " " + str(i+1)
                 liste.pts.append(pts)
                 #liste.save() 
 
@@ -411,7 +411,7 @@ def ajoutPtsCircReg(liste, CircReg):
                 pts = CmdV3V(
                     equip = circ.nomCirc,
                     )
-                pts.libelle = pts.libelle + str(i+1)
+                pts.libelle = pts.libelle + " " + str(i+1)
                 liste.pts.append(pts)
                 #liste.save() 
         else:
@@ -454,7 +454,7 @@ def ajoutPtsECS(liste, ECS):
                     equip = e.nomECS,
                     )
                 pts.libelle = 'Température départ/retour'
-                pts.libelle = pts.libelle + str(i+1)
+                pts.libelle = pts.libelle + " " + str(i+1)
                 liste.pts.append(pts)
                 #liste.save()  
 
@@ -463,7 +463,7 @@ def ajoutPtsECS(liste, ECS):
                 pts = SyntDefaut(
                     equip = e.nomECS,
                     )
-                pts.libelle = pts.libelle + str(i+1)
+                pts.libelle = pts.libelle + " " + str(i+1)
                 liste.pts.append(pts)
                 #liste.save() 
 
@@ -472,7 +472,7 @@ def ajoutPtsECS(liste, ECS):
                 pts = DefPpe(
                     equip = e.nomECS,
                     )
-                pts.libelle = pts.libelle + str(i+1)
+                pts.libelle = pts.libelle + " " + str(i+1)
                 liste.pts.append(pts)
                 #liste.save() 
 
@@ -481,7 +481,7 @@ def ajoutPtsECS(liste, ECS):
                 pts = CmdPpe(
                     equip = e.nomECS,
                     )
-                pts.libelle = pts.libelle + str(i+1)
+                pts.libelle = pts.libelle + " " + str(i+1)
                 liste.pts.append(pts)
                 #liste.save()
 
@@ -490,7 +490,7 @@ def ajoutPtsECS(liste, ECS):
                 pts = CmdV3V(
                     equip = e.nomECS,
                     )
-                pts.libelle = pts.libelle + str(i+1)
+                pts.libelle = pts.libelle + " " + str(i+1)
                 liste.pts.append(pts)
                 #liste.save() 
 
@@ -500,7 +500,7 @@ def ajoutPtsECS(liste, ECS):
                     equip = e.nomECS,
                     )
                 pts.libelle = 'Température ballon '
-                pts.libelle = pts.libelle + str(i+1)
+                pts.libelle = pts.libelle + " " + str(i+1)
                 liste.pts.append(pts)
                 #liste.save()  
 
@@ -510,7 +510,7 @@ def ajoutPtsECS(liste, ECS):
                     equip = e.nomECS,
                     )
                 pts.libelle = 'Epingle ballon '
-                pts.libelle = pts.libelle + str(i+1)
+                pts.libelle = pts.libelle + " " + str(i+1)
                 liste.pts.append(pts)
                 #liste.save() 
         else:
