@@ -70,7 +70,7 @@ def generationXls(request, liste):
     return message
 
 #Page Download LISTE DE POINTS
-def download_file(request, filename):
+def download_file(request, filename, newName):
     # Define the full file path
     filepath = MEDIA_URL + filename
     # Open the file for reading content
