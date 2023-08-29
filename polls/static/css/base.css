@@ -82,3 +82,7 @@ background-color: #4CAF50;
 color: white;
 }
 
+.logo {
+width : 50%; 
+min-width : 20%;
+}
