@@ -46,8 +46,6 @@ def genListeView(request):
             Chaufferie.creationCircReg(c) #Ajout des circuits régulés dans la base de données
             Chaufferie.creationECS(c) #Ajout de l'ECS dans la base de données       
 
-            # c = Chaufferie.objects.get(user=request.user.username) #Relecture pour affichage
-            # nbChaudform.save()
 
         # Soumission du formulaire configuration des équipements
         elif (request.POST.get("form_type") == "chaudform"): #and chaudform.is_valid()):
@@ -109,9 +107,6 @@ def genListeView(request):
         'chaufferie': c,
         'message': message
         })
-    # else :
-    #     return redirect("polls:login")
-        # return render(request, "registration/login.html")
 
 #Page 2: AFFICHAGE LISTE DE POINTS
 def listePts(request):
@@ -128,7 +123,6 @@ def listePts(request):
     #Initialisation de la liste de points
     try:
         #Si l'objet 1 est existant alors on le récupère
-        # listePts = Liste.objects.get(user=request.user.username)
         listePts = Liste(request.user.username)
     except Liste.DoesNotExist:
         #Si l'objet 1 n'existe pas, on ne fait rien
@@ -236,7 +230,8 @@ def listePts(request):
         # Soumission du formulaire de téléchargement liste de point
         elif (request.POST.get("form_type") == "exportExcelList"):
             message = generationXls(request, listePts)
-            return redirect("polls:downloadfile", filename="listedepoints.xlsx")
+            return redirect("polls:downloadfile", filename="listedepoints.xlsx", newName= c.nomInstal)
+            # return redirect("polls:downloadfile", filename="listedepoints.xlsx")
 
     else:
         nbChaudform = nbChaudForm()

@@ -70,12 +70,8 @@ def generationXls(request, liste):
     return message
 
 #Page Download LISTE DE POINTS
-def download_file(request, filename):
-    # Définition du répertoire contenant les fichiers à télécharger
-    # BASE_DIR_FILE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
+def download_file(request, filename, newName):
     # Define the full file path
-    # filepath = BASE_DIR_FILE + "\\" + filename
     filepath = MEDIA_URL + filename
     # Open the file for reading content
     with open(filepath, 'rb') as f:
@@ -83,10 +79,11 @@ def download_file(request, filename):
    
     # Set the mime type
     mime_type, _ = mimetypes.guess_type(filepath)
-
+    # Set the new name
+    newNameFile = newName + ".xlsx"
     # Set the return value of the HttpResponse
     response = HttpResponse(data, content_type=mime_type)
     # Set the HTTP header for sending to browser
-    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    response['Content-Disposition'] = "attachment; filename=%s" % newNameFile
     # Return the response value
     return response
