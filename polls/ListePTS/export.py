@@ -79,7 +79,7 @@ def download_file(request, filename, newName):
    
     # Set the mime type
     mime_type, _ = mimetypes.guess_type(filepath)
-    name = "test.xlsx"
+    name = newName + ".xlsx"
     # Set the return value of the HttpResponse
     response = HttpResponse(data, content_type=mime_type)
     # Set the HTTP header for sending to browser
