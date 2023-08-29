@@ -70,7 +70,7 @@ def generationXls(request, liste):
     return message
 
 #Page Download LISTE DE POINTS
-def download_file(request, filename, newName):
+def download_file(request, filename):
     # Define the full file path
     filepath = MEDIA_URL + filename
     # Open the file for reading content
@@ -79,11 +79,10 @@ def download_file(request, filename, newName):
    
     # Set the mime type
     mime_type, _ = mimetypes.guess_type(filepath)
-    # Set the new name
-    newNameFile = "test.xlsx"
+    name = "test.xlsx"
     # Set the return value of the HttpResponse
     response = HttpResponse(data, content_type=mime_type)
     # Set the HTTP header for sending to browser
-    response['Content-Disposition'] = "attachment; filename=%s" % newNameFile
+    response['Content-Disposition'] = "attachment; filename=%s" % name
     # Return the response value
     return response

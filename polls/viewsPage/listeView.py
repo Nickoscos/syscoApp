@@ -230,7 +230,7 @@ def listePts(request):
         # Soumission du formulaire de téléchargement liste de point
         elif (request.POST.get("form_type") == "exportExcelList"):
             message = generationXls(request, listePts)
-            return redirect("polls:downloadfile", filename="listedepoints.xlsx", newName= c.nomInstal)
+            return redirect("polls:downloadfile", filename="listedepoints.xlsx")
             # return redirect("polls:downloadfile", filename="listedepoints.xlsx")
 
     else:
