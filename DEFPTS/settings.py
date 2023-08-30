@@ -132,9 +132,9 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = 'polls/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-# MEDIAFILES_DIRS = [
-#     BASE_DIR / "polls/media/",
-# ]
+MEDIAFILES_DIRS = [
+    BASE_DIR / "polls/media/",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
