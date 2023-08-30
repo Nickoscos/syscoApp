@@ -50,6 +50,7 @@
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Réserve Sorties Digitales</td>
                         <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.DOres }}" id="{{ packOK.DOres }}">{{ packOK.DOres }}</p></td>
                     </tr>
+                    {% if user.groups.first.name == "SYSCO" %}
                     <tr>
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix WIT</td>
                         <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.priceWIT }}" id="{{ packOK.priceWIT }}">{{ packOK.priceWIT }} €</p></td>
@@ -66,6 +67,7 @@
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix SOFREL</td>
                         <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.priceSOFREL }}" id="{{ packOK.priceSOFREL }}">{{ packOK.priceSOFREL }} €</p></td>
                     </tr>
+                    {% endif %}
                     <tr>
                         <td style="background-color: gray;font-size: 1.3em; color: white; vertical-align: middle; font-weight: bold;" width="50%">Prix MOYEN</td>
                         <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packOK.priceMOY }}" id="{{ packOK.priceMOY }}">{{ packOK.priceMOY }} €</p></td>
