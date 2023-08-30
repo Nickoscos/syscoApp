@@ -32,7 +32,8 @@ color: #5e60ca;
 
 /* Position and style the close button (top right corner) */
 .sidenav .closebtn {
-position: absolute;
+position: relative;
+/* position: absolute; */
 top: 0;
 right: 25px;
 font-size: 36px;
