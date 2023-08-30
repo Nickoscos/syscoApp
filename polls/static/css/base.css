@@ -1,7 +1,7 @@
 /* The side navigation menu */
 .sidenav {
 height: 100%; /* 100% Full-height */
-/* width: 0; 0 width - change this with JavaScript */
+width: 0; /* 0 width - change this with JavaScript */
 position: fixed; 
 display:flex;
 flex-wrap: wrap;
@@ -31,7 +31,7 @@ color: #5e60ca;
 }
 
 /* Position and style the close button (top right corner) */
-.sidenav .closebtn {
+.closebtn {
 position: absolute;
 top: 0;
 right: 25px;
