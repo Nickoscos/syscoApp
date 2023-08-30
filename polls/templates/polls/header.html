@@ -36,14 +36,14 @@
     <div id="sideNavigation" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}" style="font-size:medium;">Log Out</a>
+        <a href="{% url 'logout' %}">Log Out</a>
       {% else %}
-        <a href="{% url 'login' %}" style="font-size:medium;">Log In</a>
+        <a href="{% url 'login' %}">Log In</a>
       {% endif %}
-      <a href="{% url 'polls:chaufferie' %}" style="font-size:medium;">1-Génération Liste de points</a>
-      <a href="{% url 'polls:listePts' %}" style="font-size:medium;">2-Liste de points générée</a>
-      <a href="{% url 'polls:config' %}" style="font-size:medium;">3-Configuration du pack</a>
-      <a href="{% url 'polls:packsView' %}" style="font-size:medium;position: absolute;bottom: 0%;">Packs SYSCO</a>
+      <a href="{% url 'polls:chaufferie' %}">1-Génération Liste de points</a>
+      <a href="{% url 'polls:listePts' %}">2-Liste de points générée</a>
+      <a href="{% url 'polls:config' %}">3-Configuration du pack</a>
+      <a href="{% url 'polls:packsView' %}">Packs SYSCO</a>
     </div>
   
     <nav class="topnav">
