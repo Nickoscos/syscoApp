@@ -703,4 +703,9 @@ def insertPts(liste,nbTotPts, nomEquip, type):
         valInit += 1
     liste.save()
 
-    
+#Fonction permettant d'effacer la liste de points
+def RAZListe(request):
+    try:
+        Point.objects.filter(user=request.user.username).delete()
+    except Point.DoesNotExist:
+        print("Liste vide")

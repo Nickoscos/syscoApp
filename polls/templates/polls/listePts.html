@@ -88,13 +88,28 @@
                 </tbody>
             </table>   
         </form>
-        <form action="" method="post" id="exportExcelList">
-            {% csrf_token %}
-            <div class="col d-flex justify-content-end mt-1">
-                <input type="hidden" name="form_type" value="exportExcelList">
-                <button type="submit" class="btn btn-primary">Export Liste en xls</button>
-            </div> 
-        </form>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="container-fluid col mt-1 me-1 pb-1 " >
+                    <form action="" method="post" id="RAZ" style="display: flex;justify-content: flex-start;">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="RAZList">
+                        <button type="submit" class="btn btn-danger">RAZ liste</button>
+                    </form> 
+                </div> 
+                <div class="container-fluid col mt-1 me-1 pb-1 ">
+                    <form action="" method="post" id="exportExcelList" style="display: flex;justify-content: flex-end;">
+                        {% csrf_token %}
+                            <input type="hidden" name="form_type" value="exportExcelList">
+                            <button type="submit" class="btn btn-primary">Export Liste en xls</button>
+                        </div> 
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        
+
     {% else %}
         <p>You are not logged in</p>
         <a href="{% url 'login' %}">Log In</a>

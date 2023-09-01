@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from ..models.Typology.modelsChaudiere import Chaufferie
 from ..models.Typology.modelsEquip import Liste, LotIOT
 from ..forms.formsChaudiere import nbChaudForm, chaudForm
-from ..ListePTS.listePts import generationListe, updateListe, generationXls, calculTotaux
+from ..ListePTS.listePts import generationListe, updateListe, generationXls, calculTotaux, RAZListe
 from ..models.Typology.modelsEquip import Point
 from django.db.models import Q
 
@@ -246,8 +246,7 @@ def listePts(request):
                     user=request.user.username)
             else:
                 message = updateListe(request)
-            #Si la liste est existante on supprime la dermnière ligne des TOTAUX pour les recalculer
-            # calculTotaux(request.user.username)
+
 
         # Soumission du formulaire de téléchargement liste de point
         elif (request.POST.get("form_type") == "downloadListTemplate"): #and chaudform.is_valid()):
@@ -258,8 +257,10 @@ def listePts(request):
         elif (request.POST.get("form_type") == "exportExcelList"):
             message = generationXls(request, request.user.username)
             return redirect("polls:downloadfile", filename="listedepoints.xlsx", newName=c.nomInstal)
-            # return redirect("polls:downloadfile", filename="listedepoints.xlsx")
 
+        # RAZ de la liste de point
+        elif (request.POST.get("form_type") == "RAZList"):
+            RAZListe(request)
     else:
         nbChaudform = nbChaudForm()
 
