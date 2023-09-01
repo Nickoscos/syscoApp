@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from ..models.Typology.modelsChaudiere import Chaufferie
-from ..models.Typology.modelsEquip import Liste
+from ..models.Typology.modelsEquip import Liste, LotIOT
 from ..forms.formsChaudiere import nbChaudForm, chaudForm
 from ..ListePTS.listePts import generationListe, updateListe, generationXls, calculTotaux
-from ..models.Typology.modelsEquip import point
-
+from ..models.Typology.modelsEquip import Point
+from django.db.models import Q
 
 #Page 1: GENERATION DE LA LISTE DE POINTS
 def genListeView(request):
@@ -22,6 +22,16 @@ def genListeView(request):
         c = Chaufferie.objects.create(user=request.user.username, nbChaudiere=1, nbDivers=0)
         c.save()
 
+    #Création d'un unique objet IOT dans la base de données  
+    try:
+        #Si l'objet 1 est existant alors on le récupère
+        iot = LotIOT.objects.get(user=request.user.username)
+    except LotIOT.DoesNotExist:
+        #Si l'objet 1 n'existe pas, on l'initialise
+        print("create")
+        iot = LotIOT.objects.create(user=request.user.username)
+        iot.save()
+
 
     ##Déclaration du formulaire
     nbChaudform = nbChaudForm(request.POST)
@@ -31,7 +41,7 @@ def genListeView(request):
     if request.method == "POST":
         # Choix des actions en fonction du formulaire soumit
         # Soumission du formulaire déterminant le nombre de chaudières
-        if (request.POST.get("form_type") == "nbChaudform" and nbChaudform.is_valid()):
+        if (request.POST.get("form_type") == "nbChaudform"):
             message = "Ajuster le nombre de points puis générer liste de points" 
             c.nomInstal = request.POST.get('nomInstal') #Récupération du nombre de chaudières saisies
             c.nbChaudiere = int(request.POST.get('nbChaudiere')) #Récupération du nombre de chaudières saisies
@@ -96,15 +106,27 @@ def genListeView(request):
                     nbPpe=int(request.POST.get('nbPpeECS'+str(ECS.num))),
                 )
 
+            iot.Passerelle = bool(request.POST.get('Passerelle'))
+            iot.nbTempAmbIOT = int(request.POST.get('nbTempAmbIOT'))
+            iot.nbTemp1EauIOT = int(request.POST.get('nbTemp1EauIOT'))
+            iot.nbTemp2EauIOT = int(request.POST.get('nbTemp2EauIOT'))
+            iot.nbCO2IOT = int(request.POST.get('nbCO2IOT'))
+            iot.nbTLRGazIOT = int(request.POST.get('nbTLRGazIOT'))
+            iot.nbTLREauIOT = int(request.POST.get('nbTLREauIOT'))
+            iot.nbTLRElecIOT = int(request.POST.get('nbTLRElecIOT'))
+            iot.nbTLRCaloIOT = int(request.POST.get('nbTLRCaloIOT'))
+            iot.save()
+
             message = generationListe(request, c)
             return redirect("polls:listePts")
 
     c = Chaufferie.objects.get(user=request.user.username) #Relecture pour affichage
-    # listePts = Liste.objects.get(user=request.user.username)
+
     return render(request, 'polls/chaufferie.html', {
         'nbChaudform': nbChaudform, 
         'chaudform': chaudForm, 
         'chaufferie': c,
+        'LotIOT': iot,
         'message': message
         })
 
@@ -123,10 +145,10 @@ def listePts(request):
     #Initialisation de la liste de points
     try:
         #Si l'objet 1 est existant alors on le récupère
-        listePts = Liste(request.user.username)
-    except Liste.DoesNotExist:
+        listePts = Point.objects.filter(user=request.user.username)
+    except Point.DoesNotExist:
         #Si l'objet 1 n'existe pas, on ne fait rien
-        listePts = Liste.objects.create(user=request.user.username)
+        listePts = Point.objects.create(user=request.user.username)
 
     ##Déclaration des deux formulaires
     initial_data = c
@@ -207,29 +229,34 @@ def listePts(request):
 
             message = generationListe(c)
         elif (request.POST.get("form_type") == "listform"):
-            
-            
             if request.POST.get("Supp") !=None:
-                listePts.pts.pop(int(request.POST.get('Supp')))
+                print("valeur")
+                print(request.POST.get('Supp'))
+                Point.objects.filter(pk=int(request.POST.get('Supp'))).delete()
             elif request.POST.get("Add") !=None:
-                pts = point(equip = listePts.pts[int(request.POST.get('Add'))-1].equip,TM = 0, TR = 0, TS=0, TC=0)
-                listePts.pts.insert(int(request.POST.get('Add')), pts)
-                # listePts.save()
+                listePts.create(
+                    equip= request.POST.get('Add'),
+                    type= 'Add',
+                    libelle= 'nouveau libellé', 
+                    TM=0, 
+                    TS=0, 
+                    TR=0, 
+                    TC=0,
+                    Supp=False,
+                    user=request.user.username)
             else:
-                message = updateListe(listePts, request)
+                message = updateListe(request)
             #Si la liste est existante on supprime la dermnière ligne des TOTAUX pour les recalculer
-            if len(listePts.pts)>0 :
-                listePts.pts.pop()
-            calculTotaux(listePts)
+            # calculTotaux(request.user.username)
 
         # Soumission du formulaire de téléchargement liste de point
         elif (request.POST.get("form_type") == "downloadListTemplate"): #and chaudform.is_valid()):
             print("téléchargement")
-            return redirect("polls:downloadfile", filename="template_Listedepoints.xlsx")
+            return redirect("polls:downloadfile", filename="template_Listedepoints.xlsx", newName="template_Listedepoints.xlsx")
 
         # Soumission du formulaire de téléchargement liste de point
         elif (request.POST.get("form_type") == "exportExcelList"):
-            message = generationXls(request, listePts)
+            message = generationXls(request, request.user.username)
             return redirect("polls:downloadfile", filename="listedepoints.xlsx", newName=c.nomInstal)
             # return redirect("polls:downloadfile", filename="listedepoints.xlsx")
 
@@ -238,7 +265,8 @@ def listePts(request):
 
     c = Chaufferie.objects.get(user=request.user.username) #Relecture pour affichage
     # listePts = Liste.objects.get(user=request.user.username)
-    listePts = Liste(request.user.username)
+    listePts = Point.objects.filter(user=request.user.username,).order_by('equip').values()
+    calculTotaux(request.user.username)
     return render(request, 'polls/listePts.html', {
         'nbChaudform': nbChaudform, 
         'chaudform': chaudform, 

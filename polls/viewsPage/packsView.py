@@ -1,13 +1,12 @@
 from django.shortcuts import redirect, render
-from ..models.Pack.modelsPacks import PackTG, PackOPT
+from ..models.Pack.modelsPacks import PackTG, PackOPT, PackIOTUnit
 
 def listPack(request):
     message = ''
 
-    print("requete:", request)
-    # if request.user.username != "":
     packsTG = PackTG.objects.all()
     packsOPT = PackOPT.objects.all()
+    packsIOTUnit = PackIOTUnit.objects.all()
     
     if request.method == "POST":
         if(request.POST.get("form_type") == "listPackTGform"):
@@ -44,85 +43,11 @@ def listPack(request):
             elif request.POST.get("Supp") != None:
                 packdel = packsOPT.get(Reference=request.POST.get('Supp'))
                 packdel.delete()
+
     return render(request, 'polls/packs.html', {
         'message': message,
         'packsTG': packsTG,
-        'packsOPT': packsOPT
+        'packsOPT': packsOPT,
+        'packsIOT': packsIOTUnit,
         })
-    # else :
-    #     return redirect("polls:login")
-        # return render(request, "registration/login.html")
-    
-# def addPack():
-#     listePack = listePacks
-#     # Ajout d'un pack
-#     if len(listePack.pack) > 0:
-#         for i in listePack.pack:
-#             if i.Reference == "REG1":
-#                 print("pack existant")
-#             else:
-#                 listePack.pack.append(Pack(
-#                     Reference = "REG1",
-#                     AI = 10,
-#                     DI = 22,
-#                     AO = 9,
-#                     DO = 9,
-#                     priceWIT = 7344.74,
-#                     priceTREND = 8270.98,
-#                     priceDISTECH = 6105.65,
-#                     priceSOFREL = 7121.58,
-#                     priceMOY = 7210.74
-#                 )) 
-#     else:
-#         print('ajout')
-#         listePack.pack.append(Pack(
-#                     Reference = "REG1",
-#                     AI = 10,
-#                     DI = 22,
-#                     AO = 9,
-#                     DO = 9,
-#                     priceWIT = 7344.74,
-#                     priceTREND = 8270.98,
-#                     priceDISTECH = 6105.65,
-#                     priceSOFREL = 7121.58,
-#                     priceMOY = 7210.74
-#                 )) 
-    
-#     return listePack
 
-# def genListePack():
-#     listePack = listePacks
-#     # Ajout d'un pack
-#     if len(listePack.pack) > 0:
-#         for i in listePack.pack:
-#             if i.Reference == "REG1":
-#                 print("pack existant")
-#             else:
-#                 listePack.pack.append(Pack(
-#                     Reference = "REG1",
-#                     AI = 10,
-#                     DI = 22,
-#                     AO = 9,
-#                     DO = 9,
-#                     priceWIT = 7344.74,
-#                     priceTREND = 8270.98,
-#                     priceDISTECH = 6105.65,
-#                     priceSOFREL = 7121.58,
-#                     priceMOY = 7210.74
-#                 )) 
-#     else:
-#         print('ajout')
-#         listePack.pack.append(Pack(
-#                     Reference = "REG1",
-#                     AI = 10,
-#                     DI = 22,
-#                     AO = 9,
-#                     DO = 9,
-#                     priceWIT = 7344.74,
-#                     priceTREND = 8270.98,
-#                     priceDISTECH = 6105.65,
-#                     priceSOFREL = 7121.58,
-#                     priceMOY = 7210.74
-#                 )) 
-    
-#     return listePack

@@ -27,10 +27,10 @@ LOGOUT_REDIRECT_URL = '/accounts/login'
 SECRET_KEY = 'django-insecure-m=z+!+*%=5rhqe302)2ve6+0@jh%+**eeo_@z-$ss5vlzczy@p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-# ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['nickoscos.pythonanywhere.com']
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['nickoscos.pythonanywhere.com']
 
 # Application definition
 

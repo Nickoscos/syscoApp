@@ -4,7 +4,7 @@
 {% block content %}
     {% if user.is_authenticated %}
         <div class="container-fluid">
-            <h1 class="text-center">PACK RETENU</h1>
+            <h1 class="text-center">PACKS RETENUS</h1>
         </div>
 
         <span style="color:red">{{message}}</span>
@@ -12,68 +12,114 @@
         <br>
 
         {% csrf_token %}
+        <fieldset class="container-fluid mt-1 pb-1 border border-success rounded">
+            <div class="row">
+                <legend class="text-center">PACK TELEGESTION</legend>
+            </div>
+
             <table class="table text-center mt-2" style="width: 30%;">
                 <tbody>
                     <tr>
                         <td style="background-color: gray;font-size: 1.3em; color: white; vertical-align: middle;font-weight: bold;" width="50%">Référence</td>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packOK.Reference }}" id="{{ packOK.Reference }}" type="text" value="{{ packOK.Reference }}">{{ packOK.Reference }}</p></td>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packTGOK.Reference }}" id="{{ packTGOK.Reference }}" type="text" value="{{ packTGOK.Reference }}">{{ packTGOK.Reference }}</p></td>
                     </tr>
                     <tr>
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Entrées Analogiques</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.AI }}" id="{{ packOK.AI }}">{{ packOK.AI }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.AI }}" id="{{ packTGOK.AI }}">{{ packTGOK.AI }}</p></td>
                     </tr>
                     <tr>
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Entrées Digitales</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.DI }}" id="{{ packOK.DI }}">{{ packOK.DI }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.DI }}" id="{{ packTGOK.DI }}">{{ packTGOK.DI }}</p></td>
                     </tr>
                     <tr>
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Sorties Analogiques</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.AO }}" id="{{ packOK.AO }}">{{ packOK.AO }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.AO }}" id="{{ packTGOK.AO }}">{{ packTGOK.AO }}</p></td>
                     </tr>
                     <tr>
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Sorties Digitales</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.DO }}" id="{{ packOK.DO }}">{{ packOK.DO }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.DO }}" id="{{ packTGOK.DO }}">{{ packTGOK.DO }}</p></td>
                     </tr>
                     <tr>
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Réserve Entrées Analogiques</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.AIres }}" id="{{ packOK.AIres }}">{{ packOK.AIres }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.AIres }}" id="{{ packTGOK.AIres }}">{{ packTGOK.AIres }}</p></td>
                     </tr>
                     <tr>
                         <td  style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Réserve Entrées Digitales</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.DIres }}" id="{{ packOK.DIres }}">{{ packOK.DIres }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.DIres }}" id="{{ packTGOK.DIres }}">{{ packTGOK.DIres }}</p></td>
                     </tr>
                     <tr>
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Réserve Sorties Analogiques</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.AOres }}" id="{{ packOK.AOres }}">{{ packOK.AOres }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.AOres }}" id="{{ packTGOK.AOres }}">{{ packTGOK.AOres }}</p></td>
                     </tr>
                     <tr>
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Réserve Sorties Digitales</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.DOres }}" id="{{ packOK.DOres }}">{{ packOK.DOres }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.DOres }}" id="{{ packTGOK.DOres }}">{{ packTGOK.DOres }}</p></td>
                     </tr>
                     {% if user.groups.first.name == "SYSCO" %}
                     <tr>
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix WIT</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.priceWIT }}" id="{{ packOK.priceWIT }}">{{ packOK.priceWIT }} €</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.priceWIT }}" id="{{ packTGOK.priceWIT }}">{{ packTGOK.priceWIT }} €</p></td>
                     </tr>
                     <tr>
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix TREND</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.priceTREND }}" id="{{ packOK.priceTREND }}">{{ packOK.priceTREND }} €</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.priceTREND }}" id="{{ packTGOK.priceTREND }}">{{ packTGOK.priceTREND }} €</p></td>
                     </tr>
                     <tr>
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix DISTECH</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.priceDISTECH }}" id="{{ packOK.priceDISTECH }}">{{ packOK.priceDISTECH }} €</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.priceDISTECH }}" id="{{ packTGOK.priceDISTECH }}">{{ packTGOK.priceDISTECH }} €</p></td>
                     </tr>
                     <tr>
                         <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix SOFREL</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOK.priceSOFREL }}" id="{{ packOK.priceSOFREL }}">{{ packOK.priceSOFREL }} €</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.priceSOFREL }}" id="{{ packTGOK.priceSOFREL }}">{{ packTGOK.priceSOFREL }} €</p></td>
                     </tr>
                     {% endif %}
                     <tr>
                         <td style="background-color: gray;font-size: 1.3em; color: white; vertical-align: middle; font-weight: bold;" width="50%">Prix MOYEN</td>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packOK.priceMOY }}" id="{{ packOK.priceMOY }}">{{ packOK.priceMOY }} €</p></td>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packTGOK.priceMOY }}" id="{{ packTGOK.priceMOY }}">{{ packTGOK.priceMOY }} €</p></td>
                     </tr>
                 </tbody>
             </table>  
+        </fieldset>
+        <br>
+        <fieldset class="container-fluid mt-1 pb-1 border border-success rounded" style="width: 100%;">
+            <div class="row">
+                <legend class="text-center">PACK OPTIMISATION</legend>
+            </div>
+
+            <table class="table text-center mt-2" style="width: 30%;">
+                <tbody>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.3em; color: white; vertical-align: middle;font-weight: bold;" width="50%">Référence</td>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packOPTOK.Reference }}" id="{{ packOPTOK.Reference }}" type="text" value="{{ packOPTOK.Reference }}">{{ packOPTOK.Reference }}</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Température Ambiant</td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOPTOK.Tamb }}" id="{{ packOPTOK.Tamb }}">{{ packOPTOK.Tamb }}</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Température ECS</td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOPTOK.TECS }}" id="{{ packOPTOK.TECS }}">{{ packOPTOK.TECS }}</p></td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix passerelle</td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOPTOK.pricePAS }}" id="{{ packOPTOK.pricePAS }}">{{ packOPTOK.pricePAS }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix Température Ambiante</td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOPTOK.priceTamb }}" id="{{ packOPTOK.priceTamb }}">{{ packOPTOK.priceTamb }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix Température ECS</td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOPTOK.priceTECS }}" id="{{ packOPTOK.priceTECS }}">{{ packOPTOK.priceTECS }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: gray;font-size: 1.3em; color: white; vertical-align: middle; font-weight: bold;" width="50%">Prix TOTAL</td>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packOPTOK.priceTOT }}" id="{{ packOPTOK.priceTOT }}">{{ packOPTOK.priceTOT }} €</p></td>
+                    </tr>
+                </tbody>
+            </table>  
+        </fieldset>
     {% else %}
         <p>You are not logged in</p>
         <a href="{% url 'login' %}">Log In</a>

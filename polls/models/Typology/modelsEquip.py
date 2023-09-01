@@ -1,20 +1,13 @@
 from django.db import models
 
 
-#Déclaration du modèle d'un point
-class point(models.Model):
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)  
-    # def __init__(self, equip, libelle, type, TM, TS, TR, TC, Supp):
-    #     self.equip = equip
-    #     self.libelle = libelle
-    #     self.type = type
-    #     self.TM = TM
-    #     self.TR = TR
-    #     self.TS = TS
-    #     self.TC = TC
-    #     self.Supp = Supp
+#Déclaration d'une liste de points
+class Liste(models.Model):
+    # pts = [models.ForeignKey(point,on_delete=models.CASCADE)]
+    user = models.CharField(max_length=200, default="")
 
+#Déclaration du modèle d'un point
+class Point(models.Model):
     equip = models.CharField(max_length=200, default='equipement')
     libelle = models.CharField(max_length=200, default='libellé')
     type = models.CharField(max_length=200, default='')
@@ -23,19 +16,24 @@ class point(models.Model):
     TR = models.IntegerField(default=0)
     TC = models.IntegerField(default=0)
     Supp = models.BooleanField(default=False)
-
-    
-#Déclaration d'une liste de points
-class Liste(models.Model):
-    def __init__(self, user):
-        super().__init__(user)
-
-    pts = [models.ForeignKey(point,on_delete=models.CASCADE)]
     user = models.CharField(max_length=200, default="")
+    # user = models.ForeignKey(Liste, on_delete=models.CASCADE)    
 
+#Déclaration du modèle LotIOT
+class LotIOT(models.Model):
+    user = models.CharField(max_length=200, default="")
+    Passerelle = models.BooleanField(default=True)
+    nbTempAmbIOT = models.IntegerField(default=0)
+    nbTemp1EauIOT = models.IntegerField(default=0)
+    nbTemp2EauIOT = models.IntegerField(default=0)
+    nbCO2IOT = models.IntegerField(default=0)
+    nbTLRGazIOT = models.IntegerField(default=0)
+    nbTLREauIOT = models.IntegerField(default=0)
+    nbTLRElecIOT = models.IntegerField(default=0)
+    nbTLRCaloIOT = models.IntegerField(default=0)
 
-class Temp(point):
-    def __init__(self, equip):
+class Temp(Point):
+    def __init__(self, equip, username):
         self.equip = equip
         self.libelle = 'Température '
         self.type = "Temp"
@@ -44,9 +42,10 @@ class Temp(point):
         self.TR = 0
         self.TC = 0
         self.Supp = False
+        self.username = username
 
-class Amb(point):
-    def __init__(self, equip):
+class Amb(Point):
+    def __init__(self, equip, username):
         self.equip = equip
         self.libelle = 'Température Ambiant'
         self.type = "Amb"
@@ -55,9 +54,10 @@ class Amb(point):
         self.TR = 0
         self.TC = 0
         self.Supp = False
+        self.username = username
 
-class SyntDefaut(point):
-    def __init__(self, equip):
+class SyntDefaut(Point):
+    def __init__(self, equip, username):
         self.equip = equip
         self.libelle = 'Synthèse défaut '
         self.type = "SynthDef"
@@ -66,9 +66,10 @@ class SyntDefaut(point):
         self.TR = 0
         self.TC = 0
         self.Supp = False
+        self.username = username
 
-class DefPpe(point):
-    def __init__(self, equip):
+class DefPpe(Point):
+    def __init__(self, equip, username):
         self.equip = equip
         self.libelle = 'Défaut pompe '
         self.type = "DefPpe"
@@ -77,9 +78,10 @@ class DefPpe(point):
         self.TR = 0
         self.TC = 0
         self.Supp = False
+        self.username = username
 
-class CmdPpe(point):
-    def __init__(self, equip):
+class CmdPpe(Point):
+    def __init__(self, equip, username):
         self.equip = equip
         self.libelle = 'Commande pompe '
         self.type = "CmdPpe"
@@ -88,9 +90,10 @@ class CmdPpe(point):
         self.TR = 1
         self.TC = 1
         self.Supp = False
+        self.username = username
 
-class CmdChaud(point):
-    def __init__(self, equip):
+class CmdChaud(Point):
+    def __init__(self, equip, username):
         self.equip = equip
         self.libelle = 'Commande chaudiere '
         self.type = "CmdChaud"
@@ -99,9 +102,10 @@ class CmdChaud(point):
         self.TR = 0
         self.TC = 1
         self.Supp = False
+        self.username = username
 
-class CmdV3V(point):
-    def __init__(self, equip):
+class CmdV3V(Point):
+    def __init__(self, equip, username):
         self.equip = equip
         self.libelle = 'Commande V3V '
         self.type = "CmdV3V"
@@ -110,9 +114,10 @@ class CmdV3V(point):
         self.TR = 1
         self.TC = 0
         self.Supp = False
+        self.username = username
 
-class CmdV2V(point):
-    def __init__(self, equip):
+class CmdV2V(Point):
+    def __init__(self, equip, username):
         self.equip = equip
         self.libelle = 'Commande V2V '
         self.type = "CmdV2V"
@@ -121,9 +126,10 @@ class CmdV2V(point):
         self.TR = 0
         self.TC = 1
         self.Supp = False
+        self.username = username
 
-class FdcV2V(point):
-    def __init__(self, equip):
+class FdcV2V(Point):
+    def __init__(self, equip, username):
         self.equip = equip
         self.libelle = 'Fin de course V2V '
         self.type = "FdcV2V"
@@ -132,9 +138,10 @@ class FdcV2V(point):
         self.TR = 0
         self.TC = 0
         self.Supp = False
+        self.username = username
 
-class Info(point):
-    def __init__(self, equip):
+class Info(Point):
+    def __init__(self, equip, username):
         self.equip = equip
         self.libelle = 'Information supplémentaire '
         self.type = "Info"
@@ -143,9 +150,10 @@ class Info(point):
         self.TR = 0
         self.TC = 0
         self.Supp = False
+        self.username = username
 
-class CmdBal(point):
-    def __init__(self, equip):
+class CmdBal(Point):
+    def __init__(self, equip, username):
         self.equip = equip
         self.libelle = 'Commande Epingle Ballon '
         self.type = "CmdBal"
@@ -154,3 +162,4 @@ class CmdBal(point):
         self.TR = 0
         self.TC = 1
         self.Supp = False
+        self.username = username

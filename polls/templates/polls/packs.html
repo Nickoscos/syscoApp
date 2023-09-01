@@ -149,6 +149,59 @@
                 </tbody>
             </table>  
         </form> 
+        <form action="" method="post" id="listPackIOTUnitform">
+            <input type="hidden" name="form_type" value="listPackIOTUnitform">
+            {% csrf_token %}
+            <table class="table text-center mt-2">
+                <thead>
+                    <tr>
+                        <th
+                        {% if user.groups.first.name == "SYSCO" %} 
+                            colspan="5" 
+                        {% else %}
+                            colspan="4" 
+                        {% endif %} 
+                        style="background-color: gray; font-size: 1.3em;"> PACKS IOT Unitaire</th>
+                    </tr>
+                    <tr style="background-color: gray;">
+                        <!-- <th>Sous-ensemble</th> -->
+                        <th>Référence</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Prix TOTAL</th>
+                        {% if user.groups.first.name == "SYSCO" %}
+                        <th>Action</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in packsIOTUnit %}
+                    <tr>
+                        <td class="packText"><p name="{{ p.Reference }}" id="{{ p.Reference }}" type="text" value="{{ p.Reference }}">{{ p.Reference }}</p></td>
+                        <td class="packES"><p name="{{ p.type }}" id="{{ p.type }}">{{ p.type }}</p></td>
+                        <td class="packES"><p name="{{ p.comment }}" id="{{ p.comment }}">{{ p.comment }}</p></td>
+                        <td class="packPrix"><p name="{{ p.price }}" id="{{ p.price }}">{{ p.price }} €</p></td>
+                        {% if user.groups.first.name == "SYSCO" %}
+                        <td>
+                            <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.Reference}}>Supprimer</button>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    {% if user.groups.first.name == "SYSCO" %}
+                    <tr>
+                        <td class="packText"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
+                        <td class="packES"><input name="type_Add" id="type_Add" type="number" value=0></td>
+                        <td class="packES"><textarea name="comment_Add" id="comment_Add"></textarea>
+                        <td class="packPrix"><input name="price_Add" id="price_Add" type="number" step="0.01" value=0></td>
+                        <td>
+                            <button type="submit" class="btn btn-success"name="Add" id="Add" value=1>Ajout</button>
+                        </td> 
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>  
+        </form> 
     {% else %}
         <p>You are not logged in</p>
         <a href="{% url 'login' %}">Log In</a>

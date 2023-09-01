@@ -65,9 +65,10 @@ class Chaufferie(models.Model):
     def creationGeneral(self):
         self.General.clear()
         # Initialisation de la liste
-        # De base, la liste général comprend: 1 température extérieure, 1 défaut manque d'eau
-        self.General.append(General(num=1, nomGen = "Général", nbDefaut = 1, nbTempExt = 1)) 
-        self.save() #Enregistrement dans la base
+        if self.nbChaudiere > 0 or self.nbCircReg > 0:
+            # De base, la liste général comprend: 1 température extérieure, 1 défaut manque d'eau
+            self.General.append(General(num=1, nomGen = "Général", nbDefaut = 1, nbTempExt = 1)) 
+            self.save() #Enregistrement dans la base
 
     ######CONFIGURATION CHAUDIERES#####
     #Nombre de chaudière dans la chaufferie

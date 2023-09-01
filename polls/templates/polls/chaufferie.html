@@ -3,11 +3,8 @@
 {% block content %}
     {% if user.is_authenticated %}
         <div class="container-fluid">
-            <h1 class="text-center">Génération de la liste de points</h1>
+            <h1 class="text-center">Définition des données d'entrées</h1>
         </div>
-        <p class="text-center">
-            Cette page permet de générer la liste de points en fonction de la constitution de la chaufferie ou de la sous-station.
-        </p>
 
         <span style="color:red">{{message}}</span>
         <br>
@@ -16,9 +13,13 @@
         <form method="post" id="nbChaudform" class="form">
             <fieldset class="container-fluid border border-primary rounded">
                 <div class="row"> 
-                    <legend class="text-center">Configuration de la chaufferie </legend>
+                    <legend class="text-center">PARTIE A : CONFIGURATION AUTOMATE DE REGULATION </legend>
                 </div>
-                
+                <p>
+                    Cette section vous permet de décrire ce qui compose la chaufferie ou la sous-station dans laquelle la régulation va être installée. 
+                    Les données que vous saississez sont nécessaire pour élaborer la liste de points pour le dimensionnement de l'automate de régulation, 
+                    et de son instrumentation. 
+                </p>
                 {% csrf_token %}
 
                 <div class="container-fluid col mt-1 me-1 pb-1">
@@ -30,7 +31,7 @@
                     <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
                         <legend>Chaudières</legend>
                         <label>Nombres de chaudières: </label>
-                        <input name="nbChaudiere" id="nbChaudiere" type="number" value="{{ chaufferie.nbChaudiere }}" style="width: 20%;">
+                        <input name="nbChaudiere" id="nbChaudiere" type="number" min="0" value="{{ chaufferie.nbChaudiere }}" style="width: 20%;">
                     </fieldset>
 
                     <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
@@ -48,13 +49,13 @@
                     <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
                         <legend>Circuits</legend>
                         <label>Nombres de circuits: </label>
-                        <input name="nbCircReg" id="nbCircReg" type="number" value="{{ chaufferie.nbCircReg }}">
+                        <input name="nbCircReg" id="nbCircReg" type="number" min="0" value="{{ chaufferie.nbCircReg }}">
                     </fieldset>
 
                     <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
                         <legend>Autres:</legend>
                         <label>Nombres d'équipements divers: </label>
-                        <input name="nbDivers" id="nbDivers" type="number" value="{{ chaufferie.nbDivers }}">
+                        <input name="nbDivers" id="nbDivers" type="number" min="0" value="{{ chaufferie.nbDivers }}">
                     </fieldset>
 
                     <div class="col mt-1">
@@ -86,29 +87,27 @@
 
                     <div class="col mt-1">
                         <label class="row">Nombre de synthèse défauts: </label>
-                        <input class="row" name="nbDef{{ c.num }}" id="nbDef{{ c.num }}" type="number" value="{{ c.nbDef }}">
+                        <input class="row" name="nbDef{{ c.num }}" id="nbDef{{ c.num }}" type="number" min="0" value="{{ c.nbDef }}">
                     </div>
 
                     <div class="col mt-1">
                         <label class="row">Nombre de Température: </label>
-                        <input class="row" name="nbTemp{{ c.num }}" id="nbTemp{{ c.num }}" type="number" value="{{ c.nbTemp }}">
+                        <input class="row" name="nbTemp{{ c.num }}" id="nbTemp{{ c.num }}" type="number" min="0" value="{{ c.nbTemp }}">
                     </div>
 
                     <div class="col mt-1">
                         <label class="row">Nombre de pompes: </label>
-                        <input class="row" name="nbPpeChaud{{ c.num }}" id="nbPpeChaud{{ c.num }}" type="number" value="{{ c.nbPpe }}">
+                        <input class="row" name="nbPpeChaud{{ c.num }}" id="nbPpeChaud{{ c.num }}" type="number" min="0" value="{{ c.nbPpe }}">
                     </div>
 
                     <div class="col mt-1">
                         <label class="row">Nombre de V2V: </label>
-                        <input class="row" name="nbV2VChaud{{ c.num }}" id="nbV2VChaud{{ c.num }}" type="number" value="{{ c.nbV2V }}">        
+                        <input class="row" name="nbV2VChaud{{ c.num }}" id="nbV2VChaud{{ c.num }}" type="number" min="0" value="{{ c.nbV2V }}">        
                     </div>
 
                     <div class="col mt-1">       
                     </div>
 
-                    <div class="col mt-1">       
-                    </div>
                 </div>
             </fieldset>
             {% endfor %}
@@ -122,27 +121,27 @@
                 <div class="row m-1">
                     <div class="col mt-1">
                         <label class="row">Nom équipement: </label>
-                        <input class="row" name="nomDivers{{ d.num }}" id="nomDivers{{ d.num }}" type="text" value="{{ d.nomDivers }}">
+                        <input class="row" name="nomDivers{{ d.num }}" id="nomDivers{{ d.num }}" type="text" min="0" value="{{ d.nomDivers }}">
                     </div>
         
                     <div class="col mt-1">
                         <label class="row">Nom équipement: </label>
-                        <input class="row" name="nomDivers{{ d.num }}" id="nomDivers{{ d.num }}" type="text" value="{{ d.nomDivers }}">
+                        <input class="row" name="nomDivers{{ d.num }}" id="nomDivers{{ d.num }}" type="text" min="0" value="{{ d.nomDivers }}">
                     </div>
         
                     <div class="col mt-1">
                         <label class="row">Nombre d'infos supplémentaires: </label>
-                        <input class="row" name="nbTSsupDivers{{ d.num }}" id="nbTSsupDivers{{ d.num }}" type="number" value="{{ d.nbTSsup }}">
+                        <input class="row" name="nbTSsupDivers{{ d.num }}" id="nbTSsupDivers{{ d.num }}" type="number" min="0" value="{{ d.nbTSsup }}">
                     </div>
         
                     <div class="col mt-1">
                         <label class="row">Nombre de pompes: </label>
-                        <input class="row" name="nbPpeDivers{{ d.num }}" id="nbPpeDivers{{ d.num }}" type="number" value="{{ d.nbPpe }}">
+                        <input class="row" name="nbPpeDivers{{ d.num }}" id="nbPpeDivers{{ d.num }}" type="number" min="0" value="{{ d.nbPpe }}">
                     </div>
         
                     <div class="col mt-1">
                         <label class="row">Nombre de V2V: </label>
-                        <input class="row" name="nbV2VDivers{{ d.num }}" id="nbV2VDivers{{ d.num }}" type="number" value="{{ d.nbV2V }}">
+                        <input class="row" name="nbV2VDivers{{ d.num }}" id="nbV2VDivers{{ d.num }}" type="number" min="0" value="{{ d.nbV2V }}">
                     </div>
 
                     <div class="col mt-1">
@@ -165,19 +164,19 @@
                     </div>
                     <div class="col mt-1">
                         <label class="row">Nombre de Température Eau: </label>
-                        <input class="row" name="nbTempCircReg{{ c.num }}" id="nbTempCircReg{{ c.num }}" type="number" value="{{ c.nbTemp }}">
+                        <input class="row" name="nbTempCircReg{{ c.num }}" id="nbTempCircReg{{ c.num }}" type="number" min="0" value="{{ c.nbTemp }}">
                     </div>
                     <div class="col mt-1">
                         <label class="row">Nombre de Température Ambiant (filaire): </label>
-                        <input class="row" name="nbAmbCircReg{{ c.num }}" id="nbAmbCircReg{{ c.num }}" type="number" value="{{ c.nbAmb }}">
+                        <input class="row" name="nbAmbCircReg{{ c.num }}" id="nbAmbCircReg{{ c.num }}" type="number" min="0" value="{{ c.nbAmb }}">
                     </div>
                     <div class="col mt-1">
                         <label class="row">Nombre de pompes: </label>
-                        <input class="row" name="nbPpeCircReg{{ c.num }}" id="nbPpeCircReg{{ c.num }}" type="number" value="{{ c.nbPpe }}">
+                        <input class="row" name="nbPpeCircReg{{ c.num }}" id="nbPpeCircReg{{ c.num }}" type="number" min="0" value="{{ c.nbPpe }}">
                     </div>
                     <div class="col mt-1">
                         <label class="row">Nombre de V3V: </label>
-                        <input  class="row"name="nbV3VCircReg{{ c.num }}" id="nbV3VCircReg{{ c.num }}" type="number" value="{{ c.nbV3V }}">
+                        <input  class="row"name="nbV3VCircReg{{ c.num }}" id="nbV3VCircReg{{ c.num }}" type="number" min="0" value="{{ c.nbV3V }}">
                     </div>
 
                     <div class="col mt-1">
@@ -200,29 +199,93 @@
                     </div>
                     <div class="col mt-1">
                         <label class="row">Nombre de défauts: </label>
-                        <input class="row" name="nbDef{{ c.num }}" id="nbDef{{ c.num }}" type="number" value="{{ c.nbDef }}">
+                        <input class="row" name="nbDef{{ c.num }}" id="nbDef{{ c.num }}" type="number" min="0" value="{{ c.nbDef }}">
                     </div>
                     <div class="col mt-1">
                         <label class="row">Nombre de ballon: </label>
-                        <input class="row" name="nbBallonECS{{ c.num }}" id="nbBallonECS{{ c.num }}" type="number" value="{{ c.nbBallon }}">
+                        <input class="row" name="nbBallonECS{{ c.num }}" id="nbBallonECS{{ c.num }}" type="number" min="0" value="{{ c.nbBallon }}">
                     </div>
                     <div class="col mt-1">
                         <label class="row">Nombre de sonde Température: </label>
-                        <input class="row" name="nbTempECS{{ c.num }}" id="nbTempECS{{ c.num }}" type="number" value="{{ c.nbTemp }}">
+                        <input class="row" name="nbTempECS{{ c.num }}" id="nbTempECS{{ c.num }}" type="number" min="0" value="{{ c.nbTemp }}">
                     </div>
                     <div class="col mt-1">
                         <label class="row">Nombre de pompes: </label>
-                        <input class="row" name="nbPpeECS{{ c.num }}" id="nbPpeECS{{ c.num }}" type="number" value="{{ c.nbPpe }}">
+                        <input class="row" name="nbPpeECS{{ c.num }}" id="nbPpeECS{{ c.num }}" type="number" min="0" value="{{ c.nbPpe }}">
                     </div>
                     <div class="col mt-1">
                         <label class="row">Nombre de V3V: </label>
-                        <input  class="row"name="nbV3VECS{{ c.num }}" id="nbV3VECS{{ c.num }}" type="number" value="{{ c.nbV3V }}">
+                        <input  class="row"name="nbV3VECS{{ c.num }}" id="nbV3VECS{{ c.num }}" type="number" min="0" value="{{ c.nbV3V }}">
                     </div>
                     <div class="col mt-1">
                     </div>
                 </div>
             </fieldset>
             {% endfor %}
+            <br>
+            <!-- CONFIGURATION IOT -->
+            <fieldset class="container-fluid mt-1 pb-1 border border-primary rounded">
+                <div class="row">
+                    <legend class="text-center">PARTIE B : IOT & OPTIMISATION</legend>
+                </div>
+                <p>
+                    Cette section va définir les objets IOT à chiffrer.<br /> 
+                    Prévoir une passerelle dans les cas suivants: <br />
+                    - si la couverture LoRa est mauvaise <br />
+                    - si une remontée des données IOT doit être prévue sur un automate ou une GTB en local <br />
+                    - si une optimisation d'ambiant est à prévoir <br />
+                </p>
+                <div class="row m-1">
+                    <div class="col mt-1">
+                        <label class="text-center">Passerelle à prévoir: </label>
+                        <input name="Passerelle" id="Passerelle" type="checkbox" value="{{ LotIOT.Passerelle }}" {% if LotIOT.Passerelle %} checked {% endif %}>
+                    </div>
+                </div>
+                <div class="row m-1">
+                    <div class="col mt-1">
+                        <label class="row">Température Ambiant & Humidité:</label>
+                        <input class="row" name="nbTempAmbIOT" id="nbTempAmbIOT" type="number" min="0" value="{{ LotIOT.nbTempAmbIOT }}">
+                    </div>
+                    <div class="col mt-1" hidden>
+                        <label class="row">Température Eau (1 sonde):</label>
+                        <input class="row" name="nbTemp1EauIOT" id="nbTemp1EauIOT" type="number" min="0" value="{{ LotIOT.nbTemp1EauIOT }}">
+                    </div>
+                    <div class="col mt-1">
+                        <label class="row">Température Eau (2 sondes):</label>
+                        <input class="row" name="nbTemp2EauIOT" id="nbTemp2EauIOT" type="number" min="0" value="{{ LotIOT.nbTemp2EauIOT }}">
+                    </div>
+                    <div class="col mt-1" hidden>
+                        <label class="row">CO2, Température & Humidité:</label>
+                        <input class="row" name="nbCO2IOT" id="nbCO2IOT" type="number" min="0" value="{{ LotIOT.nbCO2IOT }}">
+                    </div>
+                    <div class="col mt-1">
+                    </div>
+                    <div class="col mt-1">
+                    </div>
+                </div>
+                <div class="row m-1">
+                    <div class="col mt-1" hidden>
+                        <label class="row">Télérelève GAZ:</label>
+                        <input class="row" name="nbTLRGazIOT" id="nbTLRGazIOT" type="number" min="0" value="{{ LotIOT.nbTLRGazIOT }}">
+                    </div>
+                    <div class="col mt-1" hidden>
+                        <label class="row">Télérelève EAU:</label>
+                        <input class="row" name="nbTLREauIOT" id="nbTLREauIOT" type="number" min="0" value="{{ LotIOT.nbTLREauIOT }}">
+                    </div>
+                    <div class="col mt-1" hidden>
+                        <label class="row">Télérelève ELEC:</label>
+                        <input class="row" name="nbTLRElecIOT" id="nbTLRElecIOT" type="number" min="0" value="{{ LotIOT.nbTLRElecIOT }}">
+                    </div>
+                    <div class="col mt-1" hidden>
+                        <label class="row">Télérelève CALORIES:</label>
+                        <input class="row" name="nbTLRCaloIOT" id="nbTLRCaloIOT" type="number" min="0" value="{{ LotIOT.nbTLRCaloIOT }}">
+                    </div>
+                    <div class="col mt-1">
+                    </div>
+                    <div class="col mt-1">
+                    </div>
+                </div>
+            </fieldset>
 
             <div class="col d-flex justify-content-end mt-1">
                 <input type="hidden" name="form_type" value="chaudform">

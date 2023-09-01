@@ -23,6 +23,13 @@ class PackOPT(models.Model):
     priceTECS = models.FloatField()
     priceTOT = models.FloatField()
 
+#Déclaration du modèle d'un PACK IOT
+class PackIOTUnit(models.Model):
+    Reference = models.CharField(max_length=200, default="", unique=True)
+    type = models.CharField(max_length=200, default="")
+    comment = models.CharField(max_length=200, default="")
+    price = models.FloatField()
+
 #Déclaration d'une liste de points
 class listePacks(models.Model):
     num = models.IntegerField(default=1)

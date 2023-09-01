@@ -1,11 +1,14 @@
 import xlsxwriter
+from ..models.Typology.modelsEquip import Point
 from django.http import HttpResponse
 import mimetypes
-import os
 from DEFPTS.settings import MEDIA_URL
 from django.http.response import HttpResponse
 
-def generationXls(request, liste):
+
+def generationXls(request, username):
+    liste = Point.objects.filter(user=username)
+
     #Initialisation du message
     message = ""
 
@@ -49,9 +52,9 @@ def generationXls(request, liste):
         worksheet.write("G1", "", header_style)
 
         pos = 1
-        derniereLigne = pos + len(liste.pts)
+        derniereLigne = pos + len(liste)
 
-        for point in liste.pts:
+        for point in liste:
             pos = pos + 1
             if pos == derniereLigne: 
                 style = header_style
@@ -68,6 +71,8 @@ def generationXls(request, liste):
 
     message = "Liste de points générée"
     return message
+    
+    
 
 #Page Download LISTE DE POINTS
 def download_file(request, filename, newName):
