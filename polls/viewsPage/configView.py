@@ -13,7 +13,7 @@ class packValide():
 
 def newConfig(request):
     message = ""
-
+    print("config")
     packsTG = PackTG.objects.all()
     packsOPT = PackOPT.objects.all()
     
@@ -39,8 +39,8 @@ def newConfig(request):
     
     packOPTOK = {
         "Reference" : "",
-        "Tamb" : 0,
-        "TECS" : 0,
+        "Tamb" : 9999,
+        "TECS" : 9999,
         "pricePAS" : 0,
         "priceTamb" : 0,
         "priceTECS" : 0,
@@ -97,37 +97,6 @@ def newConfig(request):
             packTGOK["priceSOFREL"] = 0
             packTGOK["priceMOY"] = 0
 
-        # EN COURS
-        try:
-            #Si l'objet 1 est existant alors on le récupère
-            iot = LotIOT.objects.get(user=request.user.username)
-            nbTambIOT = iot.nbTempAmbIOT
-            nbTECSIOT = iot.nbTemp2EauIOT
-        except LotIOT.DoesNotExist:
-            #Si l'objet 1 n'existe pas
-            nbTambIOT = 0
-            nbTECSIOT = 0
-        
-        print("valeur T amb: ", iot.user )
-        
-        for p in packsOPT:
-            if nbTambIOT <= p.Tamb and nbTECSIOT <= p.TECS :
-                packsOPTValide.append([p.Reference, p.Tamb-nbTambIOT, p.TECS-nbTECSIOT])
-
-        for p in packsOPTValide:
-            if (int(p[1])<=int(packOPTOK.get("Tamb"))):
-                if (int(p[2])<=int(packOPTOK.get("TECS"))):
-                            packOPTOK["Reference"] = p[0]
-
-        for p in packsOPT:
-            if packOPTOK["Reference"] == p.Reference:
-                packOPTOK["Tamb"] = p.Tamb
-                packOPTOK["TECS"] = p.TECS
-                packOPTOK["pricePAS"] = p.pricePAS
-                packOPTOK["priceTamb"] = p.priceTamb
-                packOPTOK["priceTECS"] = p.priceTECS
-                packOPTOK["priceTOT"] = p.priceTOT
-
     else:
         packTGOK["Reference"] = ""
         packTGOK["AI"] = 0
@@ -144,6 +113,36 @@ def newConfig(request):
         packTGOK["priceSOFREL"] = 0
         packTGOK["priceMOY"] = 0
 
+    try:
+        #Si l'objet 1 est existant alors on le récupère
+        iot = LotIOT.objects.get(user=request.user.username)
+        nbTambIOT = iot.nbTempAmbIOT
+        nbTECSIOT = iot.nbTemp2EauIOT
+    except LotIOT.DoesNotExist:
+        #Si l'objet 1 n'existe pas
+        nbTambIOT = 0
+        nbTECSIOT = 0
+    
+    if nbTambIOT > 0 or nbTECSIOT > 0 :
+        for p in packsOPT:
+            if nbTambIOT <= p.Tamb and nbTECSIOT <= p.TECS :
+                packsOPTValide.append([p.Reference, p.Tamb-nbTambIOT, p.TECS-nbTECSIOT])
+
+        for p in packsOPTValide:
+            if (int(p[1])<=int(packOPTOK.get("Tamb"))):
+                if (int(p[2])<=int(packOPTOK.get("TECS"))):
+                            packOPTOK["Reference"] = p[0]
+            
+
+        for p in packsOPT:
+            if packOPTOK["Reference"] == p.Reference:
+                packOPTOK["Tamb"] = p.Tamb
+                packOPTOK["TECS"] = p.TECS
+                packOPTOK["pricePAS"] = p.pricePAS
+                packOPTOK["priceTamb"] = p.priceTamb
+                packOPTOK["priceTECS"] = p.priceTECS
+                packOPTOK["priceTOT"] = p.priceTOT
+    else:
         packOPTOK["Reference"] = ""
         packOPTOK["Tamb"] = 0
         packOPTOK["TECS"] = 0
@@ -151,7 +150,6 @@ def newConfig(request):
         packOPTOK["priceTamb"] = 0
         packOPTOK["priceTECS"] = 0
         packOPTOK["priceTOT"] = 0
-
             
     return render(request, 'polls/config.html', {
         'message': message,
