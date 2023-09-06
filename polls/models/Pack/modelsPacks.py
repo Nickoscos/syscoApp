@@ -16,6 +16,7 @@ class PackTG(models.Model):
 #Déclaration du modèle d'un PACK OPTIMISATION IOT
 class PackOPT(models.Model):
     Reference = models.CharField(max_length=200, default="", unique=True)
+    nbIOTmax = models.IntegerField()
     Tamb = models.IntegerField()
     TECS = models.IntegerField()
     pricePAS = models.FloatField()

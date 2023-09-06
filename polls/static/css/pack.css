@@ -43,6 +43,16 @@ table {
 	min-width: 100%;
 }
 
+.packIOTRef{ 
+	/* Behave  like a "row" */
+	position: relative;
+	line-height: 10px;
+	margin-left: 0%;
+	width: 10px;
+	/* min-width: 20%;
+	max-width: 50%;*/
+}
+
 /* Zebra striping */
 tr:nth-of-type(odd) { 
     background: #eee; 

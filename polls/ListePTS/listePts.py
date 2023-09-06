@@ -2,6 +2,7 @@ from ..models.Typology.modelsEquip import Point, Temp, SyntDefaut, DefPpe, CmdCh
 from ..models.Typology.modelsEquip import CmdV2V, FdcV2V, Info, Amb, CmdV3V, CmdBal
 from ..models.Typology.modelsChaudiere import Chaufferie
 from .export import generationXls
+from django.shortcuts import redirect, render
 
 #Fonction permettant la génération de la liste de points
 def generationListe(request, chaufferie):
@@ -30,6 +31,7 @@ def generationListe(request, chaufferie):
 
     # #Ajout de la dernière ligne de la liste TOTAUX
     calculTotaux(request.user.username)
+
 
 #Fonction de mise à jour liste
 def updateListe(request):

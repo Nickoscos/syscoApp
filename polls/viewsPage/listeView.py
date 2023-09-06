@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from ..models.Typology.modelsChaudiere import Chaufferie
-from ..models.Typology.modelsEquip import Liste, LotIOT
+from ..models.Typology.modelsEquip import LotIOT
 from ..forms.formsChaudiere import nbChaudForm, chaudForm
 from ..ListePTS.listePts import generationListe, updateListe, generationXls, calculTotaux, RAZListe
 from ..models.Typology.modelsEquip import Point
-from django.db.models import Q
+from ..models.Pack.modelsPacks import PackTG, PackOPT, PackIOTUnit
 
 #Page 1: GENERATION DE LA LISTE DE POINTS
 def genListeView(request):
@@ -118,7 +118,7 @@ def genListeView(request):
             iot.save()
 
             message = generationListe(request, c)
-            return redirect("polls:listePts")
+            return redirect("polls:config")
 
     c = Chaufferie.objects.get(user=request.user.username) #Relecture pour affichage
 
@@ -226,8 +226,8 @@ def listePts(request):
                     nbTemp=int(request.POST.get('nbTempECS'+str(ECS.num))),
                     nbPpe=int(request.POST.get('nbPpeECS'+str(ECS.num))),
                 )
-
             message = generationListe(c)
+            
         elif (request.POST.get("form_type") == "listform"):
             if request.POST.get("Supp") !=None:
                 print("valeur")
@@ -265,7 +265,6 @@ def listePts(request):
         nbChaudform = nbChaudForm()
 
     c = Chaufferie.objects.get(user=request.user.username) #Relecture pour affichage
-    # listePts = Liste.objects.get(user=request.user.username)
     listePts = Point.objects.filter(user=request.user.username,).order_by('equip').values()
     calculTotaux(request.user.username)
     return render(request, 'polls/listePts.html', {
@@ -275,5 +274,7 @@ def listePts(request):
         'listePts': listePts,
         'message': message
         })
+    
+
 
 

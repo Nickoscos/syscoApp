@@ -12,9 +12,9 @@
         <br>
 
         {% csrf_token %}
-        <fieldset class="container-fluid mt-1 pb-1 border border-success rounded">
+        <fieldset class="container-fluid mt-1 pb-1 border border-success rounded" {% if packTGOK.Reference == "" %} hidden {% endif %}>
             <div class="row">
-                <legend class="text-center">PACK TELEGESTION</legend>
+                <legend class="text-center">PARTIE A - PACK TELEGESTION</legend>
             </div>
 
             <table class="table text-center mt-2" style="width: 30%;">
@@ -81,9 +81,9 @@
             </table>  
         </fieldset>
         <br>
-        <fieldset class="container-fluid mt-1 pb-1 border border-success rounded" style="width: 100%;">
+        <fieldset class="container-fluid mt-1 pb-1 border border-success rounded" style="width: 100%;" {% if packOPTOK.Reference == "" %} hidden {% endif %}>
             <div class="row">
-                <legend class="text-center">PACK OPTIMISATION</legend>
+                <legend class="text-center">PARTIE B - PACK OPTIMISATION</legend>
             </div>
 
             <table class="table text-center mt-2" style="width: 30%;">
@@ -116,6 +116,71 @@
                     <tr>
                         <td style="background-color: gray;font-size: 1.3em; color: white; vertical-align: middle; font-weight: bold;" width="50%">Prix TOTAL</td>
                         <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packOPTOK.priceTOT }}" id="{{ packOPTOK.priceTOT }}">{{ packOPTOK.priceTOT }} €</p></td>
+                    </tr>
+                </tbody>
+            </table>  
+        </fieldset>
+        <br>
+        <fieldset class="container-fluid mt-1 pb-1 border border-success rounded" style="width: 100%;" {% if packIOTOK.Quant_TAMB == 0 and packIOTOK.Quant_TEAU2 == 0 and packIOTOK.Quant_CO2 == 0 and packIOTOK.Quant_CPTGAZ == 0 and packIOTOK.Quant_CPTEAU == 0 and packIOTOK.Quant_CPTCALO == 0 and packIOTOK.Quant_CPTELEC == 0 %} hidden {% endif %}>
+            <div class="row">
+                <legend class="text-center">PARTIE C - PACK TELERELEVE</legend>
+            </div>
+
+            <table class="table text-center mt-2" style="width: 30%;">
+                <tbody>
+                    <tr style="background-color: gray;">
+                        <th>Référence</th>
+                        <th>Quantité</th>
+                        <th>Prix Total</th>
+                    </tr>
+                    <tr {% if packIOTOK.Quant_PASS > 1 %} hidden {% endif %}>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Passerelle LoRa (100 capteurs)</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_PASS }}" id="{{ packIOTOK.Quant_PASS }}">{{ packIOTOK.Quant_PASS }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_PASS }}" id="{{ packIOTOK.Prix_PASS }}">{{ packIOTOK.Prix_PASS }} €</p></td>
+                    </tr>
+                    <tr {% if packIOTOK.Quant_PASS6 > 1 %} hidden {% endif %}>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Passerelle LoRa (moins de 6 capteurs)</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_PASS6 }}" id="{{ packIOTOK.Quant_PASS6 }}">{{ packIOTOK.Quant_PASS6 }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_PASS6 }}" id="{{ packIOTOK.Prix_PASS6 }}">{{ packIOTOK.Prix_PASS6 }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Température Ambiante & Humidité</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_TAMB }}" id="{{ packIOTOK.Quant_TAMB }}">{{ packIOTOK.Quant_TAMB }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_TAMB }}" id="{{ packIOTOK.Prix_TAMB }}">{{ packIOTOK.Prix_TAMB }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Température Eau 2 sondes (aller/retour)</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_TEAU2 }}" id="{{ packIOTOK.Quant_TEAU2 }}">{{ packIOTOK.Quant_TEAU2 }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_TEAU2 }}" id="{{ packIOTOK.Prix_TEAU2 }}">{{ packIOTOK.Prix_TEAU2 }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">CO2, COV, Température & Humidité</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_CO2 }}" id="{{ packIOTOK.Quant_CO2 }}">{{ packIOTOK.Quant_CO2 }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_CO2 }}" id="{{ packIOTOK.Prix_CO2 }}">{{ packIOTOK.Prix_CO2 }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Télérelève compteur GAZ</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_CPTGAZ }}" id="{{ packIOTOK.Quant_CPTGAZ }}">{{ packIOTOK.Quant_CPTGAZ }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_CPTGAZ }}" id="{{ packIOTOK.Prix_CPTGAZ }}">{{ packIOTOK.Prix_CPTGAZ }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Télérelève compteur EAU</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_CPTEAU }}" id="{{ packIOTOK.Quant_CPTEAU }}">{{ packIOTOK.Quant_CPTEAU }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_CPTEAU }}" id="{{ packIOTOK.Prix_CPTEAU }}">{{ packIOTOK.Prix_CPTEAU }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Télérelève compteur CALORIES</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_CPTCALO }}" id="{{ packIOTOK.Quant_CPTCALO }}">{{ packIOTOK.Quant_CPTCALO }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_CPTCALO }}" id="{{ packIOTOK.Prix_CPTCALO }}">{{ packIOTOK.Prix_CPTCALO }} €</p></td>
+                    </tr>
+                    <tr>
+                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Télérelève compteur ELEC</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_CPTELEC }}" id="{{ packIOTOK.Quant_CPTELEC }}">{{ packIOTOK.Quant_CPTELEC }}</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_CPTELEC }}" id="{{ packIOTOK.Prix_CPTELEC }}">{{ packIOTOK.Prix_CPTELEC}} €</p></td>
+                    </tr>
+                    <tr>
+                        <td class="packOKprinc" colspan="2"  style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">PRIX TOTAL</p></td>
+                        <td class="packOKsec" style="vertical-align: middle;font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packIOTOK.Prix_TOTAL }}" id="{{ packIOTOK.Prix_TOTAL }}">{{ packIOTOK.Prix_TOTAL}} €</p></td>
                     </tr>
                 </tbody>
             </table>  

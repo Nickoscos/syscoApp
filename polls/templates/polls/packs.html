@@ -95,15 +95,16 @@
                     <tr>
                         <th
                         {% if user.groups.first.name == "SYSCO" %} 
-                            colspan="8" 
+                            colspan="9" 
                         {% else %}
-                            colspan="7" 
+                            colspan="8" 
                         {% endif %} 
                         style="background-color: gray; font-size: 1.3em;"> PACKS OPTIMISATION IOT</th>
                     </tr>
                     <tr style="background-color: gray;">
                         <!-- <th>Sous-ensemble</th> -->
                         <th>Référence</th>
+                        <th>Nombre de capteurs maximal</th>
                         <th>Température Ambiant</th>
                         <th>Température ECS</th>
                         <th>Prix Passerelle</th>
@@ -119,6 +120,7 @@
                     {% for p in packsOPT %}
                     <tr>
                         <td class="packText"><p name="{{ p.Reference }}" id="{{ p.Reference }}" type="text" value="{{ p.Reference }}">{{ p.Reference }}</p></td>
+                        <td class="packES"><p name="{{ p.nbIOTmax }}" id="{{ p.nbIOTmax }}">{{ p.nbIOTmax }}</p></td>
                         <td class="packES"><p name="{{ p.Tamb }}" id="{{ p.Tamb }}">{{ p.Tamb }}</p></td>
                         <td class="packES"><p name="{{ p.TECS }}" id="{{ p.TECS }}">{{ p.TECS }}</p></td>
                         <td class="packPrix"><p name="{{ p.pricePAS }}" id="{{ p.pricePAS }}">{{ p.pricePAS }} €</p></td>
@@ -135,6 +137,10 @@
                     {% if user.groups.first.name == "SYSCO" %}
                     <tr>
                         <td class="packText"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
+                        <td class="packIOTES"><select name="nbIOTmax_Add">
+                            <option value="100">100</option>
+                            <option value="6">6</option>
+                        </select></td>
                         <td class="packES"><input name="Tamb_Add" id="Tamb_Add" type="number" value=0></td>
                         <td class="packES"><input name="TECS_Add" id="TECS_Add" type="number" value=0></td>
                         <td class="packPrix"><input name="pricePAS_Add" id="pricePAS_Add" type="number" step="0.01" value=0></td>
@@ -177,12 +183,12 @@
                 <tbody>
                     {% for p in packsIOTUnit %}
                     <tr>
-                        <td class="packText"><p name="{{ p.Reference }}" id="{{ p.Reference }}" type="text" value="{{ p.Reference }}">{{ p.Reference }}</p></td>
-                        <td class="packES"><p name="{{ p.type }}" id="{{ p.type }}">{{ p.type }}</p></td>
-                        <td class="packES"><p name="{{ p.comment }}" id="{{ p.comment }}">{{ p.comment }}</p></td>
-                        <td class="packPrix"><p name="{{ p.price }}" id="{{ p.price }}">{{ p.price }} €</p></td>
+                        <td class="packIOTRef"><p name="{{ p.Reference }}" id="{{ p.Reference }}" type="text" value="{{ p.Reference }}">{{ p.Reference }}</p></td>
+                        <td class="packIOTES"><p name="{{ p.type }}" id="{{ p.type }}">{{ p.type }}</p></td>
+                        <td class="packIOTComment"><p name="{{ p.comment }}" id="{{ p.comment }}">{{ p.comment }}</p></td>
+                        <td class="packIOTPrix"><p name="{{ p.price }}" id="{{ p.price }}">{{ p.price }} €</p></td>
                         {% if user.groups.first.name == "SYSCO" %}
-                        <td>
+                        <td class="packIOTAction">
                             <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.Reference}}>Supprimer</button>
                         </td>
                         {% endif %}
@@ -190,11 +196,22 @@
                     {% endfor %}
                     {% if user.groups.first.name == "SYSCO" %}
                     <tr>
-                        <td class="packText"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
-                        <td class="packES"><input name="type_Add" id="type_Add" type="number" value=0></td>
-                        <td class="packES"><textarea name="comment_Add" id="comment_Add"></textarea>
-                        <td class="packPrix"><input name="price_Add" id="price_Add" type="number" step="0.01" value=0></td>
-                        <td>
+                        <td class="packIOTRef"><input name="referenceIOT_Add" id="referenceIOT_Add" type="text" value="référence"></td>
+                        <!-- <td class="packES"><input name="type_Add" id="type_Add" type="number" value=0></td> -->
+                        <td class="packIOTES"><select name="typeIOT_Add">
+                            <option value="PASS6">Passerelle LoRa (Sup 6 capteurs)</option>
+                            <option value="PASS">Passerelle LoRa (inf 6 capteurs)</option>
+                            <option value="TAMB">Ambiant et Hygrométrie</option>
+                            <option value="TEAU2">T° Eau (aller/retour)</option>
+                            <option value="CO2">CO2, COV, Ambiant & Hygrométrie</option>
+                            <option value="CPT GAZ">Compteur GAZ</option>
+                            <option value="CPT ELEC">Compteur ELEC</option>
+                            <option value="CPT CALO">Compteur CALORIES</option>
+                            <option value="CPT EAU">Compteur EAU</option>
+                            </select></td>
+                        <td class="packIOTComment"><textarea name="commentIOT_Add" id="commentIOT_Add"></textarea>
+                        <td class="packIOTPrix"><input name="priceIOT_Add" id="priceIOT_Add" type="number" step="0.01" value=0></td>
+                        <td class="packIOTAction">
                             <button type="submit" class="btn btn-success"name="Add" id="Add" value=1>Ajout</button>
                         </td> 
                     </tr>

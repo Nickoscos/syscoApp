@@ -32,6 +32,7 @@ def listPack(request):
             if request.POST.get("Add") != None:
                 if not PackOPT.objects.filter(Reference=request.POST.get('reference_Add')).exists():
                     packsOPT.create(Reference = request.POST.get('reference_Add'), 
+                        nbIOTmax = int(request.POST.get('nbIOTmax_Add')),           
                         Tamb = int(request.POST.get('Tamb_Add')), 
                         TECS = int(request.POST.get('TECS_Add')), 
                         pricePAS=float(request.POST.get('pricePAS_Add')), 
@@ -44,10 +45,24 @@ def listPack(request):
                 packdel = packsOPT.get(Reference=request.POST.get('Supp'))
                 packdel.delete()
 
+        if(request.POST.get("form_type") == "listPackIOTUnitform"):
+            if request.POST.get("Add") != None:
+                print("Add IOT")
+                if not PackIOTUnit.objects.filter(Reference=request.POST.get('referenceIOT_Add')).exists():
+                    packsIOTUnit.create(Reference = request.POST.get('referenceIOT_Add'), 
+                        type = request.POST.get('typeIOT_Add'), 
+                        comment = request.POST.get('commentIOT_Add'), 
+                        price=request.POST.get('priceIOT_Add'))
+                else:
+                    message = "pack existant"
+            elif request.POST.get("Supp") != None:
+                packdel = packsIOTUnit.get(Reference=request.POST.get('Supp'))
+                packdel.delete()
+
     return render(request, 'polls/packs.html', {
         'message': message,
         'packsTG': packsTG,
         'packsOPT': packsOPT,
-        'packsIOT': packsIOTUnit,
+        'packsIOTUnit': packsIOTUnit,
         })
 
