@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -143,3 +144,10 @@ MEDIAFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#Déconnexion après la fermeture du navigateur
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+#Déconnexion après x secondes d'inactivité
+SESSION_COOKIE_AGE = 1800 # seconds
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
