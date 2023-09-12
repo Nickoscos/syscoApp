@@ -3,7 +3,19 @@
 {% block content %}
     {% if user.is_authenticated %}
         <div class="container-fluid">
-            <h1 class="text-center">Définition des données d'entrées</h1>
+            <div class="row">
+                <div class="col-1">
+
+                </div>
+                <div class="col-10"><h1 class="text-center">Définition des données d'entrées</h1></div>
+                <div class="col-1">
+                    <form action="" method="post" id="RAZ" style="display: flex;justify-content: flex-end;">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="RAZ">
+                        <button type="submit" class="btn btn-danger">RAZ liste</button>
+                    </form>
+                </div>
+            </div>           
         </div>
 
         <span style="color:red">{{message}}</span>
@@ -63,7 +75,7 @@
 
                     <div class="col d-flex justify-content-end mt-1">
                         <input type="hidden" name="form_type" value="nbChaudform">
-                        <button type="submit" class="btn btn-primary">Configuration</button>
+                        <button type="submit" class="btn btn-primary">Configuration Régulation</button>
                     </div>                
                 </div>
             </fieldset>
@@ -289,7 +301,7 @@
 
             <div class="col d-flex justify-content-end mt-1">
                 <input type="hidden" name="form_type" value="chaudform">
-                <button type="submit" class="btn btn-success">Générer liste de points</button>
+                <button type="submit" class="btn btn-success">Générer packs</button>
             </div>    
         </form>
     {% else %}

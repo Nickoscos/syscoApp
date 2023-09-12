@@ -7,7 +7,7 @@ from ..ListePTS.listePts import generationListe, updateListe, generationXls, cal
 from ..models.Typology.modelsEquip import Point
 from ..models.Pack.modelsPacks import PackTG, PackOPT, PackIOTUnit
 
-#Page 1: GENERATION DE LA LISTE DE POINTS
+#GENERATION DE LA LISTE DE POINTS
 def genListeView(request):
     message = "" 
 
@@ -55,7 +55,6 @@ def genListeView(request):
             Chaufferie.creationDivers(c) #Ajout des équipements Divers dans la base de données
             Chaufferie.creationCircReg(c) #Ajout des circuits régulés dans la base de données
             Chaufferie.creationECS(c) #Ajout de l'ECS dans la base de données       
-
 
         # Soumission du formulaire configuration des équipements
         elif (request.POST.get("form_type") == "chaudform"): #and chaudform.is_valid()):
@@ -119,6 +118,24 @@ def genListeView(request):
 
             message = generationListe(request, c)
             return redirect("polls:config")
+        
+        elif (request.POST.get("form_type") == "RAZ"):
+            print("test")
+            message = "Ajuster le nombre de points puis générer liste de points" 
+            c.nomInstal = "Nouvelle installation" #Récupération du nombre de chaudières saisies
+            c.nbChaudiere = 0 #Récupération du nombre de chaudières saisies
+            c.nbDivers = 0 #Récupération du nombre de chaudières saisies
+            c.nbCircReg = 0 #Récupération du nombre de circuits régulés saisies
+            c.ECSpres = False
+            c.ECSprepa = False
+
+            Chaufferie.creationGeneral(c) #Ajout partie générale dans la base de données
+            Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
+            Chaufferie.creationDivers(c) #Ajout des équipements Divers dans la base de données
+            Chaufferie.creationCircReg(c) #Ajout des circuits régulés dans la base de données
+            Chaufferie.creationECS(c) #Ajout de l'ECS dans la base de données       
+
+            LotIOT.objects.get(user=request.user.username).delete()
 
     c = Chaufferie.objects.get(user=request.user.username) #Relecture pour affichage
 

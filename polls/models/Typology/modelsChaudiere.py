@@ -175,7 +175,7 @@ class Chaufferie(models.Model):
     #L'ECS est-il présent:
     ECSpres = models.BooleanField(default=False)
     #L'ECS possède-t-il un préparateur indépendant:
-    ECSprepa = models.BooleanField(default=True)
+    ECSprepa = models.BooleanField(default=False)
 
     ECS = []
 
