@@ -137,6 +137,7 @@ def genListeView(request):
 
             LotIOT.objects.get(user=request.user.username).delete()
 
+
     c = Chaufferie.objects.get(user=request.user.username) #Relecture pour affichage
 
     return render(request, 'polls/chaufferie.html', {

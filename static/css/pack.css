@@ -48,9 +48,13 @@ table {
 	position: relative;
 	line-height: 10px;
 	margin-left: 0%;
-	width:0em;
-	min-width: 20%;
-	max-width: 50%;
+	width: 10px;
+	/* min-width: 20%;
+	max-width: 50%;*/
+}
+
+.packIOTAct {
+	width:1em;
 }
 
 /* Zebra striping */

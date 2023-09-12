@@ -53,6 +53,10 @@ table {
 	max-width: 50%;*/
 }
 
+.packIOTAct {
+	width:1em;
+}
+
 /* Zebra striping */
 tr:nth-of-type(odd) { 
     background: #eee; 
