@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}" media="screen">
     <link rel="stylesheet" href="{% static 'css/liste.css' %}" media="screen">
     <link rel="stylesheet" href="{% static 'css/pack.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'css/catalogueAutom.css' %}" media="screen">
 
     {% load django_bootstrap5 %}
 
@@ -43,7 +44,10 @@
       <a href="{% url 'polls:chaufferie' %}">1-Données d'entrée</a>
       <a href="{% url 'polls:listePts' %}">2-Liste de points générée</a>
       <a href="{% url 'polls:config' %}">3-Configuration du pack</a>
-      <a href="{% url 'polls:packsView' %}" style="position: absolute; bottom: 0;">Packs SYSCO</a>
+      <div style="position: absolute; bottom: 0;">
+        <a href="{% url 'polls:catalogueAutomView' %}">Catalogue Automate</a>
+        <a href="{% url 'polls:packsView' %}">Packs SYSCO</a>
+      </div>
     </div>
   
     <nav class="topnav">
