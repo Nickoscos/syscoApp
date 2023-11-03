@@ -56,7 +56,14 @@
                         <tr>
                             <form action="" method="post" id="catalogueWITUPGform">
                                 {% csrf_token %}
-                                <td class="itemTEXT"><input name="type_Upd" id="type_Upd" type="text" value="{{ p.type }}"></td>
+                                <td class="itemTEXT"><select name="type_Upd" id="type_Upd" value="{{ p.type }}">
+                                    <option value="CPU">CPU</option>
+                                    <option value="Carte_ES">Carte_ES</option>
+                                    <option value="COM">COM</option>
+                                    <option value="EMBASE">EMBASE</option>
+                                    <option value="ALIM">ALIM</option>
+                                    <option value="SONDE">SONDE</option>
+                                </select></td>
                                 <td class="itemTEXT"><input name="reference_Upd" id="reference_Upd" type="text" value="{{ p.reference }}"></td>
                                 <td class="itemNumber"><input name="DI_Upd" id="DI_Upd" value="{{ p.DI }}"></td>
                                 <td class="itemNumber"><input name="DO_Upd" id="DO_Upd" value="{{ p.DO }}"></td>
@@ -135,7 +142,14 @@
                 <form action="" method="post" id="catalogueWITAddform">
                     {% csrf_token %}
                     <tr>
-                        <td class="itemTEXT"><input name="type_Add" id="type_Add" type="text" value="type"></td>
+                        <td class="itemTEXT"><select name="type_Add" id="type_Add" value="{{ p.type }}">
+                            <option value="CPU">CPU</option>
+                            <option value="Carte_ES">Carte_ES</option>
+                            <option value="COM">COM</option>
+                            <option value="EMBASE">EMBASE</option>
+                            <option value="ALIM">ALIM</option>
+                            <option value="SONDE">SONDE</option>
+                        </select></td>
                         <td class="itemTEXT"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
                         <td class="itemNumber"><input name="DI_Add" id="DI_Add" type="number" value=0></td>
                         <td class="itemNumber"><input name="DO_Add" id="DO_Add" type="number" value=0></td>
