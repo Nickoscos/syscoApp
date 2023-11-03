@@ -10,8 +10,9 @@ Objectif:
    - permettre la génération d'une liste de point à partir des éléments constituant une Chaufferie ou Sous Station dans le but de dimensionner l'automate de régulation
 
 AVANT L'UTILISATION:
- 1) Installer BOOTSTRAP5 : pip install django-bootstrap5
- 2) Installer XLSXWRITER : pip install xlsxwriter
+ 1) Installer DJANGO : pip install django
+ 2) Installer BOOTSTRAP5 : pip install django-bootstrap5
+ 3) Installer XLSXWRITER : pip install xlsxwriter
 
 Pour la mise en place sur le serveur:
  1) Dans le fichier settings.py, placer DEBUG à FALSE
