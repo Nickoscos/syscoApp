@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from ..models.Typology.modelsEquip import LotIOT, Point
 from ..models.Pack.modelsPacks import PackTG, PackOPT, PackIOTUnit
 from math import *
+from ..configAutom.configWIT import configWIT
 
 class packValide():
     Reference: CharField(max_length=200)
@@ -14,7 +15,7 @@ class packValide():
 
 def newConfig(request):
     message = ""
-    print("config")
+    configWIT(request, request.user.username, True)
     packsTG = PackTG.objects.all()
     packsOPT = PackOPT.objects.all()
     packsTLR = PackIOTUnit.objects.all()

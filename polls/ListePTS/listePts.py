@@ -33,6 +33,8 @@ def generationListe(request, chaufferie):
     calculTotaux(request.user.username)
 
 
+
+
 #Fonction de mise à jour liste
 def updateListe(request):
     listePts = Point.objects.filter(user=request.user.username)

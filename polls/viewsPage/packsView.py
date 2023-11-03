@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from ..models.Pack.modelsPacks import PackTG, PackOPT, PackIOTUnit
 
+
 def listPack(request):
     message = ''
 
@@ -9,6 +10,8 @@ def listPack(request):
     packsIOTUnit = PackIOTUnit.objects.all()
 
     packUPDATE_ref = ""
+
+
     if request.method == "POST":
         #PACKS TELEGESTION
         if(request.POST.get("form_type") == "PackTGAddform"):
