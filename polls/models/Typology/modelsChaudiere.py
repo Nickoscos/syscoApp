@@ -103,6 +103,15 @@ class Chaufferie(models.Model):
                 chaud.nbPpe = nbPpe
         print(chaud.nbPpe)
         self.save() #Enregistrement dans la base
+    ######CONFIGURATION COMPTEURS######
+    #Nombre de compteur Mbus
+    nbMbus = models.IntegerField(default=0)
+
+    #Nombre de compteur Modbus
+    nbModbus = models.IntegerField(default=0)
+
+    #Nombre de compteur Modbus
+    nbImp = models.IntegerField(default=0)
 
     ######CONFIGURATION DIVERS#####
     #Nombre d'équipements divers dans la chaufferie

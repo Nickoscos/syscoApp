@@ -1,5 +1,5 @@
 from ..models.Typology.modelsEquip import Point, Temp, SyntDefaut, DefPpe, CmdChaud, CmdPpe, CmdV2V, FdcV2V
-from ..models.Typology.modelsEquip import CmdV2V, FdcV2V, Info, Amb, CmdV3V, CmdBal
+from ..models.Typology.modelsEquip import CmdV2V, FdcV2V, Info, Amb, CmdV3V, CmdBal, CptMbus, CptModbus
 from ..models.Typology.modelsChaudiere import Chaufferie
 from .export import generationXls
 from django.shortcuts import redirect, render
@@ -27,6 +27,9 @@ def generationListe(request, chaufferie):
     # #Ajout des points Circuits Régulés
     ajoutPtsECS(chaufferie.ECS, request.user.username)
 
+    # #Ajout des compteurs
+    ajoutPtsCpt(chaufferie, request.user.username)
+
     # suppPts(chaufferie.General, chaufferie.Chaudieres, chaufferie.Divers, chaufferie.CircReg, chaufferie.ECS, request.user.username)
 
     # #Ajout de la dernière ligne de la liste TOTAUX
@@ -50,7 +53,11 @@ def updateListe(request):
                 if (request.POST.get('TR'+str(pts.id)) is not None):
                     pts.TR = int(request.POST.get('TR'+str(pts.id)))
                 if (request.POST.get('TC'+str(pts.id)) is not None):
-                    pts.TC = int(request.POST.get('TC'+str(pts.id)))  
+                    pts.TC = int(request.POST.get('TC'+str(pts.id))) 
+                if (request.POST.get('Mbus'+str(pts.id)) is not None):
+                    pts.Mbus = int(request.POST.get('Mbus'+str(pts.id))) 
+                if (request.POST.get('Modbus'+str(pts.id)) is not None):
+                    pts.Modbus = int(request.POST.get('Modbus'+str(pts.id))) 
                 pts.save()
         i = i +1
     #Ajout de la dernière ligne de la liste TOTAUX 
@@ -79,6 +86,8 @@ def ajoutPtsGeneral(General, username):
                 TS=0, 
                 TR=0, 
                 TC=0,
+                Mbus=0,
+                Modbus=0,
                 Supp=False,
                 user=username)
 
@@ -91,6 +100,8 @@ def ajoutPtsGeneral(General, username):
                 TS=1, 
                 TR=0, 
                 TC=0,
+                Mbus=0,
+                Modbus=0,
                 Supp=False,
                 user=username
             )
@@ -122,6 +133,8 @@ def ajoutPtsChaud(Chaudieres, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -139,6 +152,8 @@ def ajoutPtsChaud(Chaudieres, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -156,6 +171,8 @@ def ajoutPtsChaud(Chaudieres, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -173,6 +190,8 @@ def ajoutPtsChaud(Chaudieres, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
             
@@ -189,6 +208,8 @@ def ajoutPtsChaud(Chaudieres, username):
                 TS=pts.TS, 
                 TR=pts.TR, 
                 TC=pts.TC,
+                Mbus=pts.Mbus,
+                Modbus=pts.Modbus,
                 Supp=pts.Supp,
                 user=pts.username)
 
@@ -206,6 +227,8 @@ def ajoutPtsChaud(Chaudieres, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -223,20 +246,74 @@ def ajoutPtsChaud(Chaudieres, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
-        # else:
-        #     #Ajout Température
-        #     insertPts(liste, nbTotPts=chaud.nbTemp, nomEquip=chaud.nomChaud, type='Temp')
-        #     #Ajout Défaut Pompe
-        #     insertPts(liste, nbTotPts=chaud.nbPpe, nomEquip=chaud.nomChaud, type='DefPpe')
-        #     #Ajout Commande Pompe
-        #     insertPts(liste, nbTotPts=chaud.nbPpe, nomEquip=chaud.nomChaud, type='CmdPpe')
-        #     #Ajout Commande V2V
-        #     insertPts(liste, nbTotPts=chaud.nbV2V, nomEquip=chaud.nomChaud, type='CmdV2V')
-        #     #Ajout Fin de course V2V
-        #     insertPts(liste, nbTotPts=chaud.nbV2V, nomEquip=chaud.nomChaud, type='FdcV2V')
 
+
+#Fonction permettant l'ajout des compteurs
+def ajoutPtsCpt(chaufferie, username):
+    liste = Point.objects.filter(user=username)
+   
+    # Ajout des compteurs MBus
+    for c in range(chaufferie.nbMbus):
+        pts = CptMbus(
+            equip = "Compteurs",
+            username= username
+            )
+        pts.libelle = "Compteur Mbus " + str(c+1)
+        liste.create(equip= pts.equip,
+            type= pts.type,
+            libelle= pts.libelle, 
+            TM=0, 
+            TS=0, 
+            TR=0, 
+            TC=0,
+            Mbus=pts.Mbus,
+            Modbus=pts.Modbus,
+            Supp=pts.Supp,
+            user=pts.username)
+        
+    # Ajout des compteurs ModBus
+    for c in range(chaufferie.nbModbus):
+        pts = CptModbus(
+            equip = "Compteurs",
+            username= username
+            )
+        pts.libelle = "Compteur Modbus " + str(c+1)
+        liste.create(equip= pts.equip,
+            type= pts.type,
+            libelle= pts.libelle, 
+            TM=0, 
+            TS=0, 
+            TR=0, 
+            TC=0,
+            Mbus=pts.Mbus,
+            Modbus=pts.Modbus,
+            Supp=pts.Supp,
+            user=pts.username)
+        
+    # Ajout des compteurs Impulsionnels
+    for c in range(chaufferie.nbImp):
+        pts = Info(
+            equip = "Compteurs",
+            username= username
+            )
+        pts.libelle = "Compteur Impulsionnel " + str(c+1)
+        liste.create(equip= pts.equip,
+            type= pts.type,
+            libelle= pts.libelle, 
+            TM=0, 
+            TS=1, 
+            TR=0, 
+            TC=0,
+            Mbus=0,
+            Modbus=0,
+            Supp=pts.Supp,
+            user=pts.username)
+
+            
 #Fonction permettant l'ajout des points Divers
 def ajoutPtsDivers(Divers, username):
     liste = Point.objects.filter(user=username)
@@ -263,6 +340,8 @@ def ajoutPtsDivers(Divers, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -280,6 +359,8 @@ def ajoutPtsDivers(Divers, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -297,6 +378,8 @@ def ajoutPtsDivers(Divers, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -314,6 +397,8 @@ def ajoutPtsDivers(Divers, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -331,20 +416,10 @@ def ajoutPtsDivers(Divers, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
-        # else:
-
-        #     #Ajout Défaut Pompe
-        #     insertPts(liste, nbTotPts=div.nbPpe, nomEquip=div.nomDivers, type='DefPpe')
-        #     #Ajout Commande Pompe
-        #     insertPts(liste, nbTotPts=div.nbPpe, nomEquip=div.nomDivers, type='CmdPpe')
-        #     #Ajout Commande V2V
-        #     insertPts(liste, nbTotPts=div.nbV2V, nomEquip=div.nomDivers, type='CmdV2V')
-        #     #Ajout Fin de course V2V
-        #     insertPts(liste, nbTotPts=div.nbV2V, nomEquip=div.nomDivers, type='FdcV2V')
-        #     #Ajout infos supplémentaire
-        #     insertPts(liste, nbTotPts=div.nbTSsup, nomEquip=div.nomDivers, type='Info')
 
 #Fonction permettant l'ajout des points circuits régulés
 def ajoutPtsCircReg(CircReg, username):
@@ -372,6 +447,8 @@ def ajoutPtsCircReg(CircReg, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -389,6 +466,8 @@ def ajoutPtsCircReg(CircReg, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -406,6 +485,8 @@ def ajoutPtsCircReg(CircReg, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -423,6 +504,8 @@ def ajoutPtsCircReg(CircReg, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -440,19 +523,10 @@ def ajoutPtsCircReg(CircReg, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
-        # else:
-        #     #Ajout Température
-        #     insertPts(liste, nbTotPts=circ.nbTemp, nomEquip=circ.nomCirc, type='Temp')
-        #     #Ajout Défaut Pompe
-        #     insertPts(liste, nbTotPts=circ.nbPpe, nomEquip=circ.nomCirc, type='DefPpe')
-        #     #Ajout Commande Pompe
-        #     insertPts(liste, nbTotPts=circ.nbPpe, nomEquip=circ.nomCirc, type='CmdPpe')
-        #     #Ajout Commande V3V
-        #     insertPts(liste, nbTotPts=circ.nbV3V, nomEquip=circ.nomCirc, type='CmdV3V')
-        #     #Ajout Température Ambiant
-        #     insertPts(liste, nbTotPts=circ.nbAmb, nomEquip=circ.nomCirc, type='Amb')
 
 
 #Fonction permettant l'ajout des points Divers
@@ -482,6 +556,8 @@ def ajoutPtsECS(ECS, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -499,6 +575,8 @@ def ajoutPtsECS(ECS, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -516,6 +594,8 @@ def ajoutPtsECS(ECS, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -533,6 +613,8 @@ def ajoutPtsECS(ECS, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -550,6 +632,8 @@ def ajoutPtsECS(ECS, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
 
@@ -568,6 +652,8 @@ def ajoutPtsECS(ECS, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)  
 
@@ -586,23 +672,10 @@ def ajoutPtsECS(ECS, username):
                     TS=pts.TS, 
                     TR=pts.TR, 
                     TC=pts.TC,
+                    Mbus=pts.Mbus,
+                    Modbus=pts.Modbus,
                     Supp=pts.Supp,
                     user=pts.username)
-        # else:
-        #     #Ajout Température
-        #     insertPts(liste, nbTotPts=e.nbTemp, nomEquip=e.nomECS, type='Temp')
-        #     #Ajout Défaut ECS
-        #     insertPts(liste, nbTotPts=e.nbDef, nomEquip=e.nomECS, type='SynthDef')
-        #     #Ajout Défaut Pompe
-        #     insertPts(liste, nbTotPts=e.nbPpe, nomEquip=e.nomECS, type='DefPpe')
-        #     #Ajout Commande Pompe
-        #     insertPts(liste, nbTotPts=e.nbPpe, nomEquip=e.nomECS, type='CmdPpe')
-        #     #Ajout Commande V3V
-        #     insertPts(liste, nbTotPts=e.nbV3V, nomEquip=e.nomECS, type='CmdV3V')
-        #     #Ajout Température Ballon
-        #     insertPts(liste, nbTotPts=e.nbBallon, nomEquip=e.nomECS, type='Temp')
-        #     #Ajout Comande épingle ballon
-        #     insertPts(liste, nbTotPts=e.nbBallon, nomEquip=e.nomECS, type='CmdBal')
     
 
 #Calcul des totaux par type d'entrées/sorties
@@ -614,6 +687,8 @@ def calculTotaux(username):
     TotTS = 0
     TotTR = 0
     TotTC = 0
+    TotMbus = 0
+    TotModbus = 0
     
     #Calcul de la somme des points par type
     for Pts in liste:
@@ -622,15 +697,19 @@ def calculTotaux(username):
         TotTS =  TotTS + Pts.TS
         TotTR =  TotTR + Pts.TR
         TotTC =  TotTC + Pts.TC
+        TotMbus =  TotMbus + Pts.Mbus
+        TotModbus =  TotModbus + Pts.Modbus
 
     liste.create(
                 equip= 'zzzzeTOTAL', #zzzz ajouté pour permettre d'afficher le point en dernière ligne de la liste sur la page
                 type= 'TOTAL',
-                libelle= 'TOTAUX (' + str(TotTM+TotTS+TotTR+TotTC) + ' points)', 
+                libelle= 'TOTAUX (' + str(TotTM+TotTS+TotTR+TotTC+TotMbus+TotModbus) + ' points)', 
                 TM=TotTM, 
                 TS=TotTS, 
                 TR=TotTR, 
                 TC=TotTC,
+                Mbus=TotMbus,
+                Modbus=TotModbus,
                 Supp=False,
                 user=username
             )

@@ -15,6 +15,8 @@ class Point(models.Model):
     TS = models.IntegerField(default=0)
     TR = models.IntegerField(default=0)
     TC = models.IntegerField(default=0)
+    Mbus = models.IntegerField(default=0)
+    Modbus = models.IntegerField(default=0)
     Supp = models.BooleanField(default=False)
     user = models.CharField(max_length=200, default="")
 
@@ -41,6 +43,8 @@ class Temp(Point):
         self.TS = 0
         self.TR = 0
         self.TC = 0
+        self.Mbus = 0
+        self.Modbus = 0
         self.Supp = False
         self.username = username
 
@@ -53,6 +57,8 @@ class Amb(Point):
         self.TS = 0
         self.TR = 0
         self.TC = 0
+        self.Mbus = 0
+        self.Modbus = 0
         self.Supp = False
         self.username = username
 
@@ -65,6 +71,8 @@ class SyntDefaut(Point):
         self.TS = 1
         self.TR = 0
         self.TC = 0
+        self.Mbus = 0
+        self.Modbus = 0
         self.Supp = False
         self.username = username
 
@@ -77,6 +85,8 @@ class DefPpe(Point):
         self.TS = 1
         self.TR = 0
         self.TC = 0
+        self.Mbus = 0
+        self.Modbus = 0
         self.Supp = False
         self.username = username
 
@@ -89,6 +99,8 @@ class CmdPpe(Point):
         self.TS = 0
         self.TR = 1
         self.TC = 1
+        self.Mbus = 0
+        self.Modbus = 0
         self.Supp = False
         self.username = username
 
@@ -101,6 +113,8 @@ class CmdChaud(Point):
         self.TS = 0
         self.TR = 0
         self.TC = 1
+        self.Mbus = 0
+        self.Modbus = 0
         self.Supp = False
         self.username = username
 
@@ -113,6 +127,8 @@ class CmdV3V(Point):
         self.TS = 0
         self.TR = 1
         self.TC = 0
+        self.Mbus = 0
+        self.Modbus = 0
         self.Supp = False
         self.username = username
 
@@ -125,6 +141,8 @@ class CmdV2V(Point):
         self.TS = 0
         self.TR = 0
         self.TC = 1
+        self.Mbus = 0
+        self.Modbus = 0
         self.Supp = False
         self.username = username
 
@@ -137,6 +155,8 @@ class FdcV2V(Point):
         self.TS = 1
         self.TR = 0
         self.TC = 0
+        self.Mbus = 0
+        self.Modbus = 0
         self.Supp = False
         self.username = username
 
@@ -149,6 +169,8 @@ class Info(Point):
         self.TS = 1
         self.TR = 0
         self.TC = 0
+        self.Mbus = 0
+        self.Modbus = 0
         self.Supp = False
         self.username = username
 
@@ -161,5 +183,35 @@ class CmdBal(Point):
         self.TS = 0
         self.TR = 0
         self.TC = 1
+        self.Mbus = 0
+        self.Modbus = 0
+        self.Supp = False
+        self.username = username
+
+class CptMbus(Point):
+    def __init__(self, equip, username):
+        self.equip = equip
+        self.libelle = 'Compteur Mbus '
+        self.type = "Cpt"
+        self.TM = 0
+        self.TS = 0
+        self.TR = 0
+        self.TC = 0
+        self.Mbus = 4
+        self.Modbus = 0
+        self.Supp = False
+        self.username = username
+
+class CptModbus(Point):
+    def __init__(self, equip, username):
+        self.equip = equip
+        self.libelle = 'Compteur Modbus '
+        self.type = "Cpt"
+        self.TM = 0
+        self.TS = 0
+        self.TR = 0
+        self.TC = 0
+        self.Mbus = 0
+        self.Modbus = 10
         self.Supp = False
         self.username = username

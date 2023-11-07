@@ -31,7 +31,7 @@
             <table class="table text-center mt-2">
                 <thead>
                     <tr>
-                        <th colspan="6" style="background-color: gray; font-size: 1.3em;">{{ chaufferie.nomInstal }} - LISTE DE POINTS</th>
+                        <th colspan="8" style="background-color: gray; font-size: 1.3em;">{{ chaufferie.nomInstal }} - LISTE DE POINTS</th>
                     </tr>
                     <tr style="background-color: gray;">
                         <!-- <th>Sous-ensemble</th> -->
@@ -40,6 +40,8 @@
                         <th>TS Digital</th>
                         <th>TR 0-10V</th>
                         <th>TC Digital</th>
+                        <th>MBus</th>
+                        <th>Modbus</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -48,24 +50,28 @@
                         {% if not forloop.last %}
                             {% ifchanged l.equip %}
                                 <tr>
-                                    <td class="equip" colspan="5" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.libelle %} style="background-color: red;" {% endif %}><p name="nomEquip{{ l.id }}" id="nomEquip{{ forloop.counter1 }}" >{{ l.equip }}</p></td>
+                                    <td class="equip" colspan="7" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle %} style="background-color: red;" {% endif %}><p name="nomEquip{{ l.id }}" id="nomEquip{{ forloop.counter1 }}" >{{ l.equip }}</p></td>
                                     <td>
                                         <button type="submit" class="btn btn-success"name="Add" id="Add" value="{{l.equip}}">Ajout</button>
                                     </td> 
                                 </tr>
                                 <tr>
-                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="libelle{{ l.id }}" id="libelle{{ l.id }}" type="text" value="{{ l.libelle }}"></td>
-                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TM{{ l.id }}" id="TM{{ l.id }}" type="number" value="{{ l.TM }}"></td>
-                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TS{{ l.id }}" id="TS{{ l.id }}" type="number" value="{{ l.TS }}"></td>
-                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TR{{ l.id }}" id="TR{{ l.id }}" type="number" value="{{ l.TR }}"></td>
-                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TC{{ l.id }}" id="TC{{ l.id }}" type="number" value="{{ l.TC }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="libelle{{ l.id }}" id="libelle{{ l.id }}" type="text" value="{{ l.libelle }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TM{{ l.id }}" id="TM{{ l.id }}" type="number" value="{{ l.TM }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TS{{ l.id }}" id="TS{{ l.id }}" type="number" value="{{ l.TS }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TR{{ l.id }}" id="TR{{ l.id }}" type="number" value="{{ l.TR }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TC{{ l.id }}" id="TC{{ l.id }}" type="number" value="{{ l.TC }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="Mbus{{ l.id }}" id="Mbus{{ l.id }}" type="number" value="{{ l.Mbus }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="Modbus{{ l.id }}" id="Modbus{{ l.id }}" type="number" value="{{ l.Modbus }}"></td>
                             {% else %}
                                 <tr>
-                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="libelle{{ l.id }}" id="libelle{{ l.id }}" type="text" value="{{ l.libelle }}"></td>
-                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TM{{ l.id }}" id="TM{{ l.id }}" type="number" value="{{ l.TM }}"></td>
-                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TS{{ l.id }}" id="TS{{ l.id }}" type="number" value="{{ l.TS }}"></td>
-                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TR{{ l.id }}" id="TR{{ l.id }}" type="number" value="{{ l.TR }}"></td>
-                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TC{{ l.id }}" id="TC{{ l.id }}" type="number" value="{{ l.TC }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="libelle{{ l.id }}" id="libelle{{ l.id }}" type="text" value="{{ l.libelle }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TM{{ l.id }}" id="TM{{ l.id }}" type="number" value="{{ l.TM }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TS{{ l.id }}" id="TS{{ l.id }}" type="number" value="{{ l.TS }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TR{{ l.id }}" id="TR{{ l.id }}" type="number" value="{{ l.TR }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="TC{{ l.id }}" id="TC{{ l.id }}" type="number" value="{{ l.TC }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="Mbus{{ l.id }}" id="Mbus{{ l.id }}" type="number" value="{{ l.Mbus }}"></td>
+                                    <td class="pts" {% if l.TM == 0 and l.TS == 0 and l.TR == 0 and l.TC == 0 and l.Mbus == 0 and l.Modbus == 0 and l.libelle  %} style="background-color: red;" {% endif %}><input name="Modbus{{ l.id }}" id="Modbus{{ l.id }}" type="number" value="{{ l.Modbus }}"></td>
                             {% endifchanged %}
                                     <td>
                                         <input type="hidden" name="equipSupp" type="number" value="{{l.equip}}">
@@ -80,6 +86,8 @@
                                 <td class="end">{{ l.TS }}</td>
                                 <td class="end">{{ l.TR }}</td>
                                 <td class="end">{{ l.TC }}</td>
+                                <td class="end">{{ l.Mbus }}</td>
+                                <td class="end">{{ l.Modbus }}</td>
                                 <td class="end"></td>
                             </tr>
                         {% endif %}

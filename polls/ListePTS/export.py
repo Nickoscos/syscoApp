@@ -27,6 +27,8 @@ def generationXls(request, username):
         worksheet.set_column("D:D", 20)
         worksheet.set_column("E:E", 20)
         worksheet.set_column("F:F", 20)
+        worksheet.set_column("G:G", 20)
+        worksheet.set_column("H:H", 20)
 
         # On définit un style qui sera utilisé pour la ligne de titre.
         # Pour obtenir toutes les caractéristiques disponibles : print(dir(header_style))
@@ -49,7 +51,9 @@ def generationXls(request, username):
         worksheet.write("D1", "Télé-Signalisation", header_style)
         worksheet.write("E1", "Télé-Réglage", header_style)
         worksheet.write("F1", "Télé-Commande", header_style)
-        worksheet.write("G1", "", header_style)
+        worksheet.write("G1", "Mbus", header_style)
+        worksheet.write("H1", "Modbus", header_style)
+        worksheet.write("I1", "", header_style)
 
         pos = 1
         derniereLigne = pos + len(liste)
@@ -67,7 +71,9 @@ def generationXls(request, username):
             worksheet.write("D"+str(pos), point.TS, style)
             worksheet.write("E"+str(pos), point.TR, style)
             worksheet.write("F"+str(pos), point.TC, style)
-            worksheet.write("G"+str(pos), "", style)
+            worksheet.write("G"+str(pos), point.Mbus, style)
+            worksheet.write("H"+str(pos), point.Modbus, style)
+            worksheet.write("I"+str(pos), "", style)
 
     message = "Liste de points générée"
     return message

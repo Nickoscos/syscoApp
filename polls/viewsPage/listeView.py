@@ -45,6 +45,9 @@ def genListeView(request):
             message = "Ajuster le nombre de points puis générer liste de points" 
             c.nomInstal = request.POST.get('nomInstal') #Récupération du nombre de chaudières saisies
             c.nbChaudiere = int(request.POST.get('nbChaudiere')) #Récupération du nombre de chaudières saisies
+            c.nbMbus = int(request.POST.get('nbMbus')) #Récupération du nombre de compteurs Mbus saisies
+            c.nbModbus = int(request.POST.get('nbModbus')) #Récupération du nombre de compteurs Modbus saisies
+            c.nbImp = int(request.POST.get('nbImp')) #Récupération du nombre de compteurs impulsionnels saisies
             c.nbDivers = int(request.POST.get('nbDivers')) #Récupération du nombre de chaudières saisies
             c.nbCircReg = int(request.POST.get('nbCircReg')) #Récupération du nombre de circuits régulés saisies
             c.ECSpres = bool(request.POST.get('ECSpres'))

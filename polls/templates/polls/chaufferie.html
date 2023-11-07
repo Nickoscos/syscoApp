@@ -65,6 +65,16 @@
                     </fieldset>
 
                     <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
+                        <legend>Compteurs:</legend>
+                        <label>Nombres de compteurs Mbus: </label>
+                        <input name="nbMbus" id="nbMbus" type="number" min="0" value="{{ chaufferie.nbMbus }}">
+                        <label>Nombres de compteurs Modbus: </label>
+                        <input name="nbModbus" id="nbModbus" type="number" min="0" value="{{ chaufferie.nbModbus }}">
+                        <label>Nombres de compteurs impulsionnels: </label>
+                        <input name="nbImp" id="nbImp" type="number" min="0" value="{{ chaufferie.nbImp }}">
+                    </fieldset>
+
+                    <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
                         <legend>Autres:</legend>
                         <label>Nombres d'équipements divers: </label>
                         <input name="nbDivers" id="nbDivers" type="number" min="0" value="{{ chaufferie.nbDivers }}">
