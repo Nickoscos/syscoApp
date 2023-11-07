@@ -89,7 +89,6 @@ def configWIT(request, username, modemNec, nbMbus):
                     #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
                     PrixMoy_ES = carte.prix / (carte.DI + carte.DO + carte.AI + carte.AO 
                                                + carte.UI + carte.UO + carte.DOR + carte.DO_UO)
-                    print(PrixMoy_ES)
                     if MinPrixMoy_ES > PrixMoy_ES :
                         carteAajouter = carte
 
@@ -285,7 +284,7 @@ def configWIT(request, username, modemNec, nbMbus):
             for carte in catalogue:
                 if carte.type =="COM" and carte.maxMbus > 0:
                     if NbMbusMspare > carte.maxMbus - NbEquipMbus and (carte.maxMbus - NbEquipMbus) > 0:
-                        NbMbusMspare = carte.maxMbus - NbEquipMbus #Calcul des equipement manquants       
+                        NbMbusMspare = carte.maxMbus - NbEquipMbus #Calcul des equipements manquants       
                         carteAajouter = carte
                         
 
@@ -317,11 +316,94 @@ def configWIT(request, username, modemNec, nbMbus):
                 print("Aucune carte correspondante trouvée")
                 break
 
+        #Etape 7: Ajout de l'embase principale
+        automate = Automate.objects.filter(user=username)
+        print(len(automate))
+        NbCarteES = 0
+        NbCarteCOM = 0
+
+        for carte in automate:
+            if carte.type.find('Carte_ES') != -1:
+                NbCarteES += 1
+            elif carte.type.find('COM') != -1:
+                NbCarteCOM += 1
+
+        NbCarte = NbCarteES + NbCarteCOM
+        print(NbCarte)
+        # Ajout de l'embase de base
+        for carte in catalogue:
+                if carte.type =="EMBASE" and carte.extension == False and carte.reference.find('PLUG310') != -1:
+                    NbCarte -= carte.nbEmpl
+                    carteAajouter = carte
+        
+        if carteAajouter != None : 
+            Automate.objects.create(
+                type=carteAajouter.type, 
+                reference=carteAajouter.reference,
+                DI=carteAajouter.DI,
+                DO=carteAajouter.DO,
+                AI=carteAajouter.AI,
+                AO=carteAajouter.AO,
+                UI=carteAajouter.UI,
+                UO=carteAajouter.UO,
+                DOR=carteAajouter.DOR,
+                DO_UO=carteAajouter.DO_UO,
+                nbEmpl=carteAajouter.nbEmpl,
+                extension=carteAajouter.extension,
+                rs232=carteAajouter.rs232,
+                rs485=carteAajouter.rs485,
+                ressources=carteAajouter.ressources,
+                maxModbus=carteAajouter.maxModbus,
+                Imagerie=carteAajouter.Imagerie,
+                maxMbus=carteAajouter.maxMbus,
+                prix=carteAajouter.prix,
+                user=request.user.username
+            )
+        else : 
+            print("Aucune embase correspondante trouvée")
+
+        while NbCarte > 0:
+            NbEmplspare = 9999
+            for carte in catalogue:
+                if carte.type =="EMBASE" and carte.extension == True and carte.nbEmpl > 0 and NbEmplspare > carte.nbEmpl - NbCarte:
+                    NbEmplspare = carte.nbEmpl - NbCarte #Calcul des emplacements manquants       
+                    carteAajouter = carte
+
+            if carteAajouter != None : 
+                Automate.objects.create(
+                    type=carteAajouter.type, 
+                    reference=carteAajouter.reference,
+                    DI=carteAajouter.DI,
+                    DO=carteAajouter.DO,
+                    AI=carteAajouter.AI,
+                    AO=carteAajouter.AO,
+                    UI=carteAajouter.UI,
+                    UO=carteAajouter.UO,
+                    DOR=carteAajouter.DOR,
+                    DO_UO=carteAajouter.DO_UO,
+                    nbEmpl=carteAajouter.nbEmpl,
+                    extension=carteAajouter.extension,
+                    rs232=carteAajouter.rs232,
+                    rs485=carteAajouter.rs485,
+                    ressources=carteAajouter.ressources,
+                    maxModbus=carteAajouter.maxModbus,
+                    Imagerie=carteAajouter.Imagerie,
+                    maxMbus=carteAajouter.maxMbus,
+                    prix=carteAajouter.prix,
+                    user=request.user.username
+                )
+                NbCarte -= carteAajouter.nbEmpl 
+            else : 
+                print("Aucune embase correspondante trouvée")
+                break
 
         #Etape finale : Affichage de la configuration
         automate = Automate.objects.filter(user=username)
+        prixAutomate = 0
         for carte in automate:
             print("Type : ", carte.type, ", Référence : ", carte.reference, ", Prix : ", carte.prix ,"€")
+            prixAutomate += carte.prix
+        print("Coût total configuration automate: ", prixAutomate, "€")
 
     
     
