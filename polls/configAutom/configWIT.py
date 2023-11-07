@@ -191,9 +191,6 @@ def configWIT(request, username, modemNec, nbMbus):
 
         #Etape 4 : Ajout des cartes d'entrées analogiques           
         AI_Autom = NbAI
-        print("Nombre AI ", AI_Autom)
-        print("Nombre AI Sup ", NbAI_Sup)
-        print("Nombre UI Sup ", NbUI_Sup)
         if AI_Autom > (NbAI_Sup + NbUI_Sup):
             while AI_Autom > 0:
                 MinPrixMoy_ES = 9999 
@@ -205,7 +202,7 @@ def configWIT(request, username, modemNec, nbMbus):
                         #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
                         PrixMoy_ES = carte.prix / (carte.DI + carte.DO + carte.AI + carte.AO 
                                                 + carte.UI + carte.UO + carte.DOR + carte.DO_UO)
-                        print(PrixMoy_ES)
+                        
                         if MinPrixMoy_ES > PrixMoy_ES :
                             carteAajouter = carte
 
@@ -318,7 +315,6 @@ def configWIT(request, username, modemNec, nbMbus):
 
         #Etape 7: Ajout de l'embase principale
         automate = Automate.objects.filter(user=username)
-        print(len(automate))
         NbCarteES = 0
         NbCarteCOM = 0
 
@@ -329,7 +325,7 @@ def configWIT(request, username, modemNec, nbMbus):
                 NbCarteCOM += 1
 
         NbCarte = NbCarteES + NbCarteCOM
-        print(NbCarte)
+
         # Ajout de l'embase de base
         for carte in catalogue:
                 if carte.type =="EMBASE" and carte.extension == False and carte.reference.find('PLUG310') != -1:
