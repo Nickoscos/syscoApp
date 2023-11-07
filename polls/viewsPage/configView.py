@@ -82,6 +82,15 @@ def newConfig(request):
         nbAO = Point.objects.filter(user=request.user.username, type='TOTAL').values('TR')[0]['TR']
         nbDO = Point.objects.filter(user=request.user.username, type='TOTAL').values('TC')[0]['TC']
 
+        liste = Point.objects.filter(user=request.user.username)
+        nbMbus = 0
+        nbModbus = 0
+        for p in liste:
+            if p.equip == "Compteurs" and p.Mbus > 0:
+                nbMbus += 1
+            if p.equip == "Compteurs" and p.Modbus > 0:
+                nbModbus += 1 
+
         if nbAI > 0 or nbDI > 0 or nbAO > 0 or nbDO > 0:
             for p in packsTG:
                 if nbAI <= p.AI and nbDI <= p.DI and nbAO <= p.AO and nbDO <= p.DO:
@@ -112,7 +121,7 @@ def newConfig(request):
                         packTGOK["priceMOY"] = p.priceMOY
             else:
                 # Dimensionnement d'un automate si aucun pack existant
-                configWIT(request, request.user.username, True, 10)
+                configWIT(request, request.user.username, True, nbMbus)
                 configPROG(request, request.user.username)
                 automate = Automate.objects.filter(user=request.user.username)
 
