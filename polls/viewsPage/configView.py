@@ -15,7 +15,7 @@ class packValide():
 
 def newConfig(request):
     message = ""
-    configWIT(request, request.user.username, True)
+    configWIT(request, request.user.username, True, 10)
     packsTG = PackTG.objects.all()
     packsOPT = PackOPT.objects.all()
     packsTLR = PackIOTUnit.objects.all()
