@@ -83,14 +83,14 @@ def configWIT(request, username, modemNec, nbMbus):
         while AO_Autom > 0:
             MinPrixMoy_ES = 9999 
             for carte in catalogue:
-                if carte.type =="Carte_ES" and (carte.AO > 0 or carte.UO > 0 or carte.DO_UO > 0):
-                    AO_Autom -= (carte.AO + carte.UO + carte.DO_UO) #Calcul des ES manquantes
-                    
+                if carte.type =="Carte_ES" and (carte.AO > 0 or carte.UO > 0 or carte.DO_UO > 0):                    
                     #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
                     PrixMoy_ES = carte.prix / (carte.DI + carte.DO + carte.AI + carte.AO 
                                                + carte.UI + carte.UO + carte.DOR + carte.DO_UO)
                     if MinPrixMoy_ES > PrixMoy_ES :
                         carteAajouter = carte
+                        AO_Autom -= (carte.AO + carte.UO + carte.DO_UO) #Calcul des ES manquantes
+                        MinPrixMoy_ES = PrixMoy_ES
 
             if carteAajouter != None : 
                 Automate.objects.create(
@@ -140,13 +140,13 @@ def configWIT(request, username, modemNec, nbMbus):
             MinPrixMoy_ES = 9999 
             for carte in catalogue:
                 if carte.type =="Carte_ES" and (carte.DO > 0 or carte.UO > 0 or carte.DOR > 0 or carte.DO_UO > 0):
-                    DO_Autom -= (carte.DO + carte.UO + carte.DOR + carte.DO_UO) #Calcul des ES manquantes
-
                     #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
                     PrixMoy_ES = carte.prix / (carte.DI + carte.DO + carte.AI + carte.AO 
                                                + carte.UI + carte.UO + carte.DOR + carte.DO_UO)
                     if MinPrixMoy_ES > PrixMoy_ES :
                         carteAajouter = carte
+                        DO_Autom -= (carte.DO + carte.UO + carte.DOR + carte.DO_UO) #Calcul des ES manquantes
+                        MinPrixMoy_ES = PrixMoy_ES
 
             if carteAajouter != None : 
                 Automate.objects.create(
@@ -190,61 +190,104 @@ def configWIT(request, username, modemNec, nbMbus):
         
 
         #Etape 4 : Ajout des cartes d'entrées analogiques           
-        AI_Autom = NbAI
-        if AI_Autom > (NbAI_Sup + NbUI_Sup):
-            while AI_Autom > 0:
-                MinPrixMoy_ES = 9999 
-                
-                for carte in catalogue:
-                    if carte.type =="Carte_ES" and (carte.AI > 0 or carte.UI > 0):
+        AI_Autom = NbAI- NbAI_Sup - NbUI_Sup
+        while AI_Autom > 0:
+            MinPrixMoy_ES = 9999 
+            
+            for carte in catalogue:
+                if carte.type =="Carte_ES" and (carte.AI > 0 or carte.UI > 0):                       
+                    #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
+                    PrixMoy_ES = carte.prix / (carte.DI + carte.DO + carte.AI + carte.AO 
+                                            + carte.UI + carte.UO + carte.DOR + carte.DO_UO)
+                    
+                    if MinPrixMoy_ES > PrixMoy_ES :
+                        carteAajouter = carte
                         AI_Autom -= (carte.AI + carte.UI) #Calcul des ES manquantes
-                        
-                        #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
-                        PrixMoy_ES = carte.prix / (carte.DI + carte.DO + carte.AI + carte.AO 
-                                                + carte.UI + carte.UO + carte.DOR + carte.DO_UO)
-                        
-                        if MinPrixMoy_ES > PrixMoy_ES :
-                            carteAajouter = carte
+                        MinPrixMoy_ES = PrixMoy_ES
 
-                if carteAajouter != None : 
-                    Automate.objects.create(
-                        type=carteAajouter.type, 
-                        reference=carteAajouter.reference,
-                        DI=carteAajouter.DI,
-                        DO=carteAajouter.DO,
-                        AI=carteAajouter.AI,
-                        AO=carteAajouter.AO,
-                        UI=carteAajouter.UI,
-                        UO=carteAajouter.UO,
-                        DOR=carteAajouter.DOR,
-                        DO_UO=carteAajouter.DO_UO,
-                        nbEmpl=carteAajouter.nbEmpl,
-                        extension=carteAajouter.extension,
-                        rs232=carteAajouter.rs232,
-                        rs485=carteAajouter.rs485,
-                        ressources=carteAajouter.ressources,
-                        maxModbus=carteAajouter.maxModbus,
-                        Imagerie=carteAajouter.Imagerie,
-                        maxMbus=carteAajouter.maxMbus,
-                        prix=carteAajouter.prix,
-                        user=request.user.username
-                    )
-                else : 
-                    print("Aucune carte correspondante trouvée")
-                    break
+            if carteAajouter != None : 
+                Automate.objects.create(
+                    type=carteAajouter.type, 
+                    reference=carteAajouter.reference,
+                    DI=carteAajouter.DI,
+                    DO=carteAajouter.DO,
+                    AI=carteAajouter.AI,
+                    AO=carteAajouter.AO,
+                    UI=carteAajouter.UI,
+                    UO=carteAajouter.UO,
+                    DOR=carteAajouter.DOR,
+                    DO_UO=carteAajouter.DO_UO,
+                    nbEmpl=carteAajouter.nbEmpl,
+                    extension=carteAajouter.extension,
+                    rs232=carteAajouter.rs232,
+                    rs485=carteAajouter.rs485,
+                    ressources=carteAajouter.ressources,
+                    maxModbus=carteAajouter.maxModbus,
+                    Imagerie=carteAajouter.Imagerie,
+                    maxMbus=carteAajouter.maxMbus,
+                    prix=carteAajouter.prix,
+                    user=request.user.username
+                )
+            else : 
+                print("Aucune carte correspondante trouvée")
+                break
 
-                #Détermination des entrées universelles en SPARE pour une utilisation en tant que sorties digitales
-                if carteAajouter.UI >= 0 or carteAajouter.DI >= 0:
-                    NbDI_Sup = carteAajouter.UI + carteAajouter.DI # Calcul du nombre de sorties universelles
-                if AI_Autom <= 0 :
-                    if NbUI_Sup > AI_Autom:
-                        NbUI_Sup = AI_Autom + NbDI_Sup # Calcul du nombre de sorties universelles non utilisées
-                    else :
-                        NbUI_Sup = 0 + NbDI_Sup
-                else:
-                    NbUI_Sup = NbUI_Sup + NbAI_Sup - AI_Autom             
+            #Détermination des entrées universelles en SPARE pour une utilisation en tant que sorties digitales
+            if carteAajouter.UI >= 0 or carteAajouter.DI >= 0:
+                NbDI_Sup = carteAajouter.UI + carteAajouter.DI # Calcul du nombre de sorties universelles
+            if AI_Autom <= 0 :
+                if NbUI_Sup > AI_Autom:
+                    NbUI_Sup = AI_Autom + NbDI_Sup # Calcul du nombre de sorties universelles non utilisées
+                else :
+                    NbUI_Sup = 0 + NbDI_Sup
+            else:
+                NbUI_Sup = NbUI_Sup + NbAI_Sup - AI_Autom             
 
-        #Etape 5: Ajout de l'Add-on interface web
+        #Etape 5 : Ajout des cartes d'entrées digitales           
+        DI_Autom = NbDI - NbUI_Sup
+        
+        while DI_Autom > 0:
+            MinPrixMoy_ES = 9999 
+            
+            for carte in catalogue:
+                if carte.type =="Carte_ES" and (carte.DI > 0 or carte.UI > 0):
+                    #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
+                    PrixMoy_ES = carte.prix / (carte.DI + carte.DO + carte.AI + carte.AO 
+                                            + carte.UI + carte.UO + carte.DOR + carte.DO_UO)
+                    
+                    if MinPrixMoy_ES > PrixMoy_ES :
+                        carteAajouter = carte
+                        DI_Autom -= (carte.DI + carte.UI) #Calcul des ES manquantes
+                        MinPrixMoy_ES = PrixMoy_ES
+
+            if carteAajouter != None : 
+                Automate.objects.create(
+                    type=carteAajouter.type, 
+                    reference=carteAajouter.reference,
+                    DI=carteAajouter.DI,
+                    DO=carteAajouter.DO,
+                    AI=carteAajouter.AI,
+                    AO=carteAajouter.AO,
+                    UI=carteAajouter.UI,
+                    UO=carteAajouter.UO,
+                    DOR=carteAajouter.DOR,
+                    DO_UO=carteAajouter.DO_UO,
+                    nbEmpl=carteAajouter.nbEmpl,
+                    extension=carteAajouter.extension,
+                    rs232=carteAajouter.rs232,
+                    rs485=carteAajouter.rs485,
+                    ressources=carteAajouter.ressources,
+                    maxModbus=carteAajouter.maxModbus,
+                    Imagerie=carteAajouter.Imagerie,
+                    maxMbus=carteAajouter.maxMbus,
+                    prix=carteAajouter.prix,
+                    user=request.user.username
+                )
+            else : 
+                print("Aucune carte correspondante trouvée")
+                break           
+
+        #Etape 6: Ajout de l'Add-on interface web
         for carte in catalogue:
                 if carte.type =="CPU" and carte.reference.find('Intravision') != -1:
                     carteAajouter = carte
@@ -274,7 +317,7 @@ def configWIT(request, username, modemNec, nbMbus):
                     user=request.user.username
                 )
 
-        #Etape 6: Ajout de la carte Mbus 
+        #Etape 7: Ajout de la carte Mbus 
         NbEquipMbus = nbMbus
         while NbEquipMbus > 0:
             NbMbusMspare = 9999 
@@ -313,7 +356,7 @@ def configWIT(request, username, modemNec, nbMbus):
                 print("Aucune carte correspondante trouvée")
                 break
 
-        #Etape 7: Ajout de l'embase principale
+        #Etape 8: Ajout de l'embase principale
         automate = Automate.objects.filter(user=username)
         NbCarteES = 0
         NbCarteCOM = 0
@@ -399,6 +442,7 @@ def configWIT(request, username, modemNec, nbMbus):
         for carte in automate:
             print("Type : ", carte.type, ", Référence : ", carte.reference, ", Prix : ", carte.prix ,"€")
             prixAutomate += carte.prix
+        Automate.objects.filter(user=username).update(cout=prixAutomate)
         print("Coût total configuration automate: ", prixAutomate, "€")
 
     

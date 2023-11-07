@@ -4,7 +4,9 @@ from django.shortcuts import redirect
 from ..models.Typology.modelsEquip import LotIOT, Point
 from ..models.Pack.modelsPacks import PackTG, PackOPT, PackIOTUnit
 from math import *
+from ..models.Pack.modelsAutom import Automate, Prestation
 from ..configAutom.configWIT import configWIT
+from ..configAutom.configPROG import configPROG
 
 class packValide():
     Reference: CharField(max_length=200)
@@ -15,7 +17,7 @@ class packValide():
 
 def newConfig(request):
     message = ""
-    configWIT(request, request.user.username, True, 10)
+    
     packsTG = PackTG.objects.all()
     packsOPT = PackOPT.objects.all()
     packsTLR = PackIOTUnit.objects.all()
@@ -85,28 +87,65 @@ def newConfig(request):
                 if nbAI <= p.AI and nbDI <= p.DI and nbAO <= p.AO and nbDO <= p.DO:
                     packsTGValide.append([p.Reference, p.AI-nbAI, p.DI-nbDI, p.AO-nbAO, p.DO-nbDO])
 
-            for p in packsTGValide:
-                if (int(p[1])<=int(packTGOK.get("AIres"))):
-                    if (int(p[3])<=int(packTGOK.get("AOres"))):
-                        if (int(p[2])<=int(packTGOK.get("DIres"))):
-                            if (int(p[4])<=int(packTGOK.get("DOres"))):
-                                packTGOK["Reference"] = p[0]
-                                packTGOK["AIres"] = int(p[1])
-                                packTGOK["DIres"] = int(p[2])
-                                packTGOK["AOres"] = int(p[3])
-                                packTGOK["DOres"] = int(p[4])
-            
-            for p in packsTG:
-                if packTGOK["Reference"] == p.Reference:
-                    packTGOK["AI"] = p.AI
-                    packTGOK["DI"] = p.DI
-                    packTGOK["AO"] = p.AO
-                    packTGOK["DO"] = p.DO
-                    packTGOK["priceWIT"] = p.priceWIT
-                    packTGOK["priceDISTECH"] = p.priceDISTECH
-                    packTGOK["priceTREND"] = p.priceTREND
-                    packTGOK["priceSOFREL"] = p.priceSOFREL
-                    packTGOK["priceMOY"] = p.priceMOY
+            if len(packsTGValide) > 1:
+                for p in packsTGValide:
+                    if (int(p[1])<=int(packTGOK.get("AIres"))):
+                        if (int(p[3])<=int(packTGOK.get("AOres"))):
+                            if (int(p[2])<=int(packTGOK.get("DIres"))):
+                                if (int(p[4])<=int(packTGOK.get("DOres"))):
+                                    packTGOK["Reference"] = p[0]
+                                    packTGOK["AIres"] = int(p[1])
+                                    packTGOK["DIres"] = int(p[2])
+                                    packTGOK["AOres"] = int(p[3])
+                                    packTGOK["DOres"] = int(p[4])
+                
+                for p in packsTG:
+                    if packTGOK["Reference"] == p.Reference:
+                        packTGOK["AI"] = p.AI
+                        packTGOK["DI"] = p.DI
+                        packTGOK["AO"] = p.AO
+                        packTGOK["DO"] = p.DO
+                        packTGOK["priceWIT"] = p.priceWIT
+                        packTGOK["priceDISTECH"] = p.priceDISTECH
+                        packTGOK["priceTREND"] = p.priceTREND
+                        packTGOK["priceSOFREL"] = p.priceSOFREL
+                        packTGOK["priceMOY"] = p.priceMOY
+            else:
+                # Dimensionnement d'un automate si aucun pack existant
+                configWIT(request, request.user.username, True, 10)
+                configPROG(request, request.user.username)
+                automate = Automate.objects.filter(user=request.user.username)
+
+                AI_Automate = 0
+                DI_Automate = 0
+                AO_Automate = 0
+                DO_Automate = 0
+
+                for carte in automate:
+                    AI_Automate += carte.AI 
+                    DI_Automate += carte.DI 
+                    AO_Automate += carte.AO 
+                    DO_Automate += carte.DO + carte.DOR
+
+
+                prestation = Prestation.objects.filter(user=request.user.username).values('coutToT')[0]['coutToT']
+                print(prestation)
+
+                packTGOK["Reference"] = "Automate dimensionné"
+                packTGOK["AI"] = AI_Automate
+                packTGOK["DI"] = DI_Automate
+                packTGOK["AO"] = AO_Automate
+                packTGOK["DO"] = DO_Automate
+                packTGOK["AIres"] = AI_Automate - nbAI
+                packTGOK["DIres"] = DI_Automate - nbDI
+                packTGOK["AOres"] = AO_Automate - nbAO
+                packTGOK["DOres"] = DO_Automate - nbDO
+                packTGOK["priceWIT"] = round(Automate.objects.filter(user=request.user.username).values('cout')[0]['cout'] + Prestation.objects.filter(user=request.user.username).values('coutToT')[0]['coutToT'], 2)
+                packTGOK["priceDISTECH"] = 0
+                packTGOK["priceTREND"] = 0
+                packTGOK["priceSOFREL"] = 0
+                packTGOK["priceMOY"] = 0
+
         else:
             packTGOK["Reference"] = ""
             packTGOK["AI"] = 0
@@ -223,6 +262,8 @@ def newConfig(request):
 
     packIOTOK["Prix_TOTAL"] = round(packIOTOK["Prix_CO2"]+packIOTOK["Prix_TEAU2"]+packIOTOK["Prix_TAMB"]+packIOTOK["Prix_CPTGAZ"]+packIOTOK["Prix_CPTELEC"]+ \
         packIOTOK["Prix_CPTCALO"]+packIOTOK["Prix_CPTEAU"], 2)
+
+    print("pack ", packTGOK["Reference"])
 
     return render(request, 'polls/config.html', {
         'message': message,

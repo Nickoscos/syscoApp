@@ -17,7 +17,7 @@ class Point(models.Model):
     TC = models.IntegerField(default=0)
     Supp = models.BooleanField(default=False)
     user = models.CharField(max_length=200, default="")
-    # user = models.ForeignKey(Liste, on_delete=models.CASCADE)    
+
 
 #Déclaration du modèle LotIOT
 class LotIOT(models.Model):

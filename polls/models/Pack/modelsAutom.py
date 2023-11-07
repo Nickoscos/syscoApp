@@ -26,4 +26,14 @@ class carteAutom(models.Model):
 #Déclaration d'une configuration automate
 class Automate(carteAutom):
     user = models.CharField(max_length=200, default="")
+    cout = models.FloatField(default=0)
 
+#Déclaration de la prestation de programmation
+class Prestation(models.Model):
+    user = models.CharField(max_length=200, default="")
+    coutAF = models.FloatField(default=0)
+    coutProg = models.FloatField(default=0)
+    coutIHM = models.FloatField(default=0)
+    coutMES = models.FloatField(default=0)
+    coutCRT = models.FloatField(default=0)
+    coutToT = models.FloatField(default=0)
