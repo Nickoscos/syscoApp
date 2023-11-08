@@ -2,7 +2,7 @@ from ..models.Typology.modelsEquip import Point
 from ..models.Pack.modelsAutom import Automate
 from ..models.Pack.modelsAutom import carteAutom
 
-def configWIT(request, username, modemNec, nbMbus):
+def configDISTECH(request, username, modemNec, nbMbus):
     liste = Point.objects.filter(user=username)
     NbUI_Sup = 0
     NbAI_Sup = 0
@@ -16,68 +16,51 @@ def configWIT(request, username, modemNec, nbMbus):
 
     NbRessources = round((NbAO+NbDO+NbDI+NbAI) * 30/100 + (NbAO+NbDO+NbDI+NbAI), 0)
 
-    catalogue = carteAutom.objects.filter(marque='WIT')
+    catalogue = carteAutom.objects.filter(marque='DISTECH')
 
     try:
-        Automate.objects.filter(user=request.user.username, marque="WIT").delete()
+        Automate.objects.filter(user=request.user.username, marque="DISTECH").delete()
     except Automate.DoesNotExist:
         print("aucun automate dimensionné")
 
     if len(liste)>1 :
         #Etape 1 : Ajout de la CPU dans la configuration
         #On parcoure le catalogue en fonction du type de la carte recherchée
+        MinRessources = 9999 
         for carte in catalogue:
-            if modemNec == True:
-                if carte.type =="CPU" and carte.reference.find('4G') != -1 and carte.reference.find('4G') != -1 and carte.reference.find('PROCESS') != -1:
-                    Automate.objects.create(
-                        type=carte.type,
-                        marque=carte.marque, 
-                        reference=carte.reference,
-                        DI=carte.DI,
-                        DO=carte.DO,
-                        AI=carte.AI,
-                        AO=carte.AO,
-                        UI=carte.UI,
-                        UO=carte.UO,
-                        DOR=carte.DOR,
-                        DO_UO=carte.DO_UO,
-                        nbEmpl=carte.nbEmpl,
-                        extension=carte.extension,
-                        rs232=carte.rs232,
-                        rs485=carte.rs485,
-                        ressources=carte.ressources,
-                        maxModbus=carte.maxModbus,
-                        Imagerie=carte.Imagerie,
-                        maxMbus=carte.maxMbus,
-                        prix=carte.prix,
-                        user=request.user.username
-                    )
+            if carte.type =="CPU" and carte.Imagerie == True and carte.ressources > NbRessources:                    
+                #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
+                if MinRessources > carte.ressources :
+                    carteAajouter = carte
+                    MinRessources = carte.ressources
 
-            else:
-                if carte.type =="CPU" and carte.reference.find('4G') == -1 and carte.reference.find('PROCESS') != -1:
-                    Automate.objects.create(
-                        type=carte.type, 
-                        marque=carte.marque, 
-                        reference=carte.reference,
-                        DI=carte.DI,
-                        DO=carte.DO,
-                        AI=carte.AI,
-                        AO=carte.AO,
-                        UI=carte.UI,
-                        UO=carte.UO,
-                        DOR=carte.DOR,
-                        DO_UO=carte.DO_UO,
-                        nbEmpl=carte.nbEmpl,
-                        extension=carte.extension,
-                        rs232=carte.rs232,
-                        rs485=carte.rs485,
-                        ressources=carte.ressources,
-                        maxModbus=carte.maxModbus,
-                        Imagerie=carte.Imagerie,
-                        maxMbus=carte.maxMbus,
-                        prix=carte.prix,
-                        user=request.user.username
-                    )
+        if carteAajouter != None : 
+            Automate.objects.create(
+                type=carteAajouter.type, 
+                marque=carteAajouter.marque, 
+                reference=carteAajouter.reference,
+                DI=carteAajouter.DI,
+                DO=carteAajouter.DO,
+                AI=carteAajouter.AI,
+                AO=carteAajouter.AO,
+                UI=carteAajouter.UI,
+                UO=carteAajouter.UO,
+                DOR=carteAajouter.DOR,
+                DO_UO=carteAajouter.DO_UO,
+                nbEmpl=carteAajouter.nbEmpl,
+                extension=carteAajouter.extension,
+                rs232=carteAajouter.rs232,
+                rs485=carteAajouter.rs485,
+                ressources=carteAajouter.ressources,
+                maxModbus=carteAajouter.maxModbus,
+                Imagerie=carteAajouter.Imagerie,
+                maxMbus=carteAajouter.maxMbus,
+                prix=carteAajouter.prix,
+                user=request.user.username
+            )
+        else : 
+            print("Aucune CPU correspondante trouvée")
+                        
 
         #Etape 2 : Ajout des cartes de sorties analogiques 
         AO_Autom = NbAO
@@ -294,38 +277,7 @@ def configWIT(request, username, modemNec, nbMbus):
                 print("Aucune carte correspondante trouvée")
                 break           
 
-        #Etape 6: Ajout de l'Add-on interface web
-        for carte in catalogue:
-                if carte.type =="CPU" and carte.reference.find('Intravision') != -1:
-                    carteAajouter = carte
-                    break
-        
-        if carteAajouter != None : 
-                Automate.objects.create(
-                    type=carteAajouter.type, 
-                    marque=carteAajouter.marque,
-                    reference=carteAajouter.reference,
-                    DI=0,
-                    DO=0,
-                    AI=0,
-                    AO=0,
-                    UI=0,
-                    UO=0,
-                    DOR=0,
-                    DO_UO=0,
-                    nbEmpl=0,
-                    extension=False,
-                    rs232=0,
-                    rs485=0,
-                    ressources=0,
-                    maxModbus=0,
-                    Imagerie=False,
-                    maxMbus=0,
-                    prix=carteAajouter.prix,
-                    user=request.user.username
-                )
-
-        #Etape 7: Ajout de la carte Mbus 
+        #Etape 6: Ajout de la carte Mbus 
         NbEquipMbus = nbMbus
         while NbEquipMbus > 0:
             NbMbusMspare = 9999 
@@ -365,132 +317,13 @@ def configWIT(request, username, modemNec, nbMbus):
                 print("Aucune carte correspondante trouvée")
                 break
 
-        #Etape 8: Ajout de l'embase principale
-        automate = Automate.objects.filter(user=username, marque="WIT")
-        NbCarteES = 0
-        NbCarteCOM = 0
-
-        for carte in automate:
-            if carte.type.find('Carte_ES') != -1:
-                NbCarteES += 1
-            elif carte.type.find('COM') != -1:
-                NbCarteCOM += 1
-
-        NbCarte = NbCarteES + NbCarteCOM
-
-        # Ajout de l'embase de base
-        for carte in catalogue:
-                if carte.type =="EMBASE" and carte.extension == False and carte.reference.find('PLUG310') != -1:
-                    NbCarte -= carte.nbEmpl
-                    carteAajouter = carte
-        
-        if carteAajouter != None : 
-            Automate.objects.create(
-                type=carteAajouter.type, 
-                marque=carteAajouter.marque,
-                reference=carteAajouter.reference,
-                DI=carteAajouter.DI,
-                DO=carteAajouter.DO,
-                AI=carteAajouter.AI,
-                AO=carteAajouter.AO,
-                UI=carteAajouter.UI,
-                UO=carteAajouter.UO,
-                DOR=carteAajouter.DOR,
-                DO_UO=carteAajouter.DO_UO,
-                nbEmpl=carteAajouter.nbEmpl,
-                extension=carteAajouter.extension,
-                rs232=carteAajouter.rs232,
-                rs485=carteAajouter.rs485,
-                ressources=carteAajouter.ressources,
-                maxModbus=carteAajouter.maxModbus,
-                Imagerie=carteAajouter.Imagerie,
-                maxMbus=carteAajouter.maxMbus,
-                prix=carteAajouter.prix,
-                user=request.user.username
-            )
-        else : 
-            print("Aucune embase correspondante trouvée")
-
-        while NbCarte > 0:
-            NbEmplspare = 9999
-            for carte in catalogue:
-                if carte.type =="EMBASE" and carte.extension == True and carte.nbEmpl > 0 and NbEmplspare > carte.nbEmpl - NbCarte:
-                    NbEmplspare = carte.nbEmpl - NbCarte #Calcul des emplacements manquants       
-                    carteAajouter = carte
-
-            if carteAajouter != None : 
-                Automate.objects.create(
-                    type=carteAajouter.type, 
-                    marque=carteAajouter.marque,
-                    reference=carteAajouter.reference,
-                    DI=carteAajouter.DI,
-                    DO=carteAajouter.DO,
-                    AI=carteAajouter.AI,
-                    AO=carteAajouter.AO,
-                    UI=carteAajouter.UI,
-                    UO=carteAajouter.UO,
-                    DOR=carteAajouter.DOR,
-                    DO_UO=carteAajouter.DO_UO,
-                    nbEmpl=carteAajouter.nbEmpl,
-                    extension=carteAajouter.extension,
-                    rs232=carteAajouter.rs232,
-                    rs485=carteAajouter.rs485,
-                    ressources=carteAajouter.ressources,
-                    maxModbus=carteAajouter.maxModbus,
-                    Imagerie=carteAajouter.Imagerie,
-                    maxMbus=carteAajouter.maxMbus,
-                    prix=carteAajouter.prix,
-                    user=request.user.username
-                )
-                NbCarte -= carteAajouter.nbEmpl 
-            else : 
-                print("Aucune embase correspondante trouvée")
-                break
-
-        #Etape 9: Ajout des upgrade ressources
-        #On parcoure le catalogue en fonction du type de la carte recherchée
-        if NbRessources > 10:
-            MinRessources = 9999 
-            carteAajouter = None
-            for carte in catalogue:
-                if carte.type =="CPU" and carte.ressources > NbRessources:                    
-                    #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
-                    if MinRessources > carte.ressources :
-                        carteAajouter = carte
-                        MinRessources = carte.ressources
-                
-            if carteAajouter != None : 
-                Automate.objects.create(
-                    type=carteAajouter.type, 
-                    marque=carteAajouter.marque,
-                    reference=carteAajouter.reference,
-                    DI=carteAajouter.DI,
-                    DO=carteAajouter.DO,
-                    AI=carteAajouter.AI,
-                    AO=carteAajouter.AO,
-                    UI=carteAajouter.UI,
-                    UO=carteAajouter.UO,
-                    DOR=carteAajouter.DOR,
-                    DO_UO=carteAajouter.DO_UO,
-                    nbEmpl=carteAajouter.nbEmpl,
-                    extension=carteAajouter.extension,
-                    rs232=carteAajouter.rs232,
-                    rs485=carteAajouter.rs485,
-                    ressources=carteAajouter.ressources,
-                    maxModbus=carteAajouter.maxModbus,
-                    Imagerie=carteAajouter.Imagerie,
-                    maxMbus=carteAajouter.maxMbus,
-                    prix=carteAajouter.prix,
-                    user=request.user.username
-                )
-
         #Etape finale : Affichage de la configuration
-        automate = Automate.objects.filter(user=username, marque="WIT")
+        automate = Automate.objects.filter(user=username, marque="DISTECH")
         prixAutomate = 0
         for carte in automate:
             print("Type : ", carte.type, ", Marque : ", carte.marque, ", Référence : ", carte.reference, ", Prix : ", carte.prix ,"€")
             prixAutomate += carte.prix
-        Automate.objects.filter(user=username, marque="WIT").update(cout=round(prixAutomate,2))
+        Automate.objects.filter(user=username, marque="DISTECH").update(cout=round(prixAutomate,2))
         print("Coût total configuration automate: ", prixAutomate, "€")
 
     

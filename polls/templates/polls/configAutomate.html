@@ -22,71 +22,9 @@
                     <table class="table text-center mt-2" style="width: 30%;">
                         <tbody>
                             <tr>
-                                <td style="background-color: gray;font-size: 1.3em; color: white; vertical-align: middle;font-weight: bold;" width="50%">Référence</td>
-                                <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packTGOK.Reference }}" id="{{ packTGOK.Reference }}" type="text" value="{{ packTGOK.Reference }}">{{ packTGOK.Reference }}</p></td>
-                            </tr>
-                            <tr>
-                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Entrées Analogiques</td>
-                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.AI }}" id="{{ packTGOK.AI }}">{{ packTGOK.AI }}</p></td>
-                            </tr>
-                            <tr>
-                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Entrées Digitales</td>
-                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.DI }}" id="{{ packTGOK.DI }}">{{ packTGOK.DI }}</p></td>
-                            </tr>
-                            <tr>
-                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Sorties Analogiques</td>
-                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.AO }}" id="{{ packTGOK.AO }}">{{ packTGOK.AO }}</p></td>
-                            </tr>
-                            <tr>
-                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Sorties Digitales</td>
-                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.DO }}" id="{{ packTGOK.DO }}">{{ packTGOK.DO }}</p></td>
-                            </tr>
-                            <tr>
-                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Réserve Entrées Analogiques</td>
-                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.AIres }}" id="{{ packTGOK.AIres }}">{{ packTGOK.AIres }}</p></td>
-                            </tr>
-                            <tr>
-                                <td  style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Réserve Entrées Digitales</td>
-                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.DIres }}" id="{{ packTGOK.DIres }}">{{ packTGOK.DIres }}</p></td>
-                            </tr>
-                            <tr>
-                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Réserve Sorties Analogiques</td>
-                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.AOres }}" id="{{ packTGOK.AOres }}">{{ packTGOK.AOres }}</p></td>
-                            </tr>
-                            <tr>
-                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Réserve Sorties Digitales</td>
-                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.DOres }}" id="{{ packTGOK.DOres }}">{{ packTGOK.DOres }}</p></td>
-                            </tr>
-                            {% if user.groups.first.name == "SYSCO" %}
-                            <tr>
-                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix WIT</td>
-                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.priceWIT }}" id="{{ packTGOK.priceWIT }}">{{ packTGOK.priceWIT }} €</p></td>
-                            </tr>
-                            <tr>
-                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix TREND</td>
-                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.priceTREND }}" id="{{ packTGOK.priceTREND }}">{{ packTGOK.priceTREND }} €</p></td>
-                            </tr>
-                            <tr>
-                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix DISTECH</td>
-                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.priceDISTECH }}" id="{{ packTGOK.priceDISTECH }}">{{ packTGOK.priceDISTECH }} €</p></td>
-                            </tr>
-                            <tr>
-                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix SOFREL</td>
-                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packTGOK.priceSOFREL }}" id="{{ packTGOK.priceSOFREL }}">{{ packTGOK.priceSOFREL }} €</p></td>
-                            </tr>
-                            {% endif %}
-                            <tr>
-                                <td style="background-color: gray;font-size: 1.3em; color: white; vertical-align: middle; font-weight: bold;" width="50%">Prix MOYEN</td>
-                                <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packTGOK.priceMOY }}" id="{{ packTGOK.priceMOY }}">{{ packTGOK.priceMOY }} €</p></td>
-                            </tr>
-                        </tbody>
-                    </table>  
-                    <table class="table text-center mt-2" style="width: 30%;">
-                        <tbody>
-                            <tr>
                                 <td colspan="3" style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Automate WIT</td>
                             </tr>
-                            {% for c in automate %}
+                            {% for c in automateWIT %}
                             <tr>
                                 <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">{{ c.type }}</td>
                                 <td class="packOKsec" style="vertical-align: middle;"><p name="{{ c.reference }}" id="{{ c.reference }}">{{ c.reference }}</p></td>
@@ -95,7 +33,7 @@
                             {% endfor %}
                             <tr>
                                 <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">PRIX TOTAL MATERIEL</td>
-                                <td class="packOKsec" colspan="2" style="vertical-align: middle;"><p name="{{ automatePrix }}" id="{{ automatePrix }}">{{ automatePrix }}€</p></td>
+                                <td class="packOKsec" colspan="2" style="vertical-align: middle;"><p name="{{ automatePrixWIT }}" id="{{ automatePrixWIT }}">{{ automatePrixWIT }}€</p></td>
                             </tr>
                             <tr>
                                 <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">PRIX PRESTATION PROGRAMMATION</td>
@@ -103,7 +41,33 @@
                             </tr>
                             <tr>
                                 <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">PRIX TOTAL</td>
-                                <td class="packOKsec" colspan="2" style="font-size: 1.3em;color:black;font-weight: bold;;"><p name="{{ coutTotal }}" id="{{ coutTotal }}">{{ coutTotal }}€</p></td>
+                                <td class="packOKsec" colspan="2" style="font-size: 1.3em;color:black;font-weight: bold;;"><p name="{{ coutTotalWIT }}" id="{{ coutTotalWIT }}">{{ coutTotalWIT }}€</p></td>
+                            </tr>
+                        </tbody>
+                    </table>  
+                    <table class="table text-center mt-2" style="width: 30%;">
+                        <tbody>
+                            <tr>
+                                <td colspan="3" style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Automate DISTECH</td>
+                            </tr>
+                            {% for c in automateDISTECH %}
+                            <tr>
+                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">{{ c.type }}</td>
+                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ c.reference }}" id="{{ c.reference }}">{{ c.reference }}</p></td>
+                                <td class="packOKsec" style="vertical-align: middle;"><p name="{{ c.prix }}" id="{{ c.prix }}">{{ c.prix }}€</p></td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">PRIX TOTAL MATERIEL</td>
+                                <td class="packOKsec" colspan="2" style="vertical-align: middle;"><p name="{{ automatePrixDISTECH }}" id="{{ automatePrixDISTECH }}">{{ automatePrixDISTECH }}€</p></td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">PRIX PRESTATION PROGRAMMATION</td>
+                                <td class="packOKsec" colspan="2" style="vertical-align: middle;"><p name="{{ PrestationPrix }}" id="{{ PrestationPrix }}">{{ PrestationPrix }}€</p></td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">PRIX TOTAL</td>
+                                <td class="packOKsec" colspan="2" style="font-size: 1.3em;color:black;font-weight: bold; vertical-align: middle;"><p name="{{ coutTotalDISTECH }}" id="{{ coutTotalDISTECH }}">{{ coutTotalDISTECH }}€</p></td>
                             </tr>
                         </tbody>
                     </table>  
@@ -113,110 +77,6 @@
             
         </fieldset>
         <br>
-        <fieldset class="container-fluid mt-1 pb-1 border border-success rounded" style="width: 100%;" {% if packOPTOK.Reference == "" %} hidden {% endif %}>
-            <div class="row">
-                <legend class="text-center">PARTIE B - PACK OPTIMISATION</legend>
-            </div>
-
-            <table class="table text-center mt-2" style="width: 30%;">
-                <tbody>
-                    <tr>
-                        <td style="background-color: gray;font-size: 1.3em; color: white; vertical-align: middle;font-weight: bold;" width="50%">Référence</td>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packOPTOK.Reference }}" id="{{ packOPTOK.Reference }}" type="text" value="{{ packOPTOK.Reference }}">{{ packOPTOK.Reference }}</p></td>
-                    </tr>
-                    <tr>
-                        <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Température Ambiant</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOPTOK.Tamb }}" id="{{ packOPTOK.Tamb }}">{{ packOPTOK.Tamb }}</p></td>
-                    </tr>
-                    <tr>
-                        <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Température ECS</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOPTOK.TECS }}" id="{{ packOPTOK.TECS }}">{{ packOPTOK.TECS }}</p></td>
-                    </tr>
-                    <tr>
-                    <tr>
-                        <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix passerelle</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOPTOK.pricePAS }}" id="{{ packOPTOK.pricePAS }}">{{ packOPTOK.pricePAS }} €</p></td>
-                    </tr>
-                    <tr>
-                        <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix Température Ambiante</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOPTOK.priceTamb }}" id="{{ packOPTOK.priceTamb }}">{{ packOPTOK.priceTamb }} €</p></td>
-                    </tr>
-                    <tr>
-                        <td style="background-color: gray;font-size: 1.2em; color: white; vertical-align: middle;" width="50%">Prix Température ECS</td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packOPTOK.priceTECS }}" id="{{ packOPTOK.priceTECS }}">{{ packOPTOK.priceTECS }} €</p></td>
-                    </tr>
-                    <tr>
-                        <td style="background-color: gray;font-size: 1.3em; color: white; vertical-align: middle; font-weight: bold;" width="50%">Prix TOTAL</td>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packOPTOK.priceTOT }}" id="{{ packOPTOK.priceTOT }}">{{ packOPTOK.priceTOT }} €</p></td>
-                    </tr>
-                </tbody>
-            </table>  
-        </fieldset>
-        <br>
-        <fieldset class="container-fluid mt-1 pb-1 border border-success rounded" style="width: 100%;" {% if packIOTOK.Quant_TAMB == 0 and packIOTOK.Quant_TEAU2 == 0 and packIOTOK.Quant_CO2 == 0 and packIOTOK.Quant_CPTGAZ == 0 and packIOTOK.Quant_CPTEAU == 0 and packIOTOK.Quant_CPTCALO == 0 and packIOTOK.Quant_CPTELEC == 0 %} hidden {% endif %}>
-            <div class="row">
-                <legend class="text-center">PARTIE C - PACK TELERELEVE</legend>
-            </div>
-
-            <table class="table text-center mt-2" style="width: 30%;">
-                <tbody>
-                    <tr style="background-color: gray;">
-                        <th>Référence</th>
-                        <th>Quantité</th>
-                        <th>Prix Total</th>
-                    </tr>
-                    <tr {% if packIOTOK.Quant_PASS > 1 %} hidden {% endif %}>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Passerelle LoRa (100 capteurs)</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_PASS }}" id="{{ packIOTOK.Quant_PASS }}">{{ packIOTOK.Quant_PASS }}</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_PASS }}" id="{{ packIOTOK.Prix_PASS }}">{{ packIOTOK.Prix_PASS }} €</p></td>
-                    </tr>
-                    <tr {% if packIOTOK.Quant_PASS6 > 1 %} hidden {% endif %}>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Passerelle LoRa (moins de 6 capteurs)</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_PASS6 }}" id="{{ packIOTOK.Quant_PASS6 }}">{{ packIOTOK.Quant_PASS6 }}</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_PASS6 }}" id="{{ packIOTOK.Prix_PASS6 }}">{{ packIOTOK.Prix_PASS6 }} €</p></td>
-                    </tr>
-                    <tr>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Température Ambiante & Humidité</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_TAMB }}" id="{{ packIOTOK.Quant_TAMB }}">{{ packIOTOK.Quant_TAMB }}</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_TAMB }}" id="{{ packIOTOK.Prix_TAMB }}">{{ packIOTOK.Prix_TAMB }} €</p></td>
-                    </tr>
-                    <tr>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Température Eau 2 sondes (aller/retour)</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_TEAU2 }}" id="{{ packIOTOK.Quant_TEAU2 }}">{{ packIOTOK.Quant_TEAU2 }}</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_TEAU2 }}" id="{{ packIOTOK.Prix_TEAU2 }}">{{ packIOTOK.Prix_TEAU2 }} €</p></td>
-                    </tr>
-                    <tr>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">CO2, COV, Température & Humidité</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_CO2 }}" id="{{ packIOTOK.Quant_CO2 }}">{{ packIOTOK.Quant_CO2 }}</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_CO2 }}" id="{{ packIOTOK.Prix_CO2 }}">{{ packIOTOK.Prix_CO2 }} €</p></td>
-                    </tr>
-                    <tr>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Télérelève compteur GAZ</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_CPTGAZ }}" id="{{ packIOTOK.Quant_CPTGAZ }}">{{ packIOTOK.Quant_CPTGAZ }}</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_CPTGAZ }}" id="{{ packIOTOK.Prix_CPTGAZ }}">{{ packIOTOK.Prix_CPTGAZ }} €</p></td>
-                    </tr>
-                    <tr>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Télérelève compteur EAU</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_CPTEAU }}" id="{{ packIOTOK.Quant_CPTEAU }}">{{ packIOTOK.Quant_CPTEAU }}</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_CPTEAU }}" id="{{ packIOTOK.Prix_CPTEAU }}">{{ packIOTOK.Prix_CPTEAU }} €</p></td>
-                    </tr>
-                    <tr>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Télérelève compteur CALORIES</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_CPTCALO }}" id="{{ packIOTOK.Quant_CPTCALO }}">{{ packIOTOK.Quant_CPTCALO }}</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_CPTCALO }}" id="{{ packIOTOK.Prix_CPTCALO }}">{{ packIOTOK.Prix_CPTCALO }} €</p></td>
-                    </tr>
-                    <tr>
-                        <td class="packOKprinc" style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">Télérelève compteur ELEC</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Quant_CPTELEC }}" id="{{ packIOTOK.Quant_CPTELEC }}">{{ packIOTOK.Quant_CPTELEC }}</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;"><p name="{{ packIOTOK.Prix_CPTELEC }}" id="{{ packIOTOK.Prix_CPTELEC }}">{{ packIOTOK.Prix_CPTELEC}} €</p></td>
-                    </tr>
-                    <tr>
-                        <td class="packOKprinc" colspan="2"  style="font-size: 1.3em;color:black;font-weight: bold;"><p type="text">PRIX TOTAL</p></td>
-                        <td class="packOKsec" style="vertical-align: middle;font-size: 1.3em;color:black;font-weight: bold;"><p name="{{ packIOTOK.Prix_TOTAL }}" id="{{ packIOTOK.Prix_TOTAL }}">{{ packIOTOK.Prix_TOTAL}} €</p></td>
-                    </tr>
-                </tbody>
-            </table>  
-        </fieldset>
     {% else %}
         <p>You are not logged in</p>
         <a href="{% url 'login' %}">Log In</a>

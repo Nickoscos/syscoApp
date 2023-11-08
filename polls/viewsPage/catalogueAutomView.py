@@ -10,10 +10,11 @@ def catalogueAutom(request):
     carteUPDATE_ref = ""
     if request.method == "POST":
         #Catalogue automate
-        if(request.POST.get("form_type") == "catalogueWITAddform"):
+        if(request.POST.get("form_type") == "catalogueAddform"):
             if request.POST.get("Add") != None:
                 if not carteAutom.objects.filter(reference=request.POST.get('reference_Add')).exists():
                     cartes.create( type = request.POST.get('type_Add'),
+                        marque = request.POST.get('marque_Add'), 
                         reference = request.POST.get('reference_Add'),  
                         DI = int(request.POST.get('DI_Add')), 
                         DO = int(request.POST.get('DO_Add')),
@@ -34,18 +35,19 @@ def catalogueAutom(request):
                         prix=float(request.POST.get('prix_Add')))
                 else:
                     message = "référence carte existante"
-        elif(request.POST.get("form_type") == "catalogueWITSuppform"):           
+        elif(request.POST.get("form_type") == "catalogueSuppform"):           
             if request.POST.get("Supp") != None:
                 cartedel = cartes.get(reference=request.POST.get('Supp'))
                 cartedel.delete()
         
-        if(request.POST.get("form_type") == "catalogueWITModifform"):    
+        if(request.POST.get("form_type") == "catalogueModifform"):    
             if request.POST.get("Modif") != None:
                 carteUPDATE_ref = request.POST.get("Modif")
-        elif(request.POST.get("form_type") == "catalogueWITUPGform"):   
+        elif(request.POST.get("form_type") == "catalogueUPGform"):   
             if request.POST.get("ValidModif") != None:
                 print(request.POST.get("ValidModif"))
                 carteAutom.objects.filter(reference=request.POST.get("ValidModif")).update(type=request.POST.get('type_Upd'))
+                carteAutom.objects.filter(reference=request.POST.get("ValidModif")).update(marque=request.POST.get('marque_Upd'))
                 carteAutom.objects.filter(reference=request.POST.get("ValidModif")).update(reference=request.POST.get('reference_Upd'))
                 carteAutom.objects.filter(reference=request.POST.get("ValidModif")).update(DI=int(request.POST.get('DI_Upd')))
                 carteAutom.objects.filter(reference=request.POST.get("ValidModif")).update(DO=int(request.POST.get('DO_Upd')))
@@ -68,7 +70,7 @@ def catalogueAutom(request):
 
     return render(request, 'polls/catalogueAutomate.html', {
         'message': message,
-        'catalogueWIT': cartes,
+        'catalogue': cartes,
         'itemUPDATE': carteUPDATE_ref,
         })
 

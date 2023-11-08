@@ -18,15 +18,16 @@
                 <tr>
                     <th
                     {% if user.groups.first.name == "SYSCO" %} 
-                        colspan="20" 
+                        colspan="21" 
                     {% else %}
-                        colspan="20" 
+                        colspan="21" 
                     {% endif %}
-                    style="background-color: gray; font-size: 1.3em;"> AUTOMATE WIT </th>
+                    style="background-color: gray; font-size: 1.3em;"> AUTOMATE </th>
                 </tr>
                 <tr style="background-color: gray;">
                     <!-- <th>Sous-ensemble</th> -->
                     <th>TYPE</th>
+                    <th>MARQUE</th>
                     <th>DENOMINATION</th>
                     <th>DI</th>
                     <th>DO</th>
@@ -51,10 +52,10 @@
                 </tr>
             </thead>
             <tbody>
-                {% for p in catalogueWIT %}
+                {% for p in catalogue %}
                     {% if itemUPDATE == p.reference %}
                         <tr>
-                            <form action="" method="post" id="catalogueWITUPGform">
+                            <form action="" method="post" id="catalogueUPGform">
                                 {% csrf_token %}
                                 <td class="itemTEXT"><select name="type_Upd" id="type_Upd" value="{{ p.type }}">
                                     <option value="CPU">CPU</option>
@@ -63,6 +64,12 @@
                                     <option value="EMBASE">EMBASE</option>
                                     <option value="ALIM">ALIM</option>
                                     <option value="SONDE">SONDE</option>
+                                </select></td>
+                                <td class="itemTEXT"><select name="marque_Upd" id="marque_Upd" value="{{ p.marque }}">
+                                    <option value="DISTECH">DISTECH</option>
+                                    <option value="TREND">TREND</option>
+                                    <option value="WIT">WIT</option>
+                                    <option value="SOFREL">SOFREL</option>
                                 </select></td>
                                 <td class="itemTEXT"><input name="reference_Upd" id="reference_Upd" type="text" value="{{ p.reference }}"></td>
                                 <td class="itemNumber"><input name="DI_Upd" id="DI_Upd" value="{{ p.DI }}"></td>
@@ -83,7 +90,7 @@
                                 <td class="itemNumber"><input name="maxMbus_Upd" id="maxMbus_Upd" value="{{ p.maxMbus }}"></td>
                                 <td class="packPrix"><input name="prix_Upd" id="prix_Upd" value="{{ p.prix }}"></td>
                                 <td>
-                                        <input type="hidden" name="form_type" value="catalogueWITUPGform">
+                                        <input type="hidden" name="form_type" value="catalogueUPGform">
                                         <button type="submit" class="btn btn-primary"name="ValidModif" id="ValidModif" value={{p.reference}}>Valider</button>
                                 </td>
                             </form>
@@ -91,6 +98,7 @@
                     {% else %}
                         <tr>
                             <td class="itemTEXT"><p name="type" id="type" type="text">{{ p.type }}</p></td>
+                            <td class="itemTEXT"><p name="marque" id="marque" type="text">{{ p.marque }}</p></td>
                             <td class="itemTEXT"><p name="reference" id="reference" type="text">{{ p.reference }}</p></td>
                             <td class="itemNumber"><p name="DI" id="DI">{{ p.DI }}</p></td>
                             <td class="itemNumber"><p name="DO" id="DO">{{ p.DO }}</p></td>
@@ -120,16 +128,16 @@
                             {% if user.groups.first.name == "SYSCO" %} 
                             <td class="row">
                                 <div class="col">
-                                    <form action="" method="post" id="catalogueWITSupform">
+                                    <form action="" method="post" id="catalogueSupform">
                                         {% csrf_token %}
-                                        <input type="hidden" name="form_type" value="catalogueWITSuppform">
+                                        <input type="hidden" name="form_type" value="catalogueSuppform">
                                         <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.reference}}>Supprimer</button>
                                     </form>
                                 </div>
                                 <div class="col">
-                                    <form action="" method="post" id="catalogueWITModifform">
+                                    <form action="" method="post" id="catalogueModifform">
                                         {% csrf_token %}
-                                        <input type="hidden" name="form_type" value="catalogueWITModifform">
+                                        <input type="hidden" name="form_type" value="catalogueModifform">
                                         <button type="submit" class="btn btn-primary"name="Modif" id="Modif" value={{p.reference}}>Modifier</button>
                                     </form>
                                 </div>
@@ -139,7 +147,7 @@
                     {% endif %}
                 {% endfor %}
                 {% if user.groups.first.name == "SYSCO" %}
-                <form action="" method="post" id="catalogueWITAddform">
+                <form action="" method="post" id="catalogueAddform">
                     {% csrf_token %}
                     <tr>
                         <td class="itemTEXT"><select name="type_Add" id="type_Add" value="{{ p.type }}">
@@ -149,6 +157,12 @@
                             <option value="EMBASE">EMBASE</option>
                             <option value="ALIM">ALIM</option>
                             <option value="SONDE">SONDE</option>
+                        </select></td>
+                        <td class="itemTEXT"><select name="marque_Add" id="marque_Add" value="{{ p.marque }}">
+                            <option value="DISTECH">DISTECH</option>
+                            <option value="TREND">TREND</option>
+                            <option value="WIT">WIT</option>
+                            <option value="SOFREL">SOFREL</option>
                         </select></td>
                         <td class="itemTEXT"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
                         <td class="itemNumber"><input name="DI_Add" id="DI_Add" type="number" value=0></td>
@@ -169,7 +183,7 @@
                         <td class="itemNumber"><input name="maxMbus_Add" id="maxMbus_Add" type="number" value=0></td>
                         <td class="itemNumber"><input name="prix_Add" id="prix_Add" type="number" step="0.01" value=0></td>
                         <td>
-                            <input type="hidden" name="form_type" value="catalogueWITAddform">
+                            <input type="hidden" name="form_type" value="catalogueAddform">
                             <button type="submit" class="btn btn-success"name="Add" id="Add" value=1>Ajout</button>
                         </td> 
                     </tr>

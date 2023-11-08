@@ -3,6 +3,7 @@ from django.db import models
 #Déclaration du modèle des cartes Automate
 class carteAutom(models.Model):
     type = models.CharField(max_length=200, default="")
+    marque = models.CharField(max_length=200, default="")
     reference = models.CharField(max_length=200, default="")
     DI = models.IntegerField(default=0)
     DO = models.IntegerField(default=0)
