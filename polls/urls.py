@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .viewsPage import listeView, packsView, configView, catalogueAutomView
+from .viewsPage import listeView, packsView, configView, catalogueAutomView, configAutomateView
 from .ListePTS import export
 
 app_name = 'polls'
@@ -13,4 +13,5 @@ urlpatterns = [
     path('packs/', packsView.listPack, name='packsView'),
     path('catalogueAutom', catalogueAutomView.catalogueAutom, name='catalogueAutomView'),
     path('config/', configView.newConfig, name='config'),
+    path('configAutomate/', configAutomateView.newConfig, name='configAutomate'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
