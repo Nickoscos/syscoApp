@@ -80,6 +80,19 @@
                         <input name="nbDivers" id="nbDivers" type="number" min="0" value="{{ chaufferie.nbDivers }}">
                     </fieldset>
 
+                    <fieldset class="container-fluid col mt-1 me-1 pb-1 border border-primary rounded">
+                        <legend>Caractéristiques spéciales:</legend>
+                        <label>Modem nécessaire: </label>
+                        <input class="col-4" name="modemNec" id="modemNec" type="checkbox" style="width:20px;" value="{{ chaufferie.modemNec }}" {% if chaufferie.modemNec %} checked {% endif %}> 
+                        <label>Nombre de ports Ethernet sur modem: </label>
+                        <td class="number"><select name="nbPortModem" id="nbPortModem" value="{{ chaufferie.nbPortModem }}">
+                            <option value=2>2</option>
+                            <option value=5>5</option>
+                        </select></td>
+                        <label>Ecran tactile: </label>
+                        <input class="col-4" name="ecranNec" id="ecranNec" type="checkbox" style="width:20px;" value="{{ chaufferie.ecranNec }}" {% if chaufferie.ecranNec %} checked {% endif %}>   
+                    </fieldset>
+
                     <div class="col mt-1">
                     </div>
 

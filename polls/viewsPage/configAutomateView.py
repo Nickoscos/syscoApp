@@ -2,9 +2,10 @@ from django.forms import CharField, IntegerField
 from django.shortcuts import render
 from django.shortcuts import redirect
 from ..models.Typology.modelsEquip import LotIOT, Point
-from ..models.Pack.modelsPacks import PackTG, PackOPT, PackIOTUnit
+from ..models.Typology.modelsChaudiere import Chaufferie
 from math import *
 from ..models.Pack.modelsAutom import Automate, Prestation
+from django.db.models import Q
 from ..configAutom.configWIT import configWIT
 from ..configAutom.configDISTECH import configDISTECH
 
@@ -38,8 +39,9 @@ def newConfig(request):
                 nbModbus += 1 
 
         # Dimensionnement d'un automate si aucun pack existant
-        configWIT(request, request.user.username, True, nbMbus)
-        configDISTECH(request, request.user.username, True, nbMbus)
+        c = Chaufferie.objects.get(user=request.user.username)
+        configWIT(request, request.user.username, c.modemNec, nbMbus)
+        configDISTECH(request, request.user.username, c.modemNec, c.nbPortModem, nbMbus)
         configPROG(request, request.user.username)
 
 
@@ -50,8 +52,8 @@ def newConfig(request):
     automateWIT = Automate.objects.filter(user=request.user.username, marque='WIT')
     automatePrixWIT = Automate.objects.filter(user=request.user.username, marque='WIT').values('cout')[0]['cout']
     coutTotalWIT = round(automatePrixWIT + prestationPrix, 2)
-    automateDISTECH = Automate.objects.filter(user=request.user.username, marque='DISTECH')
-    automatePrixDISTECH = Automate.objects.filter(user=request.user.username, marque='DISTECH').values('cout')[0]['cout']
+    automateDISTECH = Automate.objects.filter(Q(user=request.user.username) & (Q(marque="DISTECH") | Q(type="MODEM")))
+    automatePrixDISTECH = Automate.objects.filter(Q(user=request.user.username) & (Q(marque="DISTECH") | Q(type="MODEM"))).values('cout')[0]['cout']
     coutTotalDISTECH = round(automatePrixDISTECH + prestationPrix, 2)
 
     return render(request, 'polls/configAutomate.html', {

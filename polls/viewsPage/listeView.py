@@ -52,6 +52,9 @@ def genListeView(request):
             c.nbCircReg = int(request.POST.get('nbCircReg')) #Récupération du nombre de circuits régulés saisies
             c.ECSpres = bool(request.POST.get('ECSpres'))
             c.ECSprepa = bool(request.POST.get('ECSprepa'))
+            c.modemNec = bool(request.POST.get('modemNec'))
+            c.nbPortModem = int(request.POST.get('nbPortModem'))
+            c.ecranNec = bool(request.POST.get('ecranNec'))
 
             Chaufferie.creationGeneral(c) #Ajout partie générale dans la base de données
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
@@ -131,6 +134,9 @@ def genListeView(request):
             c.nbCircReg = 0 #Récupération du nombre de circuits régulés saisies
             c.ECSpres = False
             c.ECSprepa = False
+            c.modemNec = True
+            c.nbPortModem = 5
+            c.ecranNec = True
 
             Chaufferie.creationGeneral(c) #Ajout partie générale dans la base de données
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données
@@ -189,6 +195,9 @@ def listePts(request):
             c.nbCircReg = int(request.POST.get('nbCircReg')) #Récupération du nombre de circuits régulés saisies
             c.ECSpres = bool(request.POST.get('ECSpres'))
             c.ECSprepa = bool(request.POST.get('ECSprepa'))
+            c.modemNec = bool(request.POST.get('modemNec'))
+            c.nbPortModem = int(request.POST.get('nbPortModem'))
+            c.ecranNec = bool(request.POST.get('ecranNec'))
             
             Chaufferie.creationGeneral(c) #Ajout partie générale dans la base de données
             Chaufferie.creationChaudiere(c) #Ajout des chaudières dans la base de données

@@ -113,6 +113,14 @@ class Chaufferie(models.Model):
     #Nombre de compteur Modbus
     nbImp = models.IntegerField(default=0)
 
+    ######CONFIGURATION CARACTERISTIQUES SPECIALES######
+    #Modem
+    modemNec = models.BooleanField(default=False)
+    nbPortModem = models.IntegerField(default=5)
+
+    #Ecran tactile
+    ecranNec = models.BooleanField(default=False)
+
     ######CONFIGURATION DIVERS#####
     #Nombre d'équipements divers dans la chaufferie
     nbDivers = models.IntegerField(default=0)

@@ -1,8 +1,9 @@
 from ..models.Typology.modelsEquip import Point
 from ..models.Pack.modelsAutom import Automate
 from ..models.Pack.modelsAutom import carteAutom
+from django.db.models import Q
 
-def configDISTECH(request, username, modemNec, nbMbus):
+def configDISTECH(request, username, modemNec, portModem, nbMbus):
     liste = Point.objects.filter(user=username)
     NbUI_Sup = 0
     NbAI_Sup = 0
@@ -16,10 +17,10 @@ def configDISTECH(request, username, modemNec, nbMbus):
 
     NbRessources = round((NbAO+NbDO+NbDI+NbAI) * 30/100 + (NbAO+NbDO+NbDI+NbAI), 0)
 
-    catalogue = carteAutom.objects.filter(marque='DISTECH')
+    catalogue = carteAutom.objects.filter(Q(marque='DISTECH') | Q(type= 'MODEM'))
 
     try:
-        Automate.objects.filter(user=request.user.username, marque="DISTECH").delete()
+        Automate.objects.filter(Q(user=request.user.username) & Q(marque="DISTECH") | Q(type='MODEM')).delete()
     except Automate.DoesNotExist:
         print("aucun automate dimensionné")
 
@@ -317,13 +318,68 @@ def configDISTECH(request, username, modemNec, nbMbus):
                 print("Aucune carte correspondante trouvée")
                 break
 
+        #Etape 7: Ajout du modem
+        if modemNec == True:
+            for carte in catalogue:
+                if carte.type == "MODEM" and carte.reference.find('Routeur') != -1 and carte.reference.find(str(portModem) + " ports") != -1 :
+                    print("test")
+                    Automate.objects.create(
+                        type=carte.type, 
+                        marque=carte.marque,
+                        reference=carte.reference,
+                        DI=carte.DI,
+                        DO=carte.DO,
+                        AI=carte.AI,
+                        AO=carte.AO,
+                        UI=carte.UI,
+                        UO=carte.UO,
+                        DOR=carte.DOR,
+                        DO_UO=carte.DO_UO,
+                        nbEmpl=carte.nbEmpl,
+                        extension=carte.extension,
+                        rs232=carte.rs232,
+                        rs485=carte.rs485,
+                        ressources=carte.ressources,
+                        maxModbus=carte.maxModbus,
+                        Imagerie=carte.Imagerie,
+                        maxMbus=carte.maxMbus,
+                        prix=carte.prix,
+                        user=request.user.username
+                    )
+                if carte.type =="MODEM" and carte.reference.find('Routeur') !=-1 and carte.reference.find("APWR000058") != -1 :
+                    Automate.objects.create(
+                        type=carte.type, 
+                        marque=carte.marque,
+                        reference=carte.reference,
+                        DI=carte.DI,
+                        DO=carte.DO,
+                        AI=carte.AI,
+                        AO=carte.AO,
+                        UI=carte.UI,
+                        UO=carte.UO,
+                        DOR=carte.DOR,
+                        DO_UO=carte.DO_UO,
+                        nbEmpl=carte.nbEmpl,
+                        extension=carte.extension,
+                        rs232=carte.rs232,
+                        rs485=carte.rs485,
+                        ressources=carte.ressources,
+                        maxModbus=carte.maxModbus,
+                        Imagerie=carte.Imagerie,
+                        maxMbus=carte.maxMbus,
+                        prix=carte.prix,
+                        user=request.user.username
+                    )
+            
+                    
+
         #Etape finale : Affichage de la configuration
-        automate = Automate.objects.filter(user=username, marque="DISTECH")
+        automate = Automate.objects.filter(Q(user=username) & (Q(marque="DISTECH") | Q(type="MODEM")))
         prixAutomate = 0
         for carte in automate:
             print("Type : ", carte.type, ", Marque : ", carte.marque, ", Référence : ", carte.reference, ", Prix : ", carte.prix ,"€")
             prixAutomate += carte.prix
-        Automate.objects.filter(user=username, marque="DISTECH").update(cout=round(prixAutomate,2))
+        Automate.objects.filter(Q(user=username) & (Q(marque="DISTECH") | Q(type="MODEM"))).update(cout=round(prixAutomate,2))
         print("Coût total configuration automate: ", prixAutomate, "€")
 
     
