@@ -50,10 +50,16 @@ def newConfig(request):
     prestationPrix = Prestation.objects.filter(user=request.user.username).values('coutToT')[0]['coutToT']
 
     automateWIT = Automate.objects.filter(user=request.user.username, marque='WIT')
-    automatePrixWIT = Automate.objects.filter(user=request.user.username, marque='WIT').values('cout')[0]['cout']
+    automatePrixWIT = 0
+    for carte in automateWIT:
+        automatePrixWIT = round(automatePrixWIT + carte.prix, 2)
+
     coutTotalWIT = round(automatePrixWIT + prestationPrix, 2)
     automateDISTECH = Automate.objects.filter(Q(user=request.user.username) & (Q(marque="DISTECH") | Q(type="MODEM")))
-    automatePrixDISTECH = Automate.objects.filter(Q(user=request.user.username) & (Q(marque="DISTECH") | Q(type="MODEM"))).values('cout')[0]['cout']
+    automatePrixDISTECH = 0
+    for carte in automateDISTECH:
+        automatePrixDISTECH = round(automatePrixDISTECH + carte.prix, 2)
+    
     coutTotalDISTECH = round(automatePrixDISTECH + prestationPrix, 2)
 
     return render(request, 'polls/configAutomate.html', {

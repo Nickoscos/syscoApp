@@ -490,7 +490,6 @@ def configWIT(request, username, modemNec, nbMbus):
         for carte in automate:
             print("Type : ", carte.type, ", Marque : ", carte.marque, ", Référence : ", carte.reference, ", Prix : ", carte.prix ,"€")
             prixAutomate += carte.prix
-        Automate.objects.filter(user=username, marque="WIT").update(cout=round(prixAutomate,2))
         print("Coût total configuration automate: ", prixAutomate, "€")
 
     
