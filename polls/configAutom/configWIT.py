@@ -6,6 +6,8 @@ def configWIT(request, username, modemNec, nbMbus):
     liste = Point.objects.filter(user=username)
     NbUI_Sup = 0
     NbAI_Sup = 0
+    NbDI_Sup = 0
+    NbAO_Sup = 0
     # Détection nombre d'entrées/sorties nécessaire
     for point in liste:
         if point.libelle.find("TOTAUX") != -1:
@@ -84,16 +86,14 @@ def configWIT(request, username, modemNec, nbMbus):
         NbUO_Sup = 0
         
         while AO_Autom > 0:
-            MinPrixMoy_ES = 9999 
+            MinReserves = 9999 
+            carteAajouter = None
             for carte in catalogue:
                 if carte.type =="Carte_ES" and (carte.AO > 0 or carte.UO > 0 or carte.DO_UO > 0):                    
-                    #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
-                    PrixMoy_ES = carte.prix / (carte.DI + carte.DO + carte.AI + carte.AO 
-                                               + carte.UI + carte.UO + carte.DOR + carte.DO_UO)
-                    if MinPrixMoy_ES > PrixMoy_ES :
+                    NbAOcarte = (carte.AO + carte.UO + carte.DO_UO)
+                    if AO_Autom - NbAOcarte < MinReserves :
                         carteAajouter = carte
-                        AO_Autom -= (carte.AO + carte.UO + carte.DO_UO) #Calcul des ES manquantes
-                        MinPrixMoy_ES = PrixMoy_ES
+                        MinReserves = AO_Autom - NbAOcarte
 
             if carteAajouter != None : 
                 Automate.objects.create(
@@ -119,38 +119,49 @@ def configWIT(request, username, modemNec, nbMbus):
                     prix=carteAajouter.prix,
                     user=request.user.username
                 )
-
-                #Détermination des entrées en SPARE pour une utilisation
-                NbUI_Sup = NbUI_Sup + carteAajouter.UI  # Mémorisation du nombre d'entrées universelles de la carte ajoutée
-                NbAI_Sup = NbAI_Sup + carteAajouter.AI  # Mémorisation du nombre d'entrées universelles de la carte ajoutée
             else : 
                 print("Aucune carte correspondante trouvée")
                 break
 
             #Détermination des sorties universelles en SPARE pour une utilisation en tant que sorties digitales
-            if carteAajouter.UO > 0 or carteAajouter.DO_UO > 0:
-                NbUO_Sup = carteAajouter.UO + carteAajouter.DO_UO # Calcul du nombre de sorties universelles
+            NbUO_Sup = NbUO_Sup + carteAajouter.UO + carteAajouter.DO_UO  # Calcul du nombre de sorties universel
+            NbUI_Sup = NbUI_Sup + carteAajouter.UI
+            NbAI_Sup = NbAI_Sup + carteAajouter.AI
+            NbAO_Sup = carteAajouter.AO
+            AO_Autom = AO_Autom - carteAajouter.AO - carteAajouter.UO - carteAajouter.DO_UO
             if AO_Autom <= 0 :
-                if NbUO_Sup > AO_Autom:
-                    NbUO_Sup = AO_Autom # Calcul du nombre de sorties universelles non utilisées
-                else :
-                    NbUO_Sup = 0
                 break
 
+        NbAO_Sup = abs(AO_Autom) # Calcul du nombre de sorties universelles non utilisées
+        
         # Etape 3 : Ajout des cartes de sorties digitales 
         DO_Autom = NbDO - NbUO_Sup
         NbDO_Sup = 0
+
+
         while DO_Autom > 0:
-            MinPrixMoy_ES = 9999 
+            MinReserves = 9999 
+            MinReserves_UO = 9999
+            carteAajouter = None
+            prixCarteDO =0
             for carte in catalogue:
-                if carte.type =="Carte_ES" and (carte.DO > 0 or carte.UO > 0 or carte.DOR > 0 or carte.DO_UO > 0):
-                    #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
-                    PrixMoy_ES = carte.prix / (carte.DI + carte.DO + carte.AI + carte.AO 
-                                               + carte.UI + carte.UO + carte.DOR + carte.DO_UO)
-                    if MinPrixMoy_ES > PrixMoy_ES :
+                if carte.type =="Carte_ES" and (carte.DO > 0 or carte.DOR > 0 or carte.DO_UO > 0):
+                    NbDOcarte = (carte.DO_UO + carte.DO + carte.DOR)
+                    if (DO_Autom - NbDOcarte) < MinReserves :
                         carteAajouter = carte
-                        DO_Autom -= (carte.DO + carte.UO + carte.DOR + carte.DO_UO) #Calcul des ES manquantes
-                        MinPrixMoy_ES = PrixMoy_ES
+                        MinReserves_UO = MinReserves #Mémorise le nombre de sorties manquantes avant l'ajout de la carte 
+                        MinReserves = DO_Autom - NbDOcarte
+                        prixCarteDO = carte.prix
+
+            #On Vérifie si une carte de sortie universelles ne serait pas moins couteuse 
+            if MinReserves <= 0: # Toutes les cartes ont été dimensionnées
+                for carte in catalogue:
+                    if carte.type =="Carte_ES" and (carte.UO > 0 or carte.DO_UO > 0) :                    
+                        NbDOcarte = (carte.DO_UO + carte.UO)
+                        if (DO_Autom - NbDOcarte) < MinReserves_UO: # une carte UO pour remplacer la dernière ne serait-elle pas 
+                            if carte.prix<=prixCarteDO :    # moins chère
+                                carteAajouter = carte
+                            MinReserves_UO = DO_Autom - NbDOcarte
 
             if carteAajouter != None : 
                 Automate.objects.create(
@@ -176,39 +187,30 @@ def configWIT(request, username, modemNec, nbMbus):
                     prix=carteAajouter.prix,
                     user=request.user.username
                 )
-                #Détermination des entrées en SPARE pour une utilisation
-                NbUI_Sup = NbUI_Sup + carteAajouter.UI  # Mémorisation du nombre d'entrées universelles de la carte ajoutée
-                NbAI_Sup = NbAI_Sup + carteAajouter.AI  # Mémorisation du nombre d'entrées universelles de la carte ajoutée
             else : 
                 print("Aucune carte correspondante trouvée")
                 break
 
             #Détermination des sorties universelles en SPARE
-            if carte.UO > 0 or carte.DO_UO > 0:
-                NbUO_Sup = carte.UO + carte.DO_UO # Calcul du nombre de sorties universelles
+            NbDO_Sup = carteAajouter.DO + carteAajouter.DO_UO + carteAajouter.DOR + carteAajouter.UO # Calcul du nombre de sorties universe
+            DO_Autom = DO_Autom - NbDO_Sup
             if DO_Autom <= 0 :
-                if NbUO_Sup > DO_Autom:
-                    NbUO_Sup = DO_Autom # Calcul du nombre de sorties universelles non utilisées
-                else :
-                    NbUO_Sup = 0
                 break
         
+        NbDO_Sup = abs(DO_Autom) # Calcul du nombre de sorties digitales non utilisées
+        
 
-        #Etape 4 : Ajout des cartes d'entrées analogiques           
-        AI_Autom = NbAI- NbAI_Sup - NbUI_Sup
+        # Etape 4 : Ajout des cartes d'entrées analogiques           
+        AI_Autom = NbAI- NbUI_Sup - NbAI_Sup
         while AI_Autom > 0:
-            MinPrixMoy_ES = 9999 
-            
+            MinReserves = 9999 
+            carteAajouter = None
             for carte in catalogue:
-                if carte.type =="Carte_ES" and (carte.AI > 0 or carte.UI > 0):                       
-                    #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
-                    PrixMoy_ES = carte.prix / (carte.DI + carte.DO + carte.AI + carte.AO 
-                                            + carte.UI + carte.UO + carte.DOR + carte.DO_UO)
-                    
-                    if MinPrixMoy_ES > PrixMoy_ES :
+                if carte.type =="Carte_ES" and (carte.AI > 0 or carte.UI > 0):                    
+                    NbAIcarte = (carte.AI + carte.UI)
+                    if AI_Autom - NbAIcarte < MinReserves :
                         carteAajouter = carte
-                        AI_Autom -= (carte.AI + carte.UI) #Calcul des ES manquantes
-                        MinPrixMoy_ES = PrixMoy_ES
+                        MinReserves = AI_Autom - NbAIcarte
 
             if carteAajouter != None : 
                 Automate.objects.create(
@@ -239,32 +241,38 @@ def configWIT(request, username, modemNec, nbMbus):
                 break
 
             #Détermination des entrées universelles en SPARE pour une utilisation en tant que sorties digitales
-            if carteAajouter.UI >= 0 or carteAajouter.DI >= 0:
-                NbDI_Sup = carteAajouter.UI + carteAajouter.DI # Calcul du nombre de sorties universelles
+            NbAI_Sup = NbAI_Sup + carteAajouter.AI
+            AI_Autom = AI_Autom - NbAI_Sup
             if AI_Autom <= 0 :
-                if NbUI_Sup > AI_Autom:
-                    NbUI_Sup = AI_Autom + NbDI_Sup # Calcul du nombre de sorties universelles non utilisées
-                else :
-                    NbUI_Sup = 0 + NbDI_Sup
-            else:
-                NbUI_Sup = NbUI_Sup + NbAI_Sup - AI_Autom             
+                break 
 
-        #Etape 5 : Ajout des cartes d'entrées digitales           
-        DI_Autom = NbDI - NbUI_Sup
-        
+        NbUI_Sup = abs(AI_Autom) # Calcul du nombre de sorties universelles non utilisées          
+
+        # #Etape 5 : Ajout des cartes d'entrées digitales           
+        DI_Autom = NbDI - NbUI_Sup - NbDI_Sup
+        NbDI_Sup = 0
+        NbUI_Sup = 0
         while DI_Autom > 0:
-            MinPrixMoy_ES = 9999 
-            
+            MinReserves = 9999 
+            carteAajouter = None
+            prixCarteDI =0
             for carte in catalogue:
-                if carte.type =="Carte_ES" and (carte.DI > 0 or carte.UI > 0):
-                    #Détermination du prix moyen d'une entrée/sortie avec la carte retenue
-                    PrixMoy_ES = carte.prix / (carte.DI + carte.DO + carte.AI + carte.AO 
-                                            + carte.UI + carte.UO + carte.DOR + carte.DO_UO)
-                    
-                    if MinPrixMoy_ES > PrixMoy_ES :
+                if carte.type =="Carte_ES" and (carte.DI > 0 ) :                    
+                    NbDIcarte = (carte.DI)
+                    if (DI_Autom - NbDIcarte) < MinReserves :
                         carteAajouter = carte
-                        DI_Autom -= (carte.DI + carte.UI) #Calcul des ES manquantes
-                        MinPrixMoy_ES = PrixMoy_ES
+                        MinReserves = DI_Autom - NbDIcarte
+                        prixCarteDI = carte.prix
+
+            #On Vérifie si une carte de sortie universelles ne serait pas moins couteuse 
+            if MinReserves <= 0: # Toutes les cartes ont été dimensionnées
+                for carte in catalogue:
+                    if carte.type =="Carte_ES" and (carte.UI > 0) :                    
+                        NbDIcarte = (carte.UI)
+                        if (DI_Autom - NbDIcarte) < MinReserves_DI: # une carte UO pour remplacer la dernière ne serait-elle pas 
+                            if carte.prix<=prixCarteDI :    # moins chère
+                                carteAajouter = carte
+                            MinReserves_DI = DI_Autom - NbDIcarte
 
             if carteAajouter != None : 
                 Automate.objects.create(
@@ -292,7 +300,13 @@ def configWIT(request, username, modemNec, nbMbus):
                 )
             else : 
                 print("Aucune carte correspondante trouvée")
-                break           
+                break     
+
+            #Détermination des sorties universelles en SPARE
+            NbDI_Sup = carteAajouter.DI + carteAajouter.UI # Calcul du nombre de sorties universe
+            DI_Autom = DI_Autom - NbDI_Sup
+            if DI_Autom <= 0 :
+                break      
 
         #Etape 6: Ajout de l'Add-on interface web
         for carte in catalogue:
@@ -449,7 +463,7 @@ def configWIT(request, username, modemNec, nbMbus):
 
         #Etape 9: Ajout des upgrade ressources
         #On parcoure le catalogue en fonction du type de la carte recherchée
-        if NbRessources > 10:
+        if NbRessources > 100:
             MinRessources = 9999 
             carteAajouter = None
             for carte in catalogue:
