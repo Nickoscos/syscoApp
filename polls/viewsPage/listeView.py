@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
+
+from ..ListePTS.export import upload_file
 from ..models.Typology.modelsChaudiere import Chaufferie
 from ..models.Typology.modelsEquip import LotIOT
 from ..forms.formsChaudiere import nbChaudForm, chaudForm
 from ..ListePTS.listePts import generationListe, updateListe, generationXls, calculTotaux, RAZListe
 from ..models.Typology.modelsEquip import Point
 from ..models.Pack.modelsPacks import PackTG, PackOPT, PackIOTUnit
+
 
 #GENERATION DE LA LISTE DE POINTS
 def genListeView(request):
@@ -184,7 +187,6 @@ def listePts(request):
 
     #Détection de l'envoie d'un formulaire
     if request.method == "POST":
-        print(request.POST.get("form_type"))
         #Choix des actions en fonction du formulaire soumit
         # Soumission du formulaire déterminant le nombre de chaudières
         if (request.POST.get("form_type") == "nbChaudform" and nbChaudform.is_valid()):
@@ -277,6 +279,12 @@ def listePts(request):
             else:
                 message = updateListe(request)
 
+        # Soumission du formulaire de chargement liste de point
+        elif (request.POST.get("form_type") == "uploadList"): 
+            file = request.FILES['myfile']
+            print("chargement d'une liste de point ", file.name)
+            upload_file(request, file)
+            # return redirect("polls:uploadfile", filename="template_Listedepoints.xlsx", newName="template_Listedepoints.xlsx")
 
         # Soumission du formulaire de téléchargement liste de point
         elif (request.POST.get("form_type") == "downloadListTemplate"): #and chaudform.is_valid()):

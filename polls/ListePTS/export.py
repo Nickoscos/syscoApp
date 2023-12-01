@@ -4,6 +4,7 @@ from django.http import HttpResponse
 import mimetypes
 from DEFPTS.settings import MEDIA_URL
 from django.http.response import HttpResponse
+import pandas as pd
 
 
 def generationXls(request, username):
@@ -97,3 +98,66 @@ def download_file(request, filename, newName):
     response['Content-Disposition'] = "attachment; filename=%s" % name
     # Return the response value
     return response
+
+#Page Upload LISTE DE POINTS
+def upload_file(request, file):
+    fileexcel = pd.read_excel(file)  
+
+
+    try:
+        Point.objects.filter(user=request.user.username).delete()
+        
+    except Point.DoesNotExist:
+        # listeNew = Point.objects.create(user=request.user.username)
+        print("Liste non existante")
+
+    print(fileexcel)
+    listeNew = Point.objects.filter(user=request.user.username)
+    for index, row in fileexcel.iterrows():
+        print(str(row['Libellé']))
+        if not('nan' in str(row['Libellé'])) and not('TOTAUX' in str(row['Libellé'])): 
+            listeNew.create(
+                        equip= row['Sous-ensemble'],
+                        type= "",
+                        libelle= row['Libellé'], 
+                        TM= row['Télé-Mesure'], 
+                        TS= row['Télé-Signalisation'], 
+                        TR= row['Télé-Réglage'], 
+                        TC= row['Télé-Commande'],
+                        Mbus=0,
+                        Modbus=0,
+                        Supp=False,
+                        user=request.user.username)
+        
+
+    # liste = Point.objects.filter(user=request.user.username)
+    # for l in liste:
+    #     print (l.equip + " " + l.libelle + " " + str(l.TM) + " " + str(l.TS) + " " + str(l.TR) + " " + str(l.TC))
+    
+    # listeNew = Point.objects.create(user=request.user.username)
+    # listeNew.create(
+    #             equip= gen.nomGen,
+    #             type= 'Temp',
+    #             libelle= 'Température extérieure ', 
+    #             TM=1, 
+    #             TS=0, 
+    #             TR=0, 
+    #             TC=0,
+    #             Mbus=0,
+    #             Modbus=0,
+    #             Supp=False,
+    #             user=username)
+
+
+# class Point(models.Model):
+#     equip = models.CharField(max_length=200, default='equipement')
+#     libelle = models.CharField(max_length=200, default='libellé')
+#     type = models.CharField(max_length=200, default='')
+#     TM = models.IntegerField(default=0)
+#     TS = models.IntegerField(default=0)
+#     TR = models.IntegerField(default=0)
+#     TC = models.IntegerField(default=0)
+#     Mbus = models.IntegerField(default=0)
+#     Modbus = models.IntegerField(default=0)
+#     Supp = models.BooleanField(default=False)
+#     user = models.CharField(max_length=200, default="")
