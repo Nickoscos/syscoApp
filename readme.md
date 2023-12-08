@@ -13,6 +13,7 @@ AVANT L'UTILISATION:
  1) Installer DJANGO : pip install django
  2) Installer BOOTSTRAP5 : pip install django-bootstrap5
  3) Installer XLSXWRITER : pip install xlsxwriter
+ 4) Installer IMPORT-EXPORT : pip install django-import-export
 
 Pour la mise en place sur le serveur:
  1) Dans le fichier settings.py, placer DEBUG à FALSE

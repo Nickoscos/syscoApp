@@ -144,9 +144,10 @@ def configDISTECH(request, username, modemNec, portModem, nbMbus):
             NbUO_Sup = carteAajouter.UO + carteAajouter.DO_UO # Calcul du nombre de sorties universel
             NbUI_Sup = NbUI_Sup + carteAajouter.UI
             AO_Autom = AO_Autom - NbUO_Sup
-            if AO_Autom <= 0 :
-                NbUO_Sup = abs(AO_Autom) # Calcul du nombre de sorties universelles non utilisées
-                break
+            
+        if AO_Autom <= 0 :
+            NbUO_Sup = abs(AO_Autom) # Calcul du nombre de sorties universelles non utilisées
+
 
         #Etape 4: Ajout des cartes de sorties digitales 
         DO_Autom = NbDO - NbUO_Sup
@@ -211,10 +212,9 @@ def configDISTECH(request, username, modemNec, portModem, nbMbus):
             #Détermination des sorties universelles en SPARE
             NbDO_Sup = carteAajouter.DO + carteAajouter.DO_UO + carteAajouter.DOR + carteAajouter.UO # Calcul du nombre de sorties universe
             DO_Autom = DO_Autom - NbDO_Sup
-            if DO_Autom <= 0 :
-                NbDO_Sup = abs(DO_Autom) # Calcul du nombre de sorties digitales non utilisées
-                break
 
+        if DO_Autom <= 0 :
+            NbDO_Sup = abs(DO_Autom) # Calcul du nombre de sorties digitales non utilisées
 
         # #Etape 5 : Ajout des cartes d'entrées analogiques           
         AI_Autom = NbAI- NbUI_Sup
@@ -259,9 +259,9 @@ def configDISTECH(request, username, modemNec, portModem, nbMbus):
             #Détermination des sorties universelles en SPARE pour une utilisation en tant que sorties digitales
             NbUI_Sup = NbUI_Sup + carteAajouter.UI
             AI_Autom = AI_Autom - NbUI_Sup
-            if AI_Autom <= 0 :
-                NbUI_Sup = abs(AI_Autom) # Calcul du nombre de sorties universelles non utilisées
-                break
+
+        if AI_Autom <= 0 :
+            NbUI_Sup = abs(AI_Autom) # Calcul du nombre d'entrées universelles non utilisées
 
         #Etape 6: Ajout des cartes d'entrées digitales 
         DI_Autom = NbDI - NbUI_Sup
