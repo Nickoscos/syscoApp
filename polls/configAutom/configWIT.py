@@ -1,8 +1,9 @@
 from ..models.Typology.modelsEquip import Point
 from ..models.Pack.modelsAutom import Automate
 from ..models.Pack.modelsAutom import carteAutom
+from django.db.models import Q
 
-def configWIT(request, username, modemNec, nbMbus):
+def configWIT(request, username, modemNec, nbMbus, ecranNec):
     liste = Point.objects.filter(user=username)
     NbUI_Sup = 0
     NbAI_Sup = 0
@@ -18,10 +19,10 @@ def configWIT(request, username, modemNec, nbMbus):
 
     NbRessources = round((NbAO+NbDO+NbDI+NbAI) * 30/100 + (NbAO+NbDO+NbDI+NbAI), 0)
 
-    catalogue = carteAutom.objects.filter(marque='WIT')
+    catalogue = carteAutom.objects.filter(Q(marque='WIT') | Q(type= 'ECRAN'))
 
     try:
-        Automate.objects.filter(user=request.user.username, marque="WIT").delete()
+        Automate.objects.filter(Q(user=request.user.username) & (Q(marque="WIT") | Q(type= 'ECRAN'))).delete()
     except Automate.DoesNotExist:
         print("aucun automate dimensionné")
 
@@ -498,8 +499,90 @@ def configWIT(request, username, modemNec, nbMbus):
                     user=request.user.username
                 )
 
+        #Etape 10: Ecran tactile
+        if ecranNec == True:
+            for carte in catalogue:
+                if carte.type == "ECRAN" :
+                    Automate.objects.create(
+                        type=carte.type, 
+                        marque=carte.marque,
+                        reference=carte.reference,
+                        DI=carte.DI,
+                        DO=carte.DO,
+                        AI=carte.AI,
+                        AO=carte.AO,
+                        UI=carte.UI,
+                        UO=carte.UO,
+                        DOR=carte.DOR,
+                        DO_UO=carte.DO_UO,
+                        nbEmpl=carte.nbEmpl,
+                        extension=carte.extension,
+                        rs232=carte.rs232,
+                        rs485=carte.rs485,
+                        ressources=carte.ressources,
+                        maxModbus=carte.maxModbus,
+                        Imagerie=carte.Imagerie,
+                        maxMbus=carte.maxMbus,
+                        prix=carte.prix,
+                        user=request.user.username
+                    )          
+
+        #Etape 11: Sonde de température extérieure
+        for carte in catalogue:
+            if carte.type == "SONDE" and carte.reference.find('NEGO524') != -1:
+                Automate.objects.create(
+                    type=carte.type, 
+                    marque=carte.marque,
+                    reference= carte.reference + " (Quantité=1)",
+                    DI=carte.DI,
+                    DO=carte.DO,
+                    AI=carte.AI,
+                    AO=carte.AO,
+                    UI=carte.UI,
+                    UO=carte.UO,
+                    DOR=carte.DOR,
+                    DO_UO=carte.DO_UO,
+                    nbEmpl=carte.nbEmpl,
+                    extension=carte.extension,
+                    rs232=carte.rs232,
+                    rs485=carte.rs485,
+                    ressources=carte.ressources,
+                    maxModbus=carte.maxModbus,
+                    Imagerie=carte.Imagerie,
+                    maxMbus=carte.maxMbus,
+                    prix=carte.prix,
+                    user=request.user.username
+                )
+
+        #Etape 12: Sonde de température à applique
+        for carte in catalogue:
+            if carte.type == "SONDE" and carte.reference.find('NEGO545') != -1:
+                Automate.objects.create(
+                    type=carte.type, 
+                    marque=carte.marque,
+                    reference= carte.reference + " (Quantité=" + str(NbAI - 1) + ")",
+                    DI=carte.DI,
+                    DO=carte.DO,
+                    AI=carte.AI,
+                    AO=carte.AO,
+                    UI=carte.UI,
+                    UO=carte.UO,
+                    DOR=carte.DOR,
+                    DO_UO=carte.DO_UO,
+                    nbEmpl=carte.nbEmpl,
+                    extension=carte.extension,
+                    rs232=carte.rs232,
+                    rs485=carte.rs485,
+                    ressources=carte.ressources,
+                    maxModbus=carte.maxModbus,
+                    Imagerie=carte.Imagerie,
+                    maxMbus=carte.maxMbus,
+                    prix=round(carte.prix*(NbAI - 1), 2),
+                    user=request.user.username
+                )               
+
         #Etape finale : Affichage de la configuration
-        automate = Automate.objects.filter(user=username, marque="WIT")
+        automate = Automate.objects.filter(Q(user=username) & (Q(marque='WIT') | Q(type= 'ECRAN')))
         prixAutomate = 0
         for carte in automate:
             print("Type : ", carte.type, ", Marque : ", carte.marque, ", Référence : ", carte.reference, ", Prix : ", carte.prix ,"€")

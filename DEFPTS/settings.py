@@ -28,12 +28,12 @@ SECRET_KEY = 'django-insecure-m=z+!+*%=5rhqe302)2ve6+0@jh%+**eeo_@z-$ss5vlzczy@p
 
 ##### EN DEVELOPPEMENT #####
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-# ALLOWED_HOSTS = []
+DEBUG = True
+ALLOWED_HOSTS = []
 
 ##### EN PRODUCTION #####
-DEBUG = False
-ALLOWED_HOSTS = ['nickoscos.pythonanywhere.com']
+# DEBUG = False
+# ALLOWED_HOSTS = ['nickoscos.pythonanywhere.com']
 
 # Application definition
 

@@ -40,22 +40,19 @@ def newConfig(request):
 
         # Dimensionnement d'un automate si aucun pack existant
         c = Chaufferie.objects.get(user=request.user.username)
-        configWIT(request, request.user.username, c.modemNec, nbMbus)
-        configDISTECH(request, request.user.username, c.modemNec, c.nbPortModem, nbMbus)
+        configWIT(request, request.user.username, c.modemNec, nbMbus, c.ecranNec)
+        configDISTECH(request, request.user.username, c.modemNec, c.nbPortModem, nbMbus, c.ecranNec)
         configPROG(request, request.user.username)
-
-
-        automate = Automate.objects.filter(user=request.user.username, marque='WIT')
 
     prestationPrix = Prestation.objects.filter(user=request.user.username).values('coutToT')[0]['coutToT']
 
-    automateWIT = Automate.objects.filter(user=request.user.username, marque='WIT')
+    automateWIT = Automate.objects.filter(Q(user=request.user.username) & (Q(marque="WIT") | Q(type= 'ECRAN')))
     automatePrixWIT = 0
     for carte in automateWIT:
         automatePrixWIT = round(automatePrixWIT + carte.prix, 2)
 
     coutTotalWIT = round(automatePrixWIT + prestationPrix, 2)
-    automateDISTECH = Automate.objects.filter(Q(user=request.user.username) & (Q(marque="DISTECH") | Q(type="MODEM")))
+    automateDISTECH = Automate.objects.filter(Q(user=request.user.username) & (Q(marque="DISTECH") | Q(type="MODEM") | Q(type= 'ECRAN')))
     automatePrixDISTECH = 0
     for carte in automateDISTECH:
         automatePrixDISTECH = round(automatePrixDISTECH + carte.prix, 2)
