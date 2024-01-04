@@ -41,8 +41,10 @@ def catalogueAutom(request):
                 cartedel.delete()
         
         if(request.POST.get("form_type") == "catalogueModifform"):    
+            print("Modif en cours")
             if request.POST.get("Modif") != None:
                 carteUPDATE_ref = request.POST.get("Modif")
+                print(carteUPDATE_ref)
         elif(request.POST.get("form_type") == "catalogueUPGform"):   
             if request.POST.get("ValidModif") != None:
                 print(request.POST.get("ValidModif"))

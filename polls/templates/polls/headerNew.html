@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>SYSCO PACK</title>
+
+    {% load django_bootstrap5 %}
+
+    {% bootstrap_css %}
+
+    {% bootstrap_javascript %}
+
+    {% bootstrap_messages %}
+
+    {% load static %}
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="{% static 'js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    
+    <link rel="stylesheet" href="{% static 'css/baseNew.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/catalogAutomate.css' %}">
+
+    <!-- <link rel="stylesheet" href="{% static 'css/liste.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'css/pack.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'css/catalogueAutom.css' %}" media="screen"> -->
+
+
+      
+
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>   
+  
+
+  
+
+
+
+
+

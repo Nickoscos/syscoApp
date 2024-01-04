@@ -1,0 +1,22 @@
+body {
+    background-color: #021766;
+}
+
+.first .first_row{
+    height: 20vh;
+    max-height: 20vh;
+    width: 100%;
+  }
+.first .second_row{
+    height: 80vh;
+    max-height: 80vh;
+    width: 100%;
+  }
+
+.fond_sysco {
+    position: relative;
+    width: 100%;
+    
+}
+
+ 

@@ -1,0 +1,39 @@
+{% extends 'polls/headerNew.html' %}
+
+
+{% block content %}
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row-fluid templatePage">
+                <div class="col-12 first">
+                    <div class="row-fluid first_row absolute">
+                        {% load static %}
+                        <img class="logo_sysco" src="{% static 'img/SyscoApp_logo.png' %}" alt="logo_sysco"/>
+                    </div>
+                    <nav class="navbar navbar-expand-lg navbar-dark navigation">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse navlibelle" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{% url 'polls:accueil' %}">ACCUEIL</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{% url 'polls:catalogueAutomView' %}">CATALOGUE AUTOMATE</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'polls:packsView' %}">CATALOGUE PACK</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <div class="row-fluid second_row">
+                        <img class="fond_sysco" src="{% static 'img/SyscoApp_Accueil.jpg' %}" alt="fond_sysco"/>
+                    </div>  
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
