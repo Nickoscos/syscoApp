@@ -1,0 +1,406 @@
+{% extends 'polls/headerNew.html' %}
+
+{% block content %}
+    </head>
+    <body>
+        <div class="first">
+            <div class="first_row absolute">
+                {% load static %}
+                <img class="logo_sysco" src="{% static 'img/SyscoApp_logo.png' %}" alt="logo_sysco"/>
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-dark navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse navlibelle" id="navbarNav">
+                    <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'polls:accueil' %}">ACCUEIL</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'polls:catalogueAutomView' %}">CATALOGUE AUTOMATE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'polls:packsView' %}">CATALOGUE PACK</a>
+                    </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="second_row">
+                {% load static %}
+                <img class="fond_sysco" src="{% static 'img/SyscoApp_Accueil.jpg' %}" alt="fond_sysco"/>
+            </div> 
+            {% if user.is_authenticated %} 
+            <div class="second_row_content">
+                
+                    <span style="color:red">{{message}}</span>
+                    <br>
+                    <br>
+
+                <!-- AFFICHAGE DU TABLEAU DES PACKS -->
+            
+                <!-- ******** -->
+                <div style="color: chocolate;text-align: center;">
+                    <span>
+                        {% if catalogue.has_previous %}
+                            <a href="?page=1" style="color: chocolate;">&laquo; Page 1</a>
+                            <a href="?page={{ catalogue.previous_page_number }}" style="color: chocolate;">précédent</a>
+                        {% endif %}
+                
+                        <span class="current">
+                            Page {{ catalogue.number }} of {{ catalogue.paginator.num_pages }}.
+                        </span>
+                
+                        {% if catalogue.has_next %}
+                            <a href="?page={{ catalogue.next_page_number }}" style="color: chocolate;">suivant</a>
+                            <a href="?page={{ catalogue.paginator.num_pages }}" style="color: chocolate;">Dernière page &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div> 
+
+            <div class="row three_row">
+                <div class="col">
+                    <form action="" method="post" id="exportCatalogue" style="display: flex;justify-content: flex-start;">
+                        {% csrf_token %}
+                            <input type="hidden" name="form_type" value="exportCatalogue">
+                            <button type="submit" class="btn btn-primary">Export Catalogue</button>
+                    </form>
+                </div>
+                <div class="col">
+                    <form action="" method="post" id="importCatalogue" class="form" enctype="multipart/form-data" style="display: flex;justify-content: flex-end;">
+                        {% csrf_token %}
+                            <input type="hidden" name="form_type" value="importCatalogue">
+                            <input type="file" name="myfile" class="nomFileUpload">
+                            <button type="submit" class="btn btn-success">Import Catalogue</button>
+                    </form>
+                </div>
+            </div>   
+
+            {% else %}
+            <div class="row three_row">
+                <div class="col-12" style="display: flex; justify-content: center;font-size:xx-large;">
+                    <p style="color:white">You are not logged in   =>  </p>
+                    <a href="{% url 'login' %}" style="color:chocolate;"> Log In</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+            <table class="table text-center mt-2">
+                <thead>
+                    <tr>
+                        <th
+                        {% if user.groups.first.name == "SYSCO" %} 
+                            colspan="11" 
+                        {% else %}
+                            colspan="6" 
+                        {% endif %}
+                        style="background-color: gray; font-size: 1.3em;"> PACKS TELEGESTION</th>
+                    </tr>
+                    <tr style="background-color: gray;">
+                        <!-- <th>Sous-ensemble</th> -->
+                        <th>Référence</th>
+                        <th>AI</th>
+                        <th>DI</th>
+                        <th>AO</th>
+                        <th>DO</th>
+                        {% if user.groups.first.name == "SYSCO" %}
+                        <th>Prix WIT</th>
+                        <th>Prix TREND</th>
+                        <th>Prix DISTECH</th>
+                        <th>Prix SOFREL</th>
+                        {% endif %}
+                        <th>Prix Moyen</th>
+                        {% if user.groups.first.name == "SYSCO" %}
+                        <th>Action</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in packsTG %}
+                        {% if packUPDATE == p.Reference %}
+                            <tr>
+                                <form action="" method="post" id="PackTGUPGform">
+                                    {% csrf_token %}
+                                    <td class="packText"><input name="reference_Upd" id="reference_Upd" type="text" value="{{ p.Reference }}"></td>
+                                    <td class="packES"><input name="AI_Upd" id="AI_Upd" value="{{ p.AI }}"></td>
+                                    <td class="packES"><input name="DI_Upd" id="DI_Upd" value="{{ p.DI }}"></td>
+                                    <td class="packES"><input name="AO_Upd" id="AO_Upd" value="{{ p.AO }}"></td>
+                                    <td class="packES"><input name="DO_Upd" id="DO_Upd" value="{{ p.DO }}"></td>
+                                    <td class="packPrix"><input name="priceWIT_Upd" id="priceWIT_Upd" value="{{ p.priceWIT }}"></td>
+                                    <td class="packPrix"><input name="priceTREND_Upd" id="priceTREND_Upd" value="{{ p.priceTREND }}"></td>
+                                    <td class="packPrix"><input name="priceDISTECH_Upd" id="priceDISTECH_Upd" value="{{ p.priceDISTECH }}"></td>
+                                    <td class="packPrix"><input name="priceSOFREL_Upd" id="priceSOFREL_Upd" value="{{ p.priceSOFREL }}"></td>
+                                    <td class="packPrix"><input name="priceMOY_Upd" id="priceMOY_Upd" value="{{ p.priceMOY }}"></td>
+                                    <td>
+                                            <input type="hidden" name="form_type" value="PackTGUPGform">
+                                            <button type="submit" class="btn btn-primary"name="ValidModif" id="ValidModif" value={{p.Reference}}>Valider</button>
+                                    </td>
+                                </form>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td class="packText"><p name="{{ p.Reference }}" id="{{ p.Reference }}" type="text" value="{{ p.Reference }}">{{ p.Reference }}</p></td>
+                                <td class="packES"><p name="{{ p.AI }}" id="{{ p.AI }}">{{ p.AI }}</p></td>
+                                <td class="packES"><p name="{{ p.DI }}" id="{{ p.DI }}">{{ p.DI }}</p></td>
+                                <td class="packES"><p name="{{ p.AO }}" id="{{ p.AO }}">{{ p.AO }}</p></td>
+                                <td class="packES"><p name="{{ p.DO }}" id="{{ p.DO }}">{{ p.DO }}</p></td>
+                                {% if user.groups.first.name == "SYSCO" %}
+                                <td class="packPrix"><p name="{{ p.priceWIT }}" id="{{ p.priceWIT }}">{{ p.priceWIT }} €</p></td>
+                                <td class="packPrix"><p name="{{ p.priceTREND }}" id="{{ p.priceTREND }}">{{ p.priceTREND }} €</p></td>
+                                <td class="packPrix"><p name="{{ p.priceDISTECH }}" id="{{ p.priceDISTECH }}">{{ p.priceDISTECH }} €</p></td>
+                                <td class="packPrix"><p name="{{ p.priceSOFREL }}" id="{{ p.priceSOFREL }}">{{ p.priceSOFREL }} €</p></td>
+                                {% endif %}
+                                <td class="packPrix"><p name="{{ p.priceMOY }}" id="{{ p.priceMOY }}">{{ p.priceMOY }} €</p></td>
+                                {% if user.groups.first.name == "SYSCO" %} 
+                                <td class="row">
+                                    <div class="col">
+                                        <form action="" method="post" id="PackTGSupform">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="form_type" value="PackTGSuppform">
+                                            <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.Reference}}>Supprimer</button>
+                                        </form>
+                                    </div>
+                                    <div class="col">
+                                        <form action="" method="post" id="PackTGModifform">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="form_type" value="PackTGModifform">
+                                            <button type="submit" class="btn btn-primary"name="Modif" id="Modif" value={{p.Reference}}>Modifier</button>
+                                        </form>
+                                    </div>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    {% if user.groups.first.name == "SYSCO" %}
+                    <form action="" method="post" id="PackTGAddform">
+                        {% csrf_token %}
+                        <tr>
+                            <td class="packText"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
+                            <td class="packES"><input name="AI_Add" id="AI_Add" type="number" value=0></td>
+                            <td class="packES"><input name="DI_Add" id="DI_Add" type="number" value=0></td>
+                            <td class="packES"><input name="AO_Add" id="AO_Add" type="number" value=0></td>
+                            <td class="packES"><input name="DO_Add" id="DO_Add" type="number" value=0></td>
+                            <td class="packPrix"><input name="priceWIT_Add" id="priceWIT_Add" type="number" step="0.01" value=0></td>
+                            <td class="packPrix"><input name="priceTREND_Add" id="priceTREND_Add" type="number" step="0.01" value=0></td>
+                            <td class="packPrix"><input name="priceDISTECH_Add" id="priceDISTECH_Add" type="number" step="0.01" value=0></td>
+                            <td class="packPrix"><input name="priceSOFREL_Add" id="priceSOFREL_Add" type="number" step="0.01" value=0></td>
+                            <td class="packPrix"><input name="priceMOY_Add" id="priceMOY_Add" type="number" step="0.01" value=0></td>
+                            <td>
+                                <input type="hidden" name="form_type" value="PackTGAddform">
+                                <button type="submit" class="btn btn-success"name="Add" id="Add" value=1>Ajout</button>
+                            </td> 
+                        </tr>
+                    </form>
+                    {% endif %}
+                </tbody>
+            </table>  
+
+            <table class="table text-center mt-2">
+                <thead>
+                    <tr>
+                        <th
+                        {% if user.groups.first.name == "SYSCO" %} 
+                            colspan="9" 
+                        {% else %}
+                            colspan="8" 
+                        {% endif %} 
+                        style="background-color: gray; font-size: 1.3em;"> PACKS OPTIMISATION IOT</th>
+                    </tr>
+                    <tr style="background-color: gray;">
+                        <!-- <th>Sous-ensemble</th> -->
+                        <th>Référence</th>
+                        <th>Nombre de capteurs maximal</th>
+                        <th>Température Ambiant</th>
+                        <th>Température ECS</th>
+                        <th>Prix Passerelle</th>
+                        <th>Prix Température Ambiant</th>
+                        <th>Prix Température ECS</th>
+                        <th>Prix TOTAL</th>
+                        {% if user.groups.first.name == "SYSCO" %}
+                        <th>Action</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in packsOPT %}
+                        {% if packUPDATE == p.Reference %}
+                            <tr>
+                                <form action="" method="post" id="PackOPTUPGform">
+                                    {% csrf_token %}
+                                    <td class="packText"><input name="reference_Upd" id="reference_Upd" type="text" value="{{ p.Reference }}"></td>
+                                    <td class="packES"><input name="nbIOTmax_Upd" id="nbIOTmax_Upd" value="{{ p.nbIOTmax }}"></td>
+                                    <td class="packES"><input name="Tamb_Upd" id="Tamb_Upd" value="{{ p.Tamb }}"></td>
+                                    <td class="packES"><input name="TECS_Upd" id="TECS_Upd" value="{{ p.TECS }}"></td>
+                                    <td class="packPrix"><input name="pricePAS_Upd" id="pricePAS_Upd" value="{{ p.pricePAS }}"></td>
+                                    <td class="packPrix"><input name="priceTamb_Upd" id="priceTamb_Upd" value="{{ p.priceTamb }}"></td>
+                                    <td class="packPrix"><input name="priceTECS_Upd" id="priceTECS_Upd" value="{{ p.priceTECS }}"></td>
+                                    <td class="packPrix"><input name="priceTOT_Upd" id="priceTOT_Upd" value="{{ p.priceTOT }}"></td>
+                                    <td>
+                                            <input type="hidden" name="form_type" value="PackOPTUPGform">
+                                            <button type="submit" class="btn btn-primary"name="ValidModif" id="ValidModif" value={{p.Reference}}>Valider</button>
+                                    </td>
+                                </form>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td class="packText"><p name="{{ p.Reference }}" id="{{ p.Reference }}" type="text" value="{{ p.Reference }}">{{ p.Reference }}</p></td>
+                                <td class="packES"><p name="{{ p.nbIOTmax }}" id="{{ p.nbIOTmax }}">{{ p.nbIOTmax }}</p></td>
+                                <td class="packES"><p name="{{ p.Tamb }}" id="{{ p.Tamb }}">{{ p.Tamb }}</p></td>
+                                <td class="packES"><p name="{{ p.TECS }}" id="{{ p.TECS }}">{{ p.TECS }}</p></td>
+                                <td class="packPrix"><p name="{{ p.pricePAS }}" id="{{ p.pricePAS }}">{{ p.pricePAS }} €</p></td>
+                                <td class="packPrix"><p name="{{ p.priceTamb }}" id="{{ p.priceTamb }}">{{ p.priceTamb }} €</p></td>
+                                <td class="packPrix"><p name="{{ p.priceTECS }}" id="{{ p.priceTECS }}">{{ p.priceTECS }} €</p></td>
+                                <td class="packPrix"><p name="{{ p.priceTOT }}" id="{{ p.priceTOT }}">{{ p.priceTOT }} €</p></td>
+                                {% if user.groups.first.name == "SYSCO" %}
+                                <td class="row">
+                                    <div class="col">
+                                        <form action="" method="post" id="PackOPTSupform">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="form_type" value="PackOPTSuppform">
+                                            <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.Reference}}>Supprimer</button>
+                                        </form>
+                                    </div>
+                                    <div class="col">
+                                        <form action="" method="post" id="PackOPTModifform">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="form_type" value="PackOPTModifform">
+                                            <button type="submit" class="btn btn-primary"name="Modif" id="Modif" value={{p.Reference}}>Modifier</button>
+                                        </form>
+                                    </div>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    {% if user.groups.first.name == "SYSCO" %}
+                        <form action="" method="post" id="PackOPTAddform">
+                            {% csrf_token %}
+                            <tr>
+                                <td class="packText"><input name="reference_Add" id="reference_Add" type="text" value="référence"></td>
+                                <td class="packIOTES"><select name="nbIOTmax_Add">
+                                    <option value="100">100</option>
+                                    <option value="6">6</option>
+                                </select></td>
+                                <td class="packES"><input name="Tamb_Add" id="Tamb_Add" type="number" value=0></td>
+                                <td class="packES"><input name="TECS_Add" id="TECS_Add" type="number" value=0></td>
+                                <td class="packPrix"><input name="pricePAS_Add" id="pricePAS_Add" type="number" step="0.01" value=0></td>
+                                <td class="packPrix"><input name="priceTamb_Add" id="priceTamb_Add" type="number" step="0.01" value=0></td>
+                                <td class="packPrix"><input name="priceTECS_Add" id="priceTECS_Add" type="number" step="0.01" value=0></td>
+                                <td class="packPrix"><input name="priceTOT_Add" id="priceTOT_Add" type="number" step="0.01" value=0></td>
+                                <td>
+                                    <input type="hidden" name="form_type" value="PackOPTAddform">
+                                    <button type="submit" class="btn btn-success"name="Add" id="Add" value=1>Ajout</button>
+                                </td> 
+                            </tr>
+                        </form>
+                    {% endif %}
+                </tbody>
+            </table>  
+
+            <table class="table text-center mt-2">
+                <thead>
+                    <tr>
+                        <th
+                        {% if user.groups.first.name == "SYSCO" %} 
+                            colspan="5" 
+                        {% else %}
+                            colspan="4" 
+                        {% endif %} 
+                        style="background-color: gray; font-size: 1.3em;"> PACKS IOT Unitaire</th>
+                    </tr>
+                    <tr style="background-color: gray;">
+                        <!-- <th>Sous-ensemble</th> -->
+                        <th>Référence</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Prix TOTAL</th>
+                        {% if user.groups.first.name == "SYSCO" %}
+                        <th>Action</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in packsIOTUnit %}
+                        {% if packUPDATE == p.Reference %}
+                            <tr>
+                                <form action="" method="post" id="PackIOTUPGform">
+                                    {% csrf_token %}
+                                    <td class="packText"><input name="reference_Upd" id="reference_Upd" type="text" value="{{ p.Reference }}"></td>
+                                    <td class="packIOTES"><select name="typeIOT_Upd" value="{{ p.type }}">
+                                        <option value="PASS6">Passerelle LoRa (Sup 6 capteurs)</option>
+                                        <option value="PASS">Passerelle LoRa (inf 6 capteurs)</option>
+                                        <option value="TAMB">Ambiant et Hygrométrie</option>
+                                        <option value="TEAU2">T° Eau (aller/retour)</option>
+                                        <option value="CO2">CO2, COV, Ambiant & Hygrométrie</option>
+                                        <option value="CPT GAZ">Compteur GAZ</option>
+                                        <option value="CPT ELEC">Compteur ELEC</option>
+                                        <option value="CPT CALO">Compteur CALORIES</option>
+                                        <option value="CPT EAU">Compteur EAU</option>
+                                        </select></td>
+                                    <td class="packIOTComment"><textarea name="commentIOT_Upd" id="commentIOT_Upd">{{ p.comment }}</textarea></td>
+                                    <td class="packIOTPrix"><input name="priceIOT_Upd" id="priceIOT_Upd" value="{{ p.price }}"></td>
+                                    <td>
+                                            <input type="hidden" name="form_type" value="PackIOTUPGform">
+                                            <button type="submit" class="btn btn-primary"name="ValidModif" id="ValidModif" value={{p.Reference}}>Valider</button>
+                                    </td>
+                                </form>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td class="packIOTRef"><p name="{{ p.Reference }}" id="{{ p.Reference }}" type="text" value="{{ p.Reference }}">{{ p.Reference }}</p></td>
+                                <td class="packIOTES"><p name="{{ p.type }}" id="{{ p.type }}">{{ p.type }}</p></td>
+                                <td class="packIOTComment"><p name="{{ p.comment }}" id="{{ p.comment }}">{{ p.comment }}</p></td>
+                                <td class="packIOTPrix"><p name="{{ p.price }}" id="{{ p.price }}">{{ p.price }} €</p></td>
+                                {% if user.groups.first.name == "SYSCO" %}
+                                <td class="row">
+                                    <div class="col">
+                                        <form action="" method="post" id="PackIOTSupform">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="form_type" value="PackIOTSuppform">
+                                            <button type="submit" class="btn btn-danger"name="Supp" id="Supp" value={{p.Reference}}>Supprimer</button>
+                                        </form>
+                                    </div>
+                                    <div class="col">
+                                        <form action="" method="post" id="PackIOTModifform">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="form_type" value="PackIOTModifform">
+                                            <button type="submit" class="btn btn-primary"name="Modif" id="Modif" value={{p.Reference}}>Modifier</button>
+                                        </form>
+                                    </div>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    {% if user.groups.first.name == "SYSCO" %}
+                    <form action="" method="post" id="PackIOTAddform">
+                        {% csrf_token %}
+                        <tr>
+                            <td class="packIOTRef"><input name="referenceIOT_Add" id="referenceIOT_Add" type="text" value="référence"></td>
+                            <!-- <td class="packES"><input name="type_Add" id="type_Add" type="number" value=0></td> -->
+                            <td class="packIOTES"><select name="typeIOT_Add">
+                                <option value="PASS6">Passerelle LoRa (Sup 6 capteurs)</option>
+                                <option value="PASS">Passerelle LoRa (inf 6 capteurs)</option>
+                                <option value="TAMB">Ambiant et Hygrométrie</option>
+                                <option value="TEAU2">T° Eau (aller/retour)</option>
+                                <option value="CO2">CO2, COV, Ambiant & Hygrométrie</option>
+                                <option value="CPT GAZ">Compteur GAZ</option>
+                                <option value="CPT ELEC">Compteur ELEC</option>
+                                <option value="CPT CALO">Compteur CALORIES</option>
+                                <option value="CPT EAU">Compteur EAU</option>
+                                </select></td>
+                            <td class="packIOTComment"><textarea name="commentIOT_Add" id="commentIOT_Add"></textarea>
+                            <td class="packIOTPrix"><input name="priceIOT_Add" id="priceIOT_Add" type="number" step="0.01" value=0></td>
+                            <td class="packIOTAction">
+                                <input type="hidden" name="form_type" value="PackIOTAddform">
+                                <button type="submit" class="btn btn-success"name="Add" id="Add" value=1>Ajout</button>
+                            </td> 
+                        </tr>
+                    </form>
+                    {% endif %}
+                </tbody>
+            </table>  
+{% endblock %}

@@ -197,7 +197,11 @@ def catalogueXls(request, username):
 
         for point in catalogue:
             pos = pos + 1
-            style = header_style
+            style = workbook.add_format({
+                "bg_color": "white",
+                "font_color": "black",
+                "bold": False
+            })
 
 
             worksheet.write("A"+str(pos), point.type, style)
