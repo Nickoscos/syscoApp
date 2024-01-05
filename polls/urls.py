@@ -8,10 +8,11 @@ from .ListePTS import export
 app_name = 'polls'
 urlpatterns = [
     # ex: /polls/
-    path('accueil', accueilView.accueil, name='accueil'),
-    path('', listeView.genListeView, name='chaufferie'),
+    path('', accueilView.accueil, name='accueil'),
+    path('chaufferie', listeView.genListeView, name='chaufferie'),
     path('liste/', listeView.listePts, name='listePts'),
     path('downloadfile/<str:filename>/<str:newName>', export.download_file, name='downloadfile'),
+    path('exportcatalogAutom/<str:filename>/<str:newName>', catalogueAutomView.download_catalogue, name='exportcatalogAutom'),
     path('packs/', packsView.listPack, name='packsView'),
     path('catalogueAutom', catalogueAutomView.catalogueAutom, name='catalogueAutomView'),
     path('config/', configView.newConfig, name='config'),

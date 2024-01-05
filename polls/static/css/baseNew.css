@@ -2,11 +2,11 @@ body {
   background-color: #021766;
 }
 
-.templatePage {
+/* .templatePage {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .first .first_row{
     height: 20%;
@@ -28,7 +28,8 @@ body {
 
 .first .second_row_content{
   position: absolute;
-  top:26%;
+  position: 0;
+  top:25%;
   height: 80%;
   max-height: 80%;
   width: 100%;

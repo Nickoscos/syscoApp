@@ -1,17 +1,49 @@
-{% extends 'polls/header.html' %}
+{% extends 'polls/headerNew.html' %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <h2>Log In</h2>
-    <form method="post">
-        {% csrf_token %}
-        <label for="id_username">Nom d’utilisateur :</label>
-        <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
-        
-        <label for="id_password">Mot de passe :</label>
-        <input type="password" name="password" autocomplete="current-password" required="" id="id_password">
-        <!-- {{ form.as_p }} -->
-        <button type="submit">Log In</button>
-    </form>
+    </head>
+    <body>
+        <div class="first">
+            <div class="first_row absolute">
+                {% load static %}
+                <img class="logo_sysco" src="{% static 'img/SyscoApp_logo.png' %}" alt="logo_sysco"/>
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-dark navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse navlibelle" id="navbarNav">
+                    <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'polls:accueil' %}">ACCUEIL</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'polls:catalogueAutomView' %}">CATALOGUE AUTOMATE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'polls:packsView' %}">CATALOGUE PACK</a>
+                    </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="second_row">
+                {% load static %}
+                <img class="fond_sysco" src="{% static 'img/SyscoApp_Accueil.jpg' %}" alt="fond_sysco"/>
+            </div>  
+            <div class="second_row_content">
+                <h2>Log In</h2>
+                <form method="post" class="loginForm">
+                    {% csrf_token %}
+                    <label for="id_username">Nom d’utilisateur :</label>
+                    <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
+                    
+                    <label for="id_password">Mot de passe :</label>
+                    <input type="password" name="password" autocomplete="current-password" required="" id="id_password">
+                    <br>
+                    <button type="submit">Connexion</button>
+                </form>
+            </div>
+        </div>
 {% endblock %}

@@ -41,3 +41,10 @@
     width: 95%;
     text-align: center;
 }
+
+.nomFileUpload {
+    height: 20%;
+    background-color: white;
+    padding-right: 10%;
+    margin-right: 5%;
+}
