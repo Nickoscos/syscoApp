@@ -1,0 +1,51 @@
+.itemTYPE {
+    width: 4%;
+}
+
+.itemMARQUE {
+    width: 4%;
+}
+
+.itemDENOMINATION {
+    width: 20%;
+}
+
+.itemES {
+    width: 3%;
+}
+
+.itemFCT {
+    width: 4%;
+}
+
+.itemPRIX {
+    width: 6%;
+}
+
+.itemESNew {
+    width: 75%;
+    text-align: center;
+}
+
+.itemFCTNew {
+    width: 95%;
+    text-align: center;
+}
+
+.itemPRIXNew {
+    width: 90%;
+    text-align: center;
+}
+
+.itemRefNew {
+    width: 95%;
+    text-align: center;
+}
+
+.nomFileUpload {
+    height: 20%;
+    background-color: white;
+    padding-right: 10%;
+    margin-right: 5%;
+}
+

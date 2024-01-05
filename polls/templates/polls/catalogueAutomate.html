@@ -115,7 +115,7 @@
                                         </form>
                                     </tr>
                                 {% else %}
-                                    <tr style="vertical-align:middle">
+                                    <tr>
                                         <td class="itemTYPE"><p name="type" id="type" type="text">{{ p.type }}</p></td>
                                         <td class="itemMARQUE"><p name="marque" id="marque" type="text">{{ p.marque }}</p></td>
                                         <td class="itemDENOMINATION"><p name="reference" id="reference" >{{ p.reference }}</p></td>
@@ -208,26 +208,44 @@
                             {% endif %}
                         </tbody>
                     </table>  
+
+                    <div style="color: chocolate;text-align: center;">
+                        <span>
+                            {% if catalogue.has_previous %}
+                                <a href="?page=1" style="color: chocolate;">&laquo; Page 1</a>
+                                <a href="?page={{ catalogue.previous_page_number }}" style="color: chocolate;">précédent</a>
+                            {% endif %}
+                    
+                            <span class="current">
+                                Page {{ catalogue.number }} of {{ catalogue.paginator.num_pages }}.
+                            </span>
+                    
+                            {% if catalogue.has_next %}
+                                <a href="?page={{ catalogue.next_page_number }}" style="color: chocolate;">suivant</a>
+                                <a href="?page={{ catalogue.paginator.num_pages }}" style="color: chocolate;">Dernière page &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
             </div> 
-            <div class="container-fluid">
-                <div class="row three_row">
-                    <div class="col">
-                        <form action="" method="post" id="exportCatalogue" style="display: flex;justify-content: flex-start;">
-                            {% csrf_token %}
-                                <input type="hidden" name="form_type" value="exportCatalogue">
-                                <button type="submit" class="btn btn-primary">Export Catalogue</button>
-                        </form>
-                    </div>
-                    <div class="col">
-                        <form action="" method="post" id="importCatalogue" class="form" enctype="multipart/form-data" style="display: flex;justify-content: flex-end;">
-                            {% csrf_token %}
-                                <input type="hidden" name="form_type" value="importCatalogue">
-                                <input type="file" name="myfile" class="nomFileUpload">
-                                <button type="submit" class="btn btn-success">Import Catalogue</button>
-                        </form>
-                    </div>
-                </div>   
-            </div>
+
+            <div class="row three_row">
+                <div class="col">
+                    <form action="" method="post" id="exportCatalogue" style="display: flex;justify-content: flex-start;">
+                        {% csrf_token %}
+                            <input type="hidden" name="form_type" value="exportCatalogue">
+                            <button type="submit" class="btn btn-primary">Export Catalogue</button>
+                    </form>
+                </div>
+                <div class="col">
+                    <form action="" method="post" id="importCatalogue" class="form" enctype="multipart/form-data" style="display: flex;justify-content: flex-end;">
+                        {% csrf_token %}
+                            <input type="hidden" name="form_type" value="importCatalogue">
+                            <input type="file" name="myfile" class="nomFileUpload">
+                            <button type="submit" class="btn btn-success">Import Catalogue</button>
+                    </form>
+                </div>
+            </div>   
+
             {% else %}
             <div class="row three_row">
                 <div class="col-12" style="display: flex; justify-content: center;font-size:xx-large;">

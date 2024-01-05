@@ -1,0 +1,23 @@
+.loginForm {
+    background-color: chocolate;
+    font-size: xx-large;
+    display:flex;
+    align-content: center;
+    align-items: center;
+    width: 30%;
+    flex-wrap: wrap;
+    flex-direction: column;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    -webkit-transform: translate(-50%);
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+.loginForm > input {
+    font-size: 1.5rem;
+    text-align: center;
+    width: 35%;
+    height: 40%;
+}

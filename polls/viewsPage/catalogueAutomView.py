@@ -6,6 +6,7 @@ from DEFPTS.settings import MEDIA_URL
 import mimetypes
 from django.http import HttpResponse
 import xlsxwriter
+from django.core.paginator import Paginator
 
 def catalogueAutom(request):
     message = ''
@@ -87,11 +88,17 @@ def catalogueAutom(request):
             print("chargement du catalogue ", file.name)
             upload_catalogue(request, file)
 
+    #PAGINATION CATALOGUE
+    paginator = Paginator(cartes, 10) # Show 15 articles par page
+    page = request.GET.get('page')
+    catalogue = paginator.get_page(page)
+
     return render(request, 'polls/catalogueAutomate.html', {
         'message': message,
-        'catalogue': cartes,
+        'catalogue': catalogue,
         'itemUPDATE': carteUPDATE_ref,
         })
+
 
 #Page Download Catalogue
 def download_catalogue(request, filename, newName):
