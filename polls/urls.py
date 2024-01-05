@@ -14,14 +14,16 @@ urlpatterns = [
     path('accueilCataloguePacks', packsView.accueilCatalogPack, name='accueilCatalogPacks'),
     path('accueilCataloguePacks/TLG', packsView.packTLG, name='catalogPacksTLG'),
     path('exportcatalogPacksTLG/<str:filename>/<str:newName>', packsView.download_catalogue, name='exportcatalogPacksTLG'),
-
+    path('accueilCataloguePacks/OPT', packsView.packOPT, name='catalogPacksOPT'),
+    path('exportcatalogPacksOPT/<str:filename>/<str:newName>', packsView.download_catalogue, name='exportcatalogPacksOPT'),
+    path('accueilCataloguePacks/TLR', packsView.packTLR, name='catalogPacksTLR'),
+    path('exportcatalogPacksTLR/<str:filename>/<str:newName>', packsView.download_catalogue, name='exportcatalogPacksTLR'),
 
 
 
     path('chaufferie', listeView.genListeView, name='chaufferie'),
     path('liste/', listeView.listePts, name='listePts'),
     path('downloadfile/<str:filename>/<str:newName>', export.download_file, name='downloadfile'),
-    path('packs/', packsView.listPack, name='packsView'),
 
     path('config/', configView.newConfig, name='config'),
     path('configAutomate/', configAutomateView.newConfig, name='configAutomate'),
